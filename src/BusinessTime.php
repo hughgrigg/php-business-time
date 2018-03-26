@@ -37,15 +37,46 @@ class BusinessTime extends Carbon
     }
 
     /**
-     * Get the date time after adding one business day.
+     * Get the date time after adding one whole business day.
+     *
+     * @see AddBusinessDaysTest
      *
      * @return BusinessTime
      * @throws \InvalidArgumentException
      */
     public function addBusinessDay(): self
     {
-        $next = $this->copy();
-        while ($this->diffInBusinessDays($next) < 1) {
+        return $this->addBusinessDays(1);
+    }
+
+    /**
+     * Get the date time after adding an amount of partial business days.
+     *
+     * The amount can be fractional, and the accuracy depends on the current
+     * precision (the default is hour precision).
+     *
+     * Note that addPartialBusinessDays(1.0) is not equivalent to
+     * addBusinessDays(1). Adding partial business days will go from Monday
+     * 09:00 to Monday 17:00, for example, whereas adding business days would
+     * go from Monday 09:00 to Tuesday 09:00.
+     *
+     * @see AddBusinessDaysTest
+     *
+     * @param float $businessDays
+     *
+     * @return BusinessTime
+     * @throws \InvalidArgumentException
+     */
+    public function addBusinessDays(float $businessDays): self
+    {
+        // The number of business days will be at least the number of real days,
+        // so we can jump ahead that much first as an optimisation. This also
+        // ensures we get the intuitive result that Monday 09:00 + 1 business
+        // day is Tuesday 09:00 (technically it could be Monday 17:00, as 8
+        // business hours have passed then), for example.
+        $next = $this->copy()->addDays((int) $businessDays);
+
+        while ($this->diffInPartialBusinessDays($next) < $businessDays) {
             $next = $next->add($this->precision());
         }
 
@@ -53,6 +84,28 @@ class BusinessTime extends Carbon
     }
 
     /**
+     * @param float $businessHours
+     *
+     * @return BusinessTime
+     */
+    public function addBusinessHours(float $businessHours): self
+    {
+        // The number of business hours will be at least the number of real
+        // hours, so we can jump ahead that much first as an optimisation.
+        $next = $this->copy()->addHours((int) $businessHours);
+
+        while ($this->diffInPartialBusinessHours($next) < $businessHours) {
+            $next = $next->add($this->precision());
+        }
+
+        return $next;
+    }
+
+    /**
+     * Get the difference between this time and another in whole business days.
+     *
+     * @see DiffInBusinessDaysTest
+     *
      * @param DateTimeInterface $time
      * @param bool              $absolute
      *
@@ -67,6 +120,10 @@ class BusinessTime extends Carbon
     }
 
     /**
+     * Get the difference between this time and another in whole business hours.
+     *
+     * @see DiffInBusinessHoursTest
+     *
      * @param DateTimeInterface $time
      * @param bool              $absolute
      *
@@ -80,19 +137,11 @@ class BusinessTime extends Carbon
     }
 
     /**
-     * @param DateTimeInterface $time
-     * @param bool              $absolute
+     * Get the difference between this time and another in fractional business
+     * days, calculated in intervals the size of the precision.
      *
-     * @return int
-     */
-    public function diffInBusinessMinutes(
-        ?DateTimeInterface $time = null,
-        bool $absolute = true
-    ): int {
-        return (int) $this->diffInPartialBusinessMinutes($time, $absolute);
-    }
-
-    /**
+     * @see DiffInBusinessDaysTest
+     *
      * @param DateTimeInterface $time
      * @param bool              $absolute
      *
@@ -108,6 +157,11 @@ class BusinessTime extends Carbon
     }
 
     /**
+     * Get the difference between this time and another in fractional business
+     * hours, calculated in intervals the size of the precision.
+     *
+     * @see DiffInBusinessHoursTest
+     *
      * @param DateTimeInterface $time
      * @param bool              $absolute
      *
@@ -122,20 +176,12 @@ class BusinessTime extends Carbon
     }
 
     /**
-     * @param DateTimeInterface $time
-     * @param bool              $absolute
+     * Get a diff in business time as an interval.
      *
-     * @return float
-     */
-    public function diffInPartialBusinessMinutes(
-        ?DateTimeInterface $time = null,
-        bool $absolute = true
-    ): float {
-        return $this->diffInBusinessTime($time, $absolute)
-            * $this->precision()->inMinutes();
-    }
-
-    /**
+     * Note that seconds are only used as the unit here, not the precision.
+     * E.g. with hour precision, we will iterate in steps of one hour, then
+     * multiply the result to get the amount in seconds.
+     *
      * @param DateTimeInterface $time
      * @param bool              $absolute
      *
@@ -145,9 +191,9 @@ class BusinessTime extends Carbon
         ?DateTimeInterface $time = null,
         bool $absolute = true
     ): Interval {
-        return Interval::minutes(
+        return Interval::seconds(
             $this->diffInBusinessTime($time, $absolute)
-            * $this->precision()->inMinutes()
+            * $this->precision()->inSeconds()
         );
     }
 
@@ -228,9 +274,7 @@ ERR
     public function setBusinessTimeConstraints(
         BusinessTimeConstraint ...$constraints
     ): self {
-        $this->businessTimeConstraints = new All(
-            ...$constraints
-        );
+        $this->businessTimeConstraints = new All(...$constraints);
 
         return $this;
     }
@@ -244,16 +288,18 @@ ERR
         BusinessTimeConstraint ...$constraints
     ): self {
         $this->setBusinessTimeConstraints(
-            ...$this->businessTimeConstraints()->andAlso($constraints)
+            new All($constraints, ...$this->businessTimeConstraints())
         );
 
         return $this;
     }
 
     /**
-     * @return All
+     * Get the business time constraints
+     *
+     * @return BusinessTimeConstraint
      */
-    public function businessTimeConstraints(): All
+    public function businessTimeConstraints(): BusinessTimeConstraint
     {
         if ($this->businessTimeConstraints === null) {
             // Default to week days 09:00 - 17:00.
@@ -267,6 +313,8 @@ ERR
     }
 
     /**
+     * Get the size of interval used when making business time calculations.
+     *
      * @return Interval
      */
     public function precision(): Interval
@@ -280,6 +328,19 @@ ERR
     }
 
     /**
+     * Set the interval size of the precision used to make business time
+     * calculations. The finer the precision, the more iterations are required
+     * to make calculations.
+     *
+     * The default precision is one hour. If you're not calculating with
+     * intervals smaller than that (e.g. 09:00 to 17:00), there is no benefit
+     * to increasing this.
+     *
+     * If you do need finer precision, avoid setting it more finely than
+     * necessary. For example, 15-minute precision is accurate enough for
+     * timings like 09:15 to 17:30. Minute-level precision would not be more
+     * accurate in that case, but would require 15x more iterations.
+     *
      * @param DateInterval $precision
      *
      * @return BusinessTime
@@ -294,6 +355,10 @@ ERR
 
     /**
      * Difference in business time measured in units of the current precision.
+     *
+     * This is calculated by stepping through the time period in steps of the
+     * precision. Finer precision means more steps but a potentially more
+     * accurate result.
      *
      * @param DateTimeInterface $time
      * @param bool              $absolute

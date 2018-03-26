@@ -136,31 +136,33 @@ $businessTime->determineLengthOfBusinessDay(
 
 See https://secure.php.net/manual/en/class.dateperiod.php
 
-### Other units of business time
+### Business hours
 
-You can also make business time calculations in hours and minutes:
+You can also make business time calculations in hours:
 
 ```php
 $now = new BusinessTime\BusinessTime();
 $now->addBusinessHour();
 $now->addBusinessHours(3);
-$now->addBusinessMinute();
-$now->addBusinessMinutes(3);
 ```
 
 ```php
 $now = new BusinessTime\BusinessTime();
 $now->diffInBusinessHours();
-$now->diffInBusinessMinutes();
+$now->diffInPartialBusinessHours();
 ```
 
-Partial methods also exist for those units to get differences in partial
-business time.
-
-The reason an hour is the largest unit included out-of-the-box is because people
+The reason a day is the largest unit included out-of-the-box is because people
 and organisations have different understandings of what is meant by larger units
 of time. Not having built-in methods for those prevents assumptions being made
 and forces explicitness, e.g. with `$now->addBusinessTime(30)`.
+
+Similarly, no unit smaller than an hour is included out-of-the-box because the
+concept of a "business minute" is questionable for most use cases. You can
+easily calculate minutes by multipying by 60. Note that because the default
+precision is one hour, you may well need to adjust the precision to e.g 15
+minutes to get accurate calculations (see the note on precision and
+performance).
 
 ## Determining business time
 
@@ -286,8 +288,8 @@ Here's a somewhat complicated example of using business time constraints:
 $businessTime = new BusinessTime\BusinessTime();
 $businessTime->setBusinessTimeConstraints(
     (new BusinessTime\Constraint\BetweenHoursOfDay(10, 18))->except(
-        new BusinessTime\Constraint\BetweenTimesOfDay('12:30', '14:00')
-    ), // 9-6 every day, with 90 minutes for lunch.
+        new BusinessTime\Constraint\BetweenTimesOfDay('13:00', '14:00')
+    ), // 9-6 every day, with an hour for lunch.
     (new BusinessTime\Constraint\WeekDays())->except(
         new BusinessTime\Constraint\WeekDays('Thursday')
     ), // Week days, but let's take Thursdays off.
@@ -504,8 +506,8 @@ If you need better precision than this, you can set it to what you want:
 
 ```php
 $businessTime = new BusinessTime\BusinessTime();
-$businessTime->setPrecision(BusinessTime\Interval::minute()); // minute precision
-$businessTime->setPrecision(BusinessTime\Interval::second()); // second precision
+$businessTime->setPrecision(BusinessTime\Interval::minutes(30)); // Half-hour precision.
+$businessTime->setPrecision(BusinessTime\Interval::minutes(15)); // Quarter-hour precision.
 ```
 
 You can also set precision on the business time factory in the same way.
@@ -513,8 +515,10 @@ You can also set precision on the business time factory in the same way.
 Note that the higher the precision, the lower the performance is. This is
 because BusinessTime must check each interval of the size you specify. For
 example, at hour precision, dealing with one week requires `7 * 24 = 168`
-iterations. At second precision, this becomes `7 * 24 * 60 * 60 = 604800`
-iterations, which is a lot slower.
+iterations. At minute precision, this becomes `7 * 24 * 60 = 10080`
+iterations, which is 60× slower.
+
+Always try to set the largest precision interval that covers your needs.
 
 ## Testing
 
