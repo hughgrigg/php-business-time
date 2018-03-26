@@ -1,6 +1,6 @@
 <?php
 
-namespace BusinessTime\Tests\Unit\BusinessDateTime;
+namespace BusinessTime\Tests\Unit\BusinessTime;
 
 use BusinessTime\BusinessTime;
 use BusinessTime\Interval;

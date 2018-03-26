@@ -1,6 +1,6 @@
 <?php
 
-namespace BusinessTime\Tests\Unit\BusinessDateTime;
+namespace BusinessTime\Tests\Unit\BusinessTime;
 
 use BusinessTime\BusinessTime;
 use BusinessTime\Interval;
@@ -41,7 +41,7 @@ class DiffInBusinessHoursTest extends TestCase
     /**
      * Return pairs of hours with their expected diff in business hours with the
      * default behaviour, i.e. that working time is Monday to Friday
-     * 09:00 to 17:00.
+     * 09:00 to 17:00 and the precision is 1 hour.
      *
      * @return array[]
      */
@@ -138,7 +138,7 @@ class DiffInBusinessHoursTest extends TestCase
     /**
      * Return pairs of hours with their expected diff in partial business hours
      * with the default behaviour, i.e. that working time is Monday to Friday
-     * 09:00 to 17:00.
+     * 09:00 to 17:00, but with a precision of 15 minutes.
      *
      * @return array[]
      */

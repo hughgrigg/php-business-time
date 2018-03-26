@@ -76,6 +76,8 @@ class BusinessTime extends Carbon
         // business hours have passed then), for example.
         $next = $this->copy()->addDays((int) $businessDays);
 
+        // TODO: then we can jump ahead the number of full precision units?
+
         while ($this->diffInPartialBusinessDays($next) < $businessDays) {
             $next = $next->add($this->precision());
         }
@@ -84,17 +86,50 @@ class BusinessTime extends Carbon
     }
 
     /**
+     * Get the date time after adding one whole business hour.
+     *
+     * @return BusinessTime
+     * @throws \InvalidArgumentException
+     */
+    public function addBusinessHour(): self
+    {
+        return $this->addBusinessHours(1);
+    }
+
+    /**
      * @param float $businessHours
      *
      * @return BusinessTime
+     * @throws \InvalidArgumentException
      */
     public function addBusinessHours(float $businessHours): self
     {
-        // The number of business hours will be at least the number of real
-        // hours, so we can jump ahead that much first as an optimisation.
-        $next = $this->copy()->addHours((int) $businessHours);
+        // We can optimise by first jumping ahead by the equivalent amount of
+        // full days. We use the desired hours - 1 for this to avoid jumping too
+        // far. For example, jumping 1 day for 8 hours could skip into Saturday
+        // from Friday, which is incorrect.
+        $fullDays = max(
+            (int) (
+                ($businessHours - 1) / $this->lengthOfBusinessDay()->inHours()
+            ),
+            0
+        );
+        $jumpDays = $this->copy()->addDays($fullDays);
+        $businessHours -= ($fullDays * $this->lengthOfBusinessDay()->inHours());
 
-        while ($this->diffInPartialBusinessHours($next) < $businessHours) {
+        // The number of business hours to add will then be at least the
+        // number of real hours, so we can also jump ahead that much. Again we
+        // use the -1 tactic to avoid jumping too far.
+        $fullHours = max((int) $businessHours - 1, 0);
+        $jumpHours = $jumpDays->addHours($fullHours);
+        $businessHours -= $fullHours;
+
+        // TODO: allow for gaps in business hours? Currently it's possible we
+        // might jump over a gap and miss it in the calculation.
+
+        // Then we iterate over the remaining time at our precision-level.
+        $next = $jumpHours->copy();
+        while ($jumpHours->diffInPartialBusinessHours($next) < $businessHours) {
             $next = $next->add($this->precision());
         }
 
