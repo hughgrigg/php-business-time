@@ -96,6 +96,7 @@ class AddBusinessDaysTest extends TestCase
     public function addBusinessDaysProvider(): array
     {
         return [
+            // From Monday morning.
             ['Monday 14th May 2018 00:00', 0, 'Monday 14th May 2018 00:00'],
             ['Monday 14th May 2018 09:00', 0, 'Monday 14th May 2018 09:00'],
             ['Monday 14th May 2018 09:00', 0.25, 'Monday 14th May 2018 11:00'],
@@ -107,6 +108,17 @@ class AddBusinessDaysTest extends TestCase
             ['Monday 14th May 2018 09:00', 1.5, 'Tuesday 15th May 2018 13:00'],
             ['Monday 14th May 2018 09:00', 1.75, 'Tuesday 15th May 2018 15:00'],
             ['Monday 14th May 2018 09:00', 2, 'Wednesday 16th May 2018 09:00'],
+            // From Friday evening.
+            ['Friday 18th May 2018 00:00', 0, 'Friday 18th May 2018 00:00'],
+            ['Friday 18th May 2018 17:00', 0, 'Friday 18th May 2018 17:00'],
+            ['Friday 18th May 2018 17:00', 0.25, 'Monday 21st May 2018 11:00'],
+            ['Friday 18th May 2018 17:00', 0.5, 'Monday 21st May 2018 13:00'],
+            ['Friday 18th May 2018 17:00', 0.75, 'Monday 21st May 2018 15:00'],
+            ['Friday 18th May 2018 17:00', 1, 'Monday 21st May 2018 17:00'],
+            ['Friday 18th May 2018 17:00', 1.25, 'Tuesday 22nd May 2018 11:00'],
+            ['Friday 18th May 2018 17:00', 1.5, 'Tuesday 22nd May 2018 13:00'],
+            ['Friday 18th May 2018 17:00', 1.75, 'Tuesday 22nd May 2018 15:00'],
+            ['Friday 18th May 2018 17:00', 2, 'Tuesday 22nd May 2018 17:00'],
         ];
     }
 }
