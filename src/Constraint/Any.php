@@ -4,8 +4,15 @@ namespace BusinessTime\Constraint;
 
 use DateTime;
 
-class BusinessTimeConstraintSet implements BusinessTimeConstraint
+/**
+ * A set of constraints that matches if any of the included constraints matches.
+ *
+ * This is equivalent to logical OR.
+ */
+class Any implements BusinessTimeConstraint
 {
+    use Combinations;
+
     /** @var BusinessTimeConstraint[] */
     private $constraints;
 
@@ -25,22 +32,11 @@ class BusinessTimeConstraintSet implements BusinessTimeConstraint
     public function isBusinessTime(DateTime $time): bool
     {
         foreach ($this->constraints as $constraint) {
-            if (!$constraint->isBusinessTime($time)) {
-                return false;
+            if ($constraint->isBusinessTime($time)) {
+                return true;
             }
         }
 
-        return true;
-    }
-
-    /**
-     * @param BusinessTimeConstraint ...$constraints
-     *
-     * @return BusinessTimeConstraintSet
-     */
-    public function addBusinessTimeConstraints(
-        BusinessTimeConstraint ...$constraints
-    ): self {
-        return new self(array_merge($constraints, $this->constraints));
+        return false;
     }
 }

@@ -8,9 +8,9 @@ This library provides an extension for the `Carbon` class in the
 
 While Carbon already has methods like `addWorkingDays()` and
 `diffInWeekendDays()`, this extension lets you handle business time more
-precisely and flexibly. It can also consider public holidays from sources such
-as Google Calendar or WebCal.fi, as well as your own customised times which can
-be specified directly or with constraint-matching.
+precisely and flexibly. It can consider public holidays from WebCal.fi, as well
+as your own customised times which can be specified directly or with constraint-
+matching.
 
 [Official music video for this library](https://www.youtube.com/watch?v=WGOohBytKTU)
 
@@ -254,6 +254,9 @@ alternative way to define your constraints:
 // All times except Fridays are considered business time.
 ```
 
+If `except()` is not enough for your needs, you can also use the `andAlso()` and
+`orAlternatively()` methods to build different types of composite constraints.
+
 #### Custom business time constraints
 
 You can implement your own custom constraints by implementing the
@@ -268,6 +271,9 @@ interface BusinessTimeConstraint
 
 The constraint must take an instance of `DateTime` and return whether or not it
 should be considered business time.
+
+If you want to enable combinatorial logic for your custom constraint, use the
+`BusinessTime\Constraint\Combinations` trait.
 
 *Tip*: It's usually better to use multiple simple constraints together than to
 make one big, complex one.

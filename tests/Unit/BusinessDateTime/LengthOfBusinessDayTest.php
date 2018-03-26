@@ -3,9 +3,9 @@
 namespace BusinessTime\Tests\Unit\BusinessDateTime;
 
 use BusinessTime\BusinessTime;
+use BusinessTime\Constraint\All;
 use BusinessTime\Constraint\BetweenHoursOfDay;
 use BusinessTime\Constraint\BusinessTimeConstraint;
-use BusinessTime\Constraint\BusinessTimeConstraintSet;
 use BusinessTime\Constraint\WeekDays;
 use BusinessTime\Interval;
 use PHPUnit\Framework\TestCase;
@@ -117,11 +117,25 @@ class LengthOfBusinessDayTest extends TestCase
             [new BetweenHoursOfDay(0, 24), '1 day'],
             [new WeekDays(), '1 day'],
             [
-                new BusinessTimeConstraintSet(
+                new All(
                     new WeekDays(),
                     new BetweenHoursOfDay(9, 17)
                 ),
                 '8 hours',
+            ],
+            [
+                // Exclude lunch time.
+                (new BetweenHoursOfDay(9, 17))->except(
+                    new BetweenHoursOfDay(13, 14)
+                ),
+                '7 hours',
+            ],
+            [
+                // Multiple periods.
+                (new BetweenHoursOfDay(8, 10))
+                    ->orAlternatively(new BetweenHoursOfDay(12, 14))
+                    ->orAlternatively(new BetweenHoursOfDay(16, 18)),
+                '6 hours',
             ],
         ];
     }

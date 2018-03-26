@@ -13,6 +13,8 @@ use DateTime;
  */
 class FormatConstraint implements BusinessTimeConstraint
 {
+    use Combinations;
+
     /** @var string */
     private $format;
 

@@ -12,6 +12,8 @@ use DateTime;
  */
 class RangeConstraint implements BusinessTimeConstraint
 {
+    use Combinations;
+
     /** @var int */
     private $min;
 

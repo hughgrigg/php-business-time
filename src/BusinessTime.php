@@ -2,9 +2,9 @@
 
 namespace BusinessTime;
 
+use BusinessTime\Constraint\All;
 use BusinessTime\Constraint\BetweenHoursOfDay;
 use BusinessTime\Constraint\BusinessTimeConstraint;
-use BusinessTime\Constraint\BusinessTimeConstraintSet;
 use BusinessTime\Constraint\WeekDays;
 use Carbon\Carbon;
 use DateInterval;
@@ -17,7 +17,7 @@ use InvalidArgumentException;
  */
 class BusinessTime extends Carbon
 {
-    /** @var BusinessTimeConstraintSet */
+    /** @var All */
     private $businessTimeConstraints;
 
     /** @var Interval */
@@ -145,9 +145,9 @@ class BusinessTime extends Carbon
         ?DateTimeInterface $time = null,
         bool $absolute = true
     ): Interval {
-        return Interval::seconds(
+        return Interval::minutes(
             $this->diffInBusinessTime($time, $absolute)
-            * $this->precision()->inSeconds()
+            * $this->precision()->inMinutes()
         );
     }
 
@@ -228,7 +228,7 @@ ERR
     public function setBusinessTimeConstraints(
         BusinessTimeConstraint ...$constraints
     ): self {
-        $this->businessTimeConstraints = new BusinessTimeConstraintSet(
+        $this->businessTimeConstraints = new All(
             ...$constraints
         );
 
@@ -244,21 +244,20 @@ ERR
         BusinessTimeConstraint ...$constraints
     ): self {
         $this->setBusinessTimeConstraints(
-            ...$this->businessTimeConstraints()
-                   ->addBusinessTimeConstraints($constraints)
+            ...$this->businessTimeConstraints()->andAlso($constraints)
         );
 
         return $this;
     }
 
     /**
-     * @return BusinessTimeConstraintSet
+     * @return All
      */
-    public function businessTimeConstraints(): BusinessTimeConstraintSet
+    public function businessTimeConstraints(): All
     {
         if ($this->businessTimeConstraints === null) {
             // Default to week days 09:00 - 17:00.
-            $this->businessTimeConstraints = new BusinessTimeConstraintSet(
+            $this->businessTimeConstraints = new All(
                 new WeekDays(),
                 new BetweenHoursOfDay(9, 17)
             );
