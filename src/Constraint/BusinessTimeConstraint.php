@@ -4,6 +4,9 @@ namespace BusinessTime\Constraint;
 
 use DateTime;
 
+/**
+ * A constraint rule to determine whether a given time is business time or not.
+ */
 interface BusinessTimeConstraint
 {
     /**
