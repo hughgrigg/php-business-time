@@ -1,6 +1,6 @@
 <?php
 
-namespace BusinessTime\Tests\Unit\BusinessDateTime;
+namespace BusinessTime\Tests\Unit\BusinessTime;
 
 use BusinessTime\BusinessTime;
 use PHPUnit\Framework\TestCase;
@@ -37,7 +37,7 @@ class DiffInBusinessDaysTest extends TestCase
     /**
      * Return pairs of days with their expected diff in business days with the
      * default behaviour, i.e. that working time is Monday to Friday
-     * 09:00 to 17:00.
+     * 09:00 to 17:00 and the precision is 1 hour.
      *
      * @return array[]
      */

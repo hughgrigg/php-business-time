@@ -1,6 +1,6 @@
 <?php
 
-namespace BusinessTime\Tests\Unit\BusinessDateTime;
+namespace BusinessTime\Tests\Unit\BusinessTime;
 
 use BusinessTime\BusinessTime;
 use PHPUnit\Framework\TestCase;
@@ -39,7 +39,7 @@ class AddBusinessDaysTest extends TestCase
     /**
      * Provides times with the expected new time after adding one business day
      * with default behaviour, i.e. that working time is Monday to Friday
-     * 09:00 to 17:00.
+     * 09:00 to 17:00 and the precision is 1 hour.
      *
      * @return array[]
      */
@@ -86,9 +86,10 @@ class AddBusinessDaysTest extends TestCase
     }
 
     /**
-     * Provides times with the expected new time after adding an amount of whole
-     * or partial business days with default behaviour, i.e. that one
-     * business day is 8-hours from 09:00 to 17:00 Monday to Friday.
+     * Provides times with the expected new time after adding an amount of
+     * whole or partial business days with default behaviour, i.e. that one
+     * business day is 8-hours from 09:00 to 17:00 Monday to Friday and the
+     * precision is 1 hour.
      *
      * @return array[]
      */
