@@ -7,7 +7,8 @@ use BusinessTime\Interval;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Test the BusinessTime::diffInBusinessHours() method.
+ * Test the BusinessTime::diffInBusinessHours() and
+ * BusinessTime::diffInPartialBusinessHours() method.
  */
 class DiffInBusinessHoursTest extends TestCase
 {
@@ -123,7 +124,7 @@ class DiffInBusinessHoursTest extends TestCase
         $businessTime = new BusinessTime($time);
 
         // And we have 15-minute precision;
-        $businessTime->setPrecision(Interval::minutes(5));
+        $businessTime->setPrecision(Interval::minutes(15));
 
         // When we get the diff in partial business hours from another time;
         $diff = $businessTime->diffInPartialBusinessHours(

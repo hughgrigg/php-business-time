@@ -8,7 +8,7 @@ use DateInterval;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Test functionality around the length of business days.
+ * Test functionality around the precision of business time calculation.
  */
 class PrecisionTest extends TestCase
 {
