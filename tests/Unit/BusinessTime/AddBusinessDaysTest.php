@@ -119,6 +119,7 @@ class AddBusinessDaysTest extends TestCase
             ['Friday 18th May 2018 17:00', 1.5, 'Tuesday 22nd May 2018 13:00'],
             ['Friday 18th May 2018 17:00', 1.75, 'Tuesday 22nd May 2018 15:00'],
             ['Friday 18th May 2018 17:00', 2, 'Tuesday 22nd May 2018 17:00'],
+            ['Friday 18th May 2018 17:00', 3, 'Wednesday 23rd May 2018 17:00'],
         ];
     }
 }

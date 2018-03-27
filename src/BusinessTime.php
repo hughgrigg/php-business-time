@@ -55,30 +55,31 @@ class BusinessTime extends Carbon
      * The amount can be fractional, and the accuracy depends on the current
      * precision (the default is hour precision).
      *
-     * Note that addPartialBusinessDays(1.0) is not equivalent to
-     * addBusinessDays(1). Adding partial business days will go from Monday
-     * 09:00 to Monday 17:00, for example, whereas adding business days would
-     * go from Monday 09:00 to Tuesday 09:00.
-     *
      * @see AddBusinessDaysTest
      *
-     * @param float $businessDays
+     * @param float $businessDaysToAdd
      *
      * @return BusinessTime
      * @throws \InvalidArgumentException
      */
-    public function addBusinessDays(float $businessDays): self
+    public function addBusinessDays(float $businessDaysToAdd): self
     {
-        // The number of business days will be at least the number of real days,
-        // so we can jump ahead that much first as an optimisation. This also
-        // ensures we get the intuitive result that Monday 09:00 + 1 business
-        // day is Tuesday 09:00 (technically it could be Monday 17:00, as 8
-        // business hours have passed then), for example.
-        $next = $this->copy()->addDays((int) $businessDays);
+        // Optimise by jumping ahead in whole days first.
+        $daysToJump = max((int) $businessDaysToAdd - 1, 0);
+        $next = $this->copy()->addDays($daysToJump);
+        $businessDaysToAdd -= $daysToJump;
 
-        // TODO: then we can jump ahead the number of full precision units?
+        // todo: solve the "intuitive problem" of Monday 09:00 + 1 business day
+        // == Tuesday 09:00, not Monday 17:00
 
-        while ($this->diffInPartialBusinessDays($next) < $businessDays) {
+        /** @var Interval $decrement */
+        $decrement = $this->precision()->inDays()
+            / $this->lengthOfBusinessDay()->inDays();
+
+        while ($businessDaysToAdd > 0) {
+            if ($next->isBusinessTime()) {
+                $businessDaysToAdd -= $decrement;
+            }
             $next = $next->add($this->precision());
         }
 
@@ -404,6 +405,9 @@ ERR
         ?DateTimeInterface $time = null,
         bool $absolute = true
     ): int {
+        // TODO: iterate directly here to avoid performance issue of repeated
+        // callbacks.
+
         return $this->diffFiltered(
             $this->precision(),
             function (DateTime $time): bool {
