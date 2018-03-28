@@ -110,7 +110,20 @@ class DiffInBusinessDaysTest extends TestCase
         );
 
         // Then we should get the expected diff.
-        self::assertSame($expectedDiff, $diff);
+        self::assertEquals(
+            $expectedDiff,
+            $diff,
+            sprintf(
+                'Expected business diff between %s and %s to be %.5f;'
+                . ' got %.5f (off by %.6f)',
+                $time,
+                $otherTime,
+                $expectedDiff,
+                $diff,
+                abs($expectedDiff - $diff)
+            ),
+            0.00001
+        );
     }
 
     /**

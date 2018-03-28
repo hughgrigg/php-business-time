@@ -64,14 +64,22 @@ class BusinessTime extends Carbon
      */
     public function addBusinessDays(float $businessDaysToAdd): self
     {
-        // Optimise by jumping ahead in whole days first.
+        // TODO: should we round start and end to nearest precision first? That
+        // would keep the results "clean" and is reasonable considering we have
+        // the precision anyway.
+
+        // Optimise by jumping ahead in whole days first. This also solves the
+        // "intuitive problem" that Monday 09:00 + 1 business day could
+        // technically be Monday 17:00, but
+        // intuitively should be Tuesday 09:00.
         $daysToJump = max((int) $businessDaysToAdd, 0);
         $next = $this->copy()->addDays($daysToJump);
 
         // We need to check how much business time we actually covered by
-        // skipping ahead in days. This also solves the "intuitive problem" that
-        // Monday 09:00 + 1 business day could technically be Monday 17:00, but
-        // intuitively should be Tuesday 09:00.
+        // skipping ahead in days.
+
+        // TODO: can we avoid doing a back-track of iterations over the
+        // skipped days here?
         $businessDaysToAdd -= $this->diffInPartialBusinessDays($next);
 
         /** @var Interval $decrement */
@@ -107,6 +115,10 @@ class BusinessTime extends Carbon
      */
     public function addBusinessHours(float $businessHours): self
     {
+        // TODO: should we round start and end to nearest precision first? That
+        // would keep the results "clean" and is reasonable considering we have
+        // the precision anyway.
+
         // We can optimise by first jumping ahead by the equivalent amount of
         // full days. We use the desired hours - 1 for this to avoid jumping too
         // far. For example, jumping 1 day for 8 hours could skip into Saturday
@@ -130,6 +142,7 @@ class BusinessTime extends Carbon
         // TODO: allow for gaps in business hours? Currently it's possible we
         // might jump over a gap and miss it in the calculation.
 
+        // TODO: optimise this to work in the same way as addBusinessDays()
         // Then we iterate over the remaining time at our precision-level.
         $next = $jumpHours->copy();
         while ($jumpHours->diffInPartialBusinessHours($next) < $businessHours) {
@@ -407,21 +420,35 @@ ERR
         ?DateTimeInterface $time = null,
         bool $absolute = true
     ): int {
-        // TODO: iterate directly here to avoid performance issue of repeated
-        // callbacks.
+        // TODO: should we round start and end to nearest precision first? That
+        // would keep the results "clean" and is reasonable considering we have
+        // the precision anyway.
 
-        return $this->diffFiltered(
-            $this->precision(),
-            function (DateTime $time): bool {
-                /** @noinspection NullPointerExceptionInspection */
-                $businessTime = $this->copy()->setTimestamp(
-                    $time->getTimestamp()
-                );
+        // We're taking a basic approach with some variables and a loop here as
+        // it turns out to be ~25% faster than using Carbon::diffFiltered().
 
-                return $businessTime->isBusinessTime();
-            },
-            $time,
-            $absolute
-        );
+        $start = $this;
+        $end = $time;
+        $sign = 1;
+        // Swap if we're diffing back in time.
+        if ($this > $time) {
+            $start = $time;
+            $end = $this;
+            // We only need to negate if absolute is false.
+            $sign = $absolute ? 1 : -1;
+        }
+
+        // Count the business time diff by iterating in steps the length of the
+        // precision and checking if each step counts as business time.
+        $diff = 0;
+        $next = $start->copy();
+        while ($next < $end) {
+            if ($next->isBusinessTime()) {
+                ++$diff;
+            }
+            $next = $next->add($this->precision());
+        }
+
+        return $diff * $sign;
     }
 }
