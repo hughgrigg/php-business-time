@@ -65,12 +65,14 @@ class BusinessTime extends Carbon
     public function addBusinessDays(float $businessDaysToAdd): self
     {
         // Optimise by jumping ahead in whole days first.
-        $daysToJump = max((int) $businessDaysToAdd - 1, 0);
+        $daysToJump = max((int) $businessDaysToAdd, 0);
         $next = $this->copy()->addDays($daysToJump);
-        $businessDaysToAdd -= $daysToJump;
 
-        // todo: solve the "intuitive problem" of Monday 09:00 + 1 business day
-        // == Tuesday 09:00, not Monday 17:00
+        // We need to check how much business time we actually covered by
+        // skipping ahead in days. This also solves the "intuitive problem" that
+        // Monday 09:00 + 1 business day could technically be Monday 17:00, but
+        // intuitively should be Tuesday 09:00.
+        $businessDaysToAdd -= $this->diffInPartialBusinessDays($next);
 
         /** @var Interval $decrement */
         $decrement = $this->precision()->inDays()
