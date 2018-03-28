@@ -52,6 +52,9 @@ class AddBusinessHoursTest extends TestCase
             ['Monday 14th May 2018 00:00', 'Monday 14th May 2018 10:00'],
             ['Monday 14th May 2018 08:00', 'Monday 14th May 2018 10:00'],
             ['Monday 14th May 2018 09:00', 'Monday 14th May 2018 10:00'],
+            ['Monday 14th May 2018 09:15', 'Monday 14th May 2018 10:15'],
+            ['Monday 14th May 2018 09:30', 'Monday 14th May 2018 10:30'],
+            ['Monday 14th May 2018 09:45', 'Monday 14th May 2018 10:45'],
             ['Monday 14th May 2018 10:00', 'Monday 14th May 2018 11:00'],
             ['Monday 14th May 2018 11:00', 'Monday 14th May 2018 12:00'],
             ['Monday 14th May 2018 12:00', 'Monday 14th May 2018 13:00'],
@@ -121,15 +124,25 @@ class AddBusinessHoursTest extends TestCase
             ['Monday 14th May 2018 09:00', 1.75, 'Monday 14th May 2018 10:45'],
             ['Monday 14th May 2018 09:00', 2, 'Monday 14th May 2018 11:00'],
             ['Monday 14th May 2018 09:00', 7.75, 'Monday 14th May 2018 16:45'],
-            // Adding a whole day or more.
+            // Adding a whole business day or more.
             ['Monday 14th May 2018 09:00', 8, 'Monday 14th May 2018 17:00'],
             ['Monday 14th May 2018 09:00', 8.25, 'Tuesday 15th May 2018 09:15'],
             ['Monday 14th May 2018 09:00', 8.5, 'Tuesday 15th May 2018 09:30'],
             ['Monday 14th May 2018 09:00', 8.75, 'Tuesday 15th May 2018 09:45'],
             ['Monday 14th May 2018 09:00', 9, 'Tuesday 15th May 2018 10:00'],
-            ['Monday 14th May 2018 09:00', 32, 'Thursday 17th May 2018 17:00'],
-            ['Monday 14th May 2018 09:00', 39, 'Friday 18th May 2018 16:00'],
-            ['Monday 14th May 2018 09:00', 40, 'Friday 18th May 2018 17:00'],
+            ['Monday 14th May 2018 09:00', 16, 'Tuesday 15th May 2018 17:00'],
+            ['Monday 14th May 2018 09:00', 23, 'Wednesday 16th May 2018 16:00'],
+            ['Monday 14th May 2018 09:00', 24, 'Wednesday 16th May 2018 17:00'],
+            // Negative values.
+            ['Monday 14th May 2018 09:00', -0, 'Monday 14th May 2018 09:00'],
+            ['Monday 14th May 2018 09:00', -0.25, 'Friday 11th May 2018 16:45'],
+            ['Monday 14th May 2018 09:00', -0.5, 'Friday 11th May 2018 16:30'],
+            ['Monday 14th May 2018 09:00', -0.75, 'Friday 11th May 2018 16:15'],
+            ['Monday 14th May 2018 09:00', -1, 'Friday 11th May 2018 16:00'],
+            ['Monday 14th May 2018 09:00', -1.25, 'Friday 11th May 2018 15:45'],
+            ['Monday 14th May 2018 09:00', -1.5, 'Friday 11th May 2018 15:30'],
+            ['Monday 14th May 2018 09:00', -1.75, 'Friday 11th May 2018 15:15'],
+            ['Monday 14th May 2018 09:00', -2, 'Friday 11th May 2018 15:00'],
         ];
     }
 
