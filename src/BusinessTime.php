@@ -68,11 +68,13 @@ class BusinessTime extends Carbon
         // would keep the results "clean" and is reasonable considering we have
         // the precision anyway.
 
-        // Optimise by jumping ahead in whole days first. This also solves the
-        // "intuitive problem" that Monday 09:00 + 1 business day could
-        // technically be Monday 17:00, but
-        // intuitively should be Tuesday 09:00.
-        $daysToJump = max((int) $businessDaysToAdd, 0);
+        // TODO: handle negative addition.
+
+        // Jump ahead in whole days first, because the business days to add
+        // will be at least this much. This also solves the "intuitive
+        // problem" that Monday 09:00 + 1 business day could technically be
+        // Monday 17:00, but intuitively should be Tuesday 09:00.
+        $daysToJump = (int) $businessDaysToAdd;
         $next = $this->copy()->addDays($daysToJump);
 
         // We need to check how much business time we actually covered by
@@ -108,44 +110,25 @@ class BusinessTime extends Carbon
     }
 
     /**
-     * @param float $businessHours
+     * @param float $businessHoursToAdd
      *
      * @return BusinessTime
      * @throws \InvalidArgumentException
      */
-    public function addBusinessHours(float $businessHours): self
+    public function addBusinessHours(float $businessHoursToAdd): self
     {
         // TODO: should we round start and end to nearest precision first? That
         // would keep the results "clean" and is reasonable considering we have
         // the precision anyway.
 
-        // We can optimise by first jumping ahead by the equivalent amount of
-        // full days. We use the desired hours - 1 for this to avoid jumping too
-        // far. For example, jumping 1 day for 8 hours could skip into Saturday
-        // from Friday, which is incorrect.
-        $fullDays = max(
-            (int) (
-                ($businessHours - 1) / $this->lengthOfBusinessDay()->inHours()
-            ),
-            0
-        );
-        $jumpDays = $this->copy()->addDays($fullDays);
-        $businessHours -= ($fullDays * $this->lengthOfBusinessDay()->inHours());
+        // TODO: handle negative addition.
 
-        // The number of business hours to add will then be at least the
-        // number of real hours, so we can also jump ahead that much. Again we
-        // use the -1 tactic to avoid jumping too far.
-        $fullHours = max((int) $businessHours - 1, 0);
-        $jumpHours = $jumpDays->addHours($fullHours);
-        $businessHours -= $fullHours;
-
-        // TODO: allow for gaps in business hours? Currently it's possible we
-        // might jump over a gap and miss it in the calculation.
-
-        // TODO: optimise this to work in the same way as addBusinessDays()
-        // Then we iterate over the remaining time at our precision-level.
-        $next = $jumpHours->copy();
-        while ($jumpHours->diffInPartialBusinessHours($next) < $businessHours) {
+        $next = $this->copy();
+        $decrement = $this->precision()->inHours();
+        while ($businessHoursToAdd > 0) {
+            if ($next->isBusinessTime()) {
+                $businessHoursToAdd -= $decrement;
+            }
             $next = $next->add($this->precision());
         }
 
