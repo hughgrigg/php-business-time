@@ -238,6 +238,7 @@ class BusinessTime extends Carbon
      */
     public function startOfBusinessDay(): self
     {
+        // Iterate from the beginning of the day until we hit business time.
         $start = $this->copy()->startOfDay();
         while (!$start->isBusinessTime()) {
             $start = $start->add($this->precision());
@@ -253,12 +254,14 @@ class BusinessTime extends Carbon
      */
     public function endOfBusinessDay(): self
     {
+        // Iterate back from the end of the day until we hit business time.
         $end = $this->copy()->endOfDay();
         while (!$end->isBusinessTime()) {
             $end = $end->sub($this->precision());
         }
 
-        return $end;
+        // Add a second because we've iterated from 23:59:59.
+        return $end->addSecond();
     }
 
     /**
