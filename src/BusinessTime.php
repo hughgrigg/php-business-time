@@ -64,10 +64,6 @@ class BusinessTime extends Carbon
      */
     public function addBusinessDays(float $businessDaysToAdd): self
     {
-        // TODO: should we round start and end to nearest precision first? That
-        // would keep the results "clean" and is reasonable considering we have
-        // the precision anyway.
-
         // TODO: handle negative addition.
 
         // Jump ahead in whole days first, because the business days to add
@@ -79,9 +75,6 @@ class BusinessTime extends Carbon
 
         // We need to check how much business time we actually covered by
         // skipping ahead in days.
-
-        // TODO: can we avoid doing a back-track of iterations over the
-        // skipped days here?
         $businessDaysToAdd -= $this->diffInPartialBusinessDays($next);
 
         /** @var Interval $decrement */
@@ -99,7 +92,9 @@ class BusinessTime extends Carbon
     }
 
     /**
-     * Get the date time after adding one whole business hour.
+     * Get the date time after adding one business hour.
+     *
+     * @see AddBusinessHoursTest
      *
      * @return BusinessTime
      * @throws \InvalidArgumentException
@@ -110,18 +105,20 @@ class BusinessTime extends Carbon
     }
 
     /**
+     * Get the date time after adding an amount of business hours.
+     *
      * @param float $businessHoursToAdd
+     *
+     * @see AddBusinessHoursTest
      *
      * @return BusinessTime
      * @throws \InvalidArgumentException
      */
     public function addBusinessHours(float $businessHoursToAdd): self
     {
-        // TODO: should we round start and end to nearest precision first? That
-        // would keep the results "clean" and is reasonable considering we have
-        // the precision anyway.
-
-        // TODO: handle negative addition.
+        if ($businessHoursToAdd < 0) {
+            return $this->subBusinessHours($businessHoursToAdd * -1);
+        }
 
         $next = $this->copy();
         $decrement = $this->precision()->inHours();
@@ -133,6 +130,47 @@ class BusinessTime extends Carbon
         }
 
         return $next;
+    }
+
+    /**
+     * Get the date time after subtracting one business hour.
+     *
+     * @see SubBusinessHoursTest
+     *
+     * @return BusinessTime
+     * @throws \InvalidArgumentException
+     */
+    public function subBusinessHour(): self
+    {
+        return $this->subBusinessHours(1);
+    }
+
+    /**
+     * Get the date time after subtracting an amount of business hours.
+     *
+     * @see SubBusinessHoursTest
+     *
+     * @param float $businessHoursToSub
+     *
+     * @return BusinessTime
+     * @throws \InvalidArgumentException
+     */
+    public function subBusinessHours(float $businessHoursToSub): self
+    {
+        if ($businessHoursToSub < 0) {
+            return $this->addBusinessHours($businessHoursToSub * -1);
+        }
+
+        $prev = $this->copy();
+        $decrement = $this->precision()->inHours();
+        while ($businessHoursToSub > 0) {
+            $prev = $prev->sub($this->precision());
+            if ($prev->isBusinessTime()) {
+                $businessHoursToSub -= $decrement;
+            }
+        }
+
+        return $prev;
     }
 
     /**
@@ -426,7 +464,7 @@ ERR
     }
 
     /**
-     * Get the business time constraints
+     * Get the business time constraints.
      *
      * @return BusinessTimeConstraint
      */
@@ -500,10 +538,6 @@ ERR
         ?DateTimeInterface $time = null,
         bool $absolute = true
     ): int {
-        // TODO: should we round start and end to nearest precision first? That
-        // would keep the results "clean" and is reasonable considering we have
-        // the precision anyway.
-
         // We're taking a basic approach with some variables and a loop here as
         // it turns out to be ~25% faster than using Carbon::diffFiltered().
 
