@@ -380,6 +380,19 @@ add customised exceptions to the dates it provides.
 You can add any other source you like by implementing the `Constraint` interface
 described above.
 
+## Start and end of business day
+
+You can get the start or end of the business day based on the business time
+constraints like this:
+
+```php
+$businessTime = new BusinessTime\BusinessTime();
+$businessTime->startOfBusinessDay();
+// = BusinessTime instance for e.g. 09:00
+$businessTime->endOfBusinessDay();
+// = BusinessTime instance for e.g. 17:00
+```
+
 ## Recurring business deadlines
 
 As well as calculating business time, it's often useful to make calculations
