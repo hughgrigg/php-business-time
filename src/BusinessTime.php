@@ -232,6 +232,100 @@ class BusinessTime extends Carbon
     }
 
     /**
+     * Get the first business time after the start of this day.
+     *
+     * @return BusinessTime
+     */
+    public function startOfBusinessDay(): self
+    {
+        $start = $this->copy()->startOfDay();
+        while (!$start->isBusinessTime()) {
+            $start = $start->add($this->precision());
+        }
+
+        return $start;
+    }
+
+    /**
+     * Get the last business time before the end of this day.
+     *
+     * @return BusinessTime
+     */
+    public function endOfBusinessDay(): self
+    {
+        $end = $this->copy()->endOfDay();
+        while (!$end->isBusinessTime()) {
+            $end = $end->sub($this->precision());
+        }
+
+        return $end;
+    }
+
+    /**
+     * Get this date time floored to the given precision interval in terms of
+     * seconds since the epoch.
+     *
+     * Consider methods like startOfBusinessDay() or startOfMonth(), as those
+     * are more appropriate in many situations.
+     *
+     * @see RoundTest
+     *
+     * @param DateInterval|null $precision
+     *
+     * @return BusinessTime
+     */
+    public function floor(?DateInterval $precision = null): self
+    {
+        $seconds = Interval::instance($precision ?: $this->precision())
+            ->inSeconds();
+
+        return $this->copy()->setTimestamp(
+            floor($this->timestamp / $seconds) * $seconds
+        );
+    }
+
+    /**
+     * Get this date time rounded to the given precision interval.
+     *
+     * @see RoundTest
+     *
+     * @param DateInterval|null $precision
+     *
+     * @return BusinessTime
+     */
+    public function round(?DateInterval $precision = null): self
+    {
+        $seconds = Interval::instance($precision ?: $this->precision())
+            ->inSeconds();
+
+        return $this->copy()->setTimestamp(
+            round($this->timestamp / $seconds) * $seconds
+        );
+    }
+
+    /**
+     * Get this date time ceil-ed to the given precision interval.
+     *
+     * Consider methods like endOfBusinessDay() or endOfMonth(), as those
+     * are more appropriate in many situations.
+     *
+     * @see RoundTest
+     *
+     * @param DateInterval|null $precision
+     *
+     * @return BusinessTime
+     */
+    public function ceil(?DateInterval $precision = null): self
+    {
+        $seconds = Interval::instance($precision ?: $this->precision())
+            ->inSeconds();
+
+        return $this->copy()->setTimestamp(
+            ceil($this->timestamp / $seconds) * $seconds
+        );
+    }
+
+    /**
      * @return Interval
      * @throws InvalidArgumentException
      */

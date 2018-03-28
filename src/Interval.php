@@ -58,6 +58,7 @@ class Interval extends CarbonInterval
     public function asMultipleOf(DateInterval $interval): float
     {
         $interval = self::instance($interval);
+
         return $this->inSeconds() / $interval->inSeconds();
     }
 
