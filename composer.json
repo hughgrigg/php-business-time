@@ -1,29 +1,30 @@
 {
-  "name": "hughgrigg/php-business-time",
-  "description": "Business time / working days extension for Carbon dates",
-  "version": "1.0.0",
-  "type": "library",
-  "require": {
-    "php": "^7.2",
-    "nesbot/carbon": "^1.25"
-  },
-  "require-dev": {
-    "phpunit/phpunit": "^7.0",
-    "phpmd/phpmd": "@stable",
-    "squizlabs/php_codesniffer": "@stable",
-    "johnkary/phpunit-speedtrap": "^3.0"
-  },
-  "license": "MIT License",
-  "authors": [
-    {
-      "name": "Hugh Grigg",
-      "email": "hugh.grigg@gmail.com"
+    "name": "hughgrigg/php-business-time",
+    "description": "Business time / working days extension for Carbon dates",
+    "version": "1.0.0",
+    "type": "library",
+    "require": {
+        "php": "^7.2",
+        "nesbot/carbon": "^1.25"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^7.0",
+        "phpmd/phpmd": "@stable",
+        "squizlabs/php_codesniffer": "@stable",
+        "johnkary/phpunit-speedtrap": "^3.0"
+    },
+    "license": "MIT License",
+    "authors": [
+        {
+            "name": "Hugh Grigg",
+            "email": "hugh.grigg@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "autoload": {
+        "psr-4": {
+            "BusinessTime\\": "src/",
+            "BusinessTime\\Tests\\": "tests/"
+        }
     }
-  ],
-  "minimum-stability": "stable",
-  "autoload": {
-    "psr-4": {
-      "BusinessTime\\": "src/"
-    }
-  }
 }

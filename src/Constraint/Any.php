@@ -8,6 +8,8 @@ use DateTime;
  * A set of constraints that matches if any of the included constraints matches.
  *
  * This is equivalent to logical OR.
+ *
+ * @see CompositeAnyTest
  */
 class Any implements BusinessTimeConstraint
 {
