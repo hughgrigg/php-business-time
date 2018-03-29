@@ -21,18 +21,18 @@ class OrAlternativelyCombinationTest extends TestCase
      *
      * @dataProvider allMatchProvider
      *
-     * @param BusinessTimeConstraint[] $constraints
+     * @param BusinessTimeConstraint[] $alternatives
      */
-    public function testOrAlternativelyAllMatch(array $constraints): void
+    public function testOrAlternativelyAllMatch(array $alternatives): void
     {
         // Given we have a constraint which does not match a business time;
         $time = $this->wednesdayOnePm();
         $constraint = new NoTime();
         self::assertFalse($constraint->isBusinessTime($time));
 
-        // When we use orAlternatively to combine it with other constraints that
-        // all match.
-        $composite = $constraint->orAlternatively(...$constraints);
+        // When we use orAlternatively() to combine it with other constraints
+        // that all match.
+        $composite = $constraint->orAlternatively(...$alternatives);
 
         // Then the composite constraint should match the time.
         self::assertTrue(
@@ -47,18 +47,18 @@ class OrAlternativelyCombinationTest extends TestCase
      *
      * @dataProvider noneMatchProvider
      *
-     * @param BusinessTimeConstraint[] $constraints
+     * @param BusinessTimeConstraint[] $alternatives
      */
-    public function testOrAlternativelyNoneMatch(array $constraints): void
+    public function testOrAlternativelyNoneMatch(array $alternatives): void
     {
         // Given we have a constraint which does not match a business time;
         $time = $this->wednesdayOnePm();
         $constraint = new NoTime();
         self::assertFalse($constraint->isBusinessTime($time));
 
-        // When we use orAlternatively to combine it with other constraints none
-        // of which match.
-        $composite = $constraint->orAlternatively(...$constraints);
+        // When we use orAlternatively() to combine it with other constraints
+        // none of which match.
+        $composite = $constraint->orAlternatively(...$alternatives);
 
         // Then the composite constraint should not match the time.
         self::assertFalse(
@@ -73,18 +73,18 @@ class OrAlternativelyCombinationTest extends TestCase
      *
      * @dataProvider someMatchProvider
      *
-     * @param BusinessTimeConstraint[] $constraints
+     * @param BusinessTimeConstraint[] $alternatives
      */
-    public function testOrAlternativelySomeMatch(array $constraints): void
+    public function testOrAlternativelySomeMatch(array $alternatives): void
     {
         // Given we have a constraint which does not match a business time;
         $time = $this->wednesdayOnePm();
         $constraint = new NoTime();
         self::assertFalse($constraint->isBusinessTime($time));
 
-        // When we use orAlternatively to combine it with other constraints only
-        // some of which match.
-        $composite = $constraint->orAlternatively(...$constraints);
+        // When we use orAlternatively() to combine it with other constraints
+        // only some of which match.
+        $composite = $constraint->orAlternatively(...$alternatives);
 
         // Then the composite constraint should match the time.
         self::assertTrue(
