@@ -9,6 +9,8 @@ use DateTime;
  * matches.
  *
  * This is equivalent to logical NOT.
+ *
+ * @see CompositeNotTest
  */
 class Not implements BusinessTimeConstraint
 {

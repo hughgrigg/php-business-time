@@ -8,6 +8,8 @@ use DateTime;
  * A set of constraints that matches if all of the included constraints match.
  *
  * This is equivalent to logical AND.
+ *
+ * @see CompositeAllTest
  */
 class All implements BusinessTimeConstraint
 {
