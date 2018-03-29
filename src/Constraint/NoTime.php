@@ -9,6 +9,8 @@ use DateTime;
  */
 class NoTime implements BusinessTimeConstraint
 {
+    use Combinations;
+
     /**
      * Is the given time business time according to this constraint?
      *
