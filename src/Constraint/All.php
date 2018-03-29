@@ -2,6 +2,7 @@
 
 namespace BusinessTime\Constraint;
 
+use BusinessTime\Tests\Unit\Constraint\Composite\CompositeAllTest;
 use DateTime;
 
 /**

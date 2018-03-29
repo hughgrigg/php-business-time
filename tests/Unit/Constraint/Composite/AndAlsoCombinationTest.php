@@ -1,6 +1,6 @@
 <?php
 
-namespace BusinessTime\Tests\Unit\Constraint;
+namespace BusinessTime\Tests\Unit\Constraint\Composite;
 
 use BusinessTime\Constraint\AnyTime;
 use BusinessTime\Constraint\BusinessTimeConstraint;
