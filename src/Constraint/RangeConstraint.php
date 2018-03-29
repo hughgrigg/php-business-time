@@ -10,7 +10,7 @@ use DateTime;
  * Note that the minimum is inclusive while the maximum is exclusive. For
  * example, a range of 9 to 17 matches 9 but does not match 17.
  */
-class RangeConstraint implements BusinessTimeConstraint
+abstract class RangeConstraint implements BusinessTimeConstraint
 {
     use Combinations;
 
@@ -42,7 +42,7 @@ class RangeConstraint implements BusinessTimeConstraint
     public function isBusinessTime(DateTime $time): bool
     {
         return ($this->relevantValueOf($time) >= $this->min)
-            && ($this->relevantValueOf($time) < $this->max);
+               && ($this->relevantValueOf($time) < $this->max);
     }
 
     /**
@@ -52,8 +52,5 @@ class RangeConstraint implements BusinessTimeConstraint
      *
      * @return int
      */
-    protected function relevantValueOf(DateTime $time): int
-    {
-        return $time->getTimestamp();
-    }
+    abstract public function relevantValueOf(DateTime $time): int;
 }

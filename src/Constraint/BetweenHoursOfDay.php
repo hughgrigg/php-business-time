@@ -8,7 +8,8 @@ use DateTime;
 /**
  * Constraint that matches business time between certain hours of the day.
  *
- * e.g. new BetweenHourOfDay(9, 17) matches any time between 9am and 5pm.
+ * e.g.
+ * new BetweenHourOfDay(9, 17) matches any time after 9am and before 5pm.
  *
  * @see HoursOfDay
  */
@@ -19,7 +20,7 @@ class BetweenHoursOfDay extends RangeConstraint
      *
      * @return int
      */
-    protected function relevantValueOf(DateTime $time): int
+    public function relevantValueOf(DateTime $time): int
     {
         return Carbon::instance($time)->hour;
     }

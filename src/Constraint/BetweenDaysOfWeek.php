@@ -6,47 +6,60 @@ use Carbon\Carbon;
 use DateTime;
 
 /**
- * Constraint that matches business time between certain hours of the day.
+ * Constraint that matches business time between given days of the week,
+ * inclusively.
  *
- * e.g. new BetweenDaysOfWeek('Monday', 'Friday') matches week days apart from
- * Friday. Be careful with the inclusive minimum vs exclusive maximum.
+ * This follows ISO 8601, so Monday is the first day of the week and Sunday
+ * is the last.
+ * https://en.wikipedia.org/wiki/ISO_week_date
+ *
+ * e.g.
+ * new BetweenDaysOfWeek('Monday', 'Friday') matches week days.
+ * new BetweenDaysOfWeek('Monday', 'Saturday') matches week days and Saturday.
+ * new BetweenDaysOfWeek('Monday', 'Sunday') matches any day.
  *
  * @see DaysOfWeek
  * @see WeekDays
+ *
+ * @see BetweenDaysOfWeekTest
  */
 class BetweenDaysOfWeek extends RangeConstraint
 {
-    public const NAME_INDEX = [
-        'Sunday'    => 0,
-        'Monday'    => 1,
-        'Tuesday'   => 2,
-        'Wednesday' => 3,
-        'Thursday'  => 4,
-        'Friday'    => 5,
-        'Saturday'  => 6,
-        'Sun'       => 0,
-        'Mon'       => 1,
-        'Tues'      => 2,
-        'Wed'       => 3,
-        'Thur'      => 4,
-        'Fri'       => 5,
-        'Sat'       => 6,
-    ];
-
     /**
      * @param string|int $min e.g. 'Sunday' or 0
      * @param string|int $max e.g. 'Saturday' or 6
      */
     public function __construct(string $min, string $max)
     {
+        // Convert named days of the week to numeric indexes.
         if (!is_numeric($min)) {
-            $min = self::NAME_INDEX[$min];
+            $min = DaysOfWeek::NAME_INDEX[$min];
         }
         if (!is_numeric($max)) {
-            $max = self::NAME_INDEX[$max];
+            $max = DaysOfWeek::NAME_INDEX[$max];
         }
 
-        parent::__construct((int) $min, (int) $max);
+        // Keep the days within the valid range.
+        $min = max((int) $min, 1);
+        $max = min((int) $max, 7);
+
+        // Allow backwards order.
+        if ($min > $max) {
+            [$min, $max] = [$max, $min];
+        }
+
+        // Interpret passing the same day as min and max as meaning any day of
+        // the week.
+        if ($min === $max) {
+            $min = 1;
+            $max = 7;
+        }
+
+        // It's more intuitive that "Monday to Friday" includes Friday, but the
+        // default range logic is to treat the max exclusively, so we add 1.
+        ++$max;
+
+        parent::__construct($min, $max);
     }
 
     /**
@@ -54,8 +67,8 @@ class BetweenDaysOfWeek extends RangeConstraint
      *
      * @return int
      */
-    protected function relevantValueOf(DateTime $time): int
+    public function relevantValueOf(DateTime $time): int
     {
-        return Carbon::instance($time)->dayOfWeek;
+        return Carbon::instance($time)->dayOfWeekIso;
     }
 }
