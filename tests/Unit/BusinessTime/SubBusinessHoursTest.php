@@ -97,6 +97,9 @@ class SubBusinessHoursTest extends TestCase
     }
 
     /**
+     * Provides times and the expected new times after subtracting various
+     * amounts of business hours with the default behaviour.
+     *
      * @return array[]
      */
     public function subBusinessHoursProvider(): array

@@ -64,7 +64,10 @@ class BusinessTime extends Carbon
      */
     public function addBusinessDays(float $businessDaysToAdd): self
     {
-        // TODO: handle negative addition.
+        // TODO: test negative addition.
+        if ($businessDaysToAdd < 0) {
+            return $this->subBusinessDays($businessDaysToAdd * -1);
+        }
 
         // Jump ahead in whole days first, because the business days to add
         // will be at least this much. This also solves the "intuitive
@@ -77,7 +80,6 @@ class BusinessTime extends Carbon
         // skipping ahead in days.
         $businessDaysToAdd -= $this->diffInPartialBusinessDays($next);
 
-        /** @var Interval $decrement */
         $decrement = $this->precision()->inDays()
             / $this->lengthOfBusinessDay()->inDays();
 
@@ -89,6 +91,59 @@ class BusinessTime extends Carbon
         }
 
         return $next;
+    }
+
+    /**
+     * Get the date time after subtracting one business day.
+     *
+     * @see SubBusinessDaysTest
+     *
+     * @return BusinessTime
+     * @throws \InvalidArgumentException
+     */
+    public function subBusinessDay(): self
+    {
+        return $this->subBusinessDays(1);
+    }
+
+    /**
+     * Get the date time after subtracting an amount of business days.
+     *
+     * @see SubBusinessDaysTest
+     *
+     * @param float $businessDaysToSub
+     *
+     * @return BusinessTime
+     * @throws \InvalidArgumentException
+     */
+    public function subBusinessDays(float $businessDaysToSub): self
+    {
+        if ($businessDaysToSub < 0) {
+            return $this->addBusinessDays($businessDaysToSub * -1);
+        }
+
+        // Jump back in whole days first, because the business days to subtract
+        // will be at least this much. This also solves the "intuitive
+        // problem" that Tuesday 17:00 - 1 business day could technically be
+        // Tuesday 09:00, but intuitively should be Monday 17:00.
+        $daysToJump = (int) $businessDaysToSub;
+        $prev = $this->copy()->subDays($daysToJump);
+
+        // We need to check how much business time we actually covered by
+        // skipping back in days.
+        $businessDaysToSub -= $this->diffInPartialBusinessDays($prev);
+
+        $decrement = $this->precision()->inDays()
+            / $this->lengthOfBusinessDay()->inDays();
+
+        while ($businessDaysToSub > 0) {
+            $prev = $prev->sub($this->precision());
+            if ($prev->isBusinessTime()) {
+                $businessDaysToSub -= $decrement;
+            }
+        }
+
+        return $prev;
     }
 
     /**
