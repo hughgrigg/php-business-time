@@ -2,6 +2,9 @@
 
 namespace BusinessTime\Constraint;
 
+use BusinessTime\Tests\Unit\Constraint\Composite\AndAlsoCombinationTest;
+use BusinessTime\Tests\Unit\Constraint\Composite\OrAlternativelyCombinationTest;
+
 /**
  * Combinatorial behaviour for constraints to make composites of themselves.
  *
