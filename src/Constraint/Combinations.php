@@ -4,6 +4,8 @@ namespace BusinessTime\Constraint;
 
 /**
  * Combinatorial behaviour for constraints to make composites of themselves.
+ *
+ * @see AndAlsoCombinationTest
  */
 trait Combinations
 {
