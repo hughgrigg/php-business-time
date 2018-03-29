@@ -64,7 +64,6 @@ class BusinessTime extends Carbon
      */
     public function addBusinessDays(float $businessDaysToAdd): self
     {
-        // TODO: test negative addition.
         if ($businessDaysToAdd < 0) {
             return $this->subBusinessDays($businessDaysToAdd * -1);
         }
