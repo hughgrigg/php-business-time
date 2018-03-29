@@ -10,6 +10,7 @@ use BusinessTime\Tests\Unit\Constraint\Composite\OrAlternativelyCombinationTest;
  *
  * @see AndAlsoCombinationTest
  * @see OrAlternativelyCombinationTest
+ * @see ExceptCombinationTest
  */
 trait Combinations
 {
