@@ -37,8 +37,8 @@ class SubBusinessDaysTest extends TestCase
     }
 
     /**
-     * Provides times with the expected new time after subing one business day
-     * with default behaviour, i.e. that working time is Monday to Friday
+     * Provides times with the expected new time after subtracting one business
+     * day with default behaviour, i.e. that working time is Monday to Friday
      * 09:00 to 17:00 and the precision is 1 day.
      *
      * @return array[]

@@ -32,8 +32,7 @@ class AddBusinessDaysTest extends TestCase
         // Then we should get the expected new time.
         self::assertSame(
             $expectedNewTime,
-            // TODO: use short date format.
-            $nextBusinessDay->format('l jS F Y H:i')
+            $nextBusinessDay->format('l Y-m-d H:i')
         );
     }
 
@@ -46,19 +45,18 @@ class AddBusinessDaysTest extends TestCase
      */
     public function addBusinessDayProvider(): array
     {
-        // TODO: use short date format.
         return [
-            ['Monday 14th May 2018 00:00', 'Tuesday 15th May 2018 00:00'],
-            ['Monday 14th May 2018 08:00', 'Tuesday 15th May 2018 08:00'],
-            ['Monday 14th May 2018 09:00', 'Tuesday 15th May 2018 09:00'],
-            ['Monday 14th May 2018 10:00', 'Tuesday 15th May 2018 10:00'],
-            ['Monday 14th May 2018 17:00', 'Tuesday 15th May 2018 17:00'],
-            ['Tuesday 15th May 2018 11:00', 'Wednesday 16th May 2018 11:00'],
-            ['Wednesday 16th May 2018 12:00', 'Thursday 17th May 2018 12:00'],
-            ['Thursday 17th May 2018 13:00', 'Friday 18th May 2018 13:00'],
-            ['Friday 18th May 2018 14:00', 'Monday 21st May 2018 14:00'],
-            ['Saturday 19th May 2018 15:00', 'Monday 21st May 2018 17:00'],
-            ['Sunday 20th May 2018 16:00', 'Monday 21st May 2018 17:00'],
+            ['Monday 2018-05-14 00:00', 'Tuesday 2018-05-15 00:00'],
+            ['Monday 2018-05-14 08:00', 'Tuesday 2018-05-15 08:00'],
+            ['Monday 2018-05-14 09:00', 'Tuesday 2018-05-15 09:00'],
+            ['Monday 2018-05-14 10:00', 'Tuesday 2018-05-15 10:00'],
+            ['Monday 2018-05-14 17:00', 'Tuesday 2018-05-15 17:00'],
+            ['Tuesday 2018-05-15 11:00', 'Wednesday 2018-05-16 11:00'],
+            ['Wednesday 2018-05-16 12:00', 'Thursday 2018-05-17 12:00'],
+            ['Thursday 2018-05-17 13:00', 'Friday 2018-05-18 13:00'],
+            ['Friday 2018-05-18 14:00', 'Monday 2018-05-21 14:00'],
+            ['Saturday 2018-05-19 15:00', 'Monday 2018-05-21 17:00'],
+            ['Sunday 2018-05-20 16:00', 'Monday 2018-05-21 17:00'],
         ];
     }
 
@@ -84,8 +82,7 @@ class AddBusinessDaysTest extends TestCase
         $added = $businessTime->addBusinessDays($businessDaysToAdd);
 
         // Then we should get the expected new time.
-        // TODO: use short date format.
-        self::assertSame($expectedNewTime, $added->format('l jS F Y H:i'));
+        self::assertSame($expectedNewTime, $added->format('l Y-m-d H:i'));
     }
 
     /**
@@ -98,33 +95,42 @@ class AddBusinessDaysTest extends TestCase
      */
     public function addBusinessDaysProvider(): array
     {
-        // TODO: use short date format.
         return [
             // From Monday morning.
-            ['Monday 14th May 2018 00:00', 0, 'Monday 14th May 2018 00:00'],
-            ['Monday 14th May 2018 09:00', 0, 'Monday 14th May 2018 09:00'],
-            ['Monday 14th May 2018 09:00', 0.25, 'Monday 14th May 2018 11:00'],
-            ['Monday 14th May 2018 09:00', 0.5, 'Monday 14th May 2018 13:00'],
-            ['Monday 14th May 2018 09:00', 0.75, 'Monday 14th May 2018 15:00'],
-            ['Monday 14th May 2018 09:00', 1, 'Tuesday 15th May 2018 09:00'],
-            ['Monday 14th May 2018 00:00', 1, 'Tuesday 15th May 2018 00:00'],
-            ['Monday 14th May 2018 09:00', 1.25, 'Tuesday 15th May 2018 11:00'],
-            ['Monday 14th May 2018 09:00', 1.5, 'Tuesday 15th May 2018 13:00'],
-            ['Monday 14th May 2018 09:00', 1.75, 'Tuesday 15th May 2018 15:00'],
-            ['Monday 14th May 2018 09:00', 2, 'Wednesday 16th May 2018 09:00'],
+            ['Monday 2018-05-14 00:00', 0, 'Monday 2018-05-14 00:00'],
+            ['Monday 2018-05-14 09:00', 0, 'Monday 2018-05-14 09:00'],
+            ['Monday 2018-05-14 09:00', 0.25, 'Monday 2018-05-14 11:00'],
+            ['Monday 2018-05-14 09:00', 0.5, 'Monday 2018-05-14 13:00'],
+            ['Monday 2018-05-14 09:00', 0.75, 'Monday 2018-05-14 15:00'],
+            ['Monday 2018-05-14 09:00', 1, 'Tuesday 2018-05-15 09:00'],
+            ['Monday 2018-05-14 00:00', 1, 'Tuesday 2018-05-15 00:00'],
+            ['Monday 2018-05-14 09:00', 1.25, 'Tuesday 2018-05-15 11:00'],
+            ['Monday 2018-05-14 09:00', 1.5, 'Tuesday 2018-05-15 13:00'],
+            ['Monday 2018-05-14 09:00', 1.75, 'Tuesday 2018-05-15 15:00'],
+            ['Monday 2018-05-14 09:00', 2, 'Wednesday 2018-05-16 09:00'],
             // From Friday evening.
-            ['Friday 18th May 2018 00:00', 0, 'Friday 18th May 2018 00:00'],
-            ['Friday 18th May 2018 17:00', 0, 'Friday 18th May 2018 17:00'],
-            ['Friday 18th May 2018 17:00', 0.25, 'Monday 21st May 2018 11:00'],
-            ['Friday 18th May 2018 17:00', 0.5, 'Monday 21st May 2018 13:00'],
-            ['Friday 18th May 2018 17:00', 0.75, 'Monday 21st May 2018 15:00'],
-            ['Friday 18th May 2018 17:00', 1, 'Monday 21st May 2018 17:00'],
-            ['Friday 18th May 2018 17:00', 1.25, 'Tuesday 22nd May 2018 11:00'],
-            ['Friday 18th May 2018 17:00', 1.5, 'Tuesday 22nd May 2018 13:00'],
-            ['Friday 18th May 2018 17:00', 1.75, 'Tuesday 22nd May 2018 15:00'],
-            ['Friday 18th May 2018 17:00', 2, 'Tuesday 22nd May 2018 17:00'],
-            ['Friday 18th May 2018 17:00', 3, 'Wednesday 23rd May 2018 17:00'],
-            // TODO: negative values.
+            ['Friday 2018-05-18 00:00', 0, 'Friday 2018-05-18 00:00'],
+            ['Friday 2018-05-18 17:00', 0, 'Friday 2018-05-18 17:00'],
+            ['Friday 2018-05-18 17:00', 0.25, 'Monday 2018-05-21 11:00'],
+            ['Friday 2018-05-18 17:00', 0.5, 'Monday 2018-05-21 13:00'],
+            ['Friday 2018-05-18 17:00', 0.75, 'Monday 2018-05-21 15:00'],
+            ['Friday 2018-05-18 17:00', 1, 'Monday 2018-05-21 17:00'],
+            ['Friday 2018-05-18 17:00', 1.25, 'Tuesday 2018-05-22 11:00'],
+            ['Friday 2018-05-18 17:00', 1.5, 'Tuesday 2018-05-22 13:00'],
+            ['Friday 2018-05-18 17:00', 1.75, 'Tuesday 2018-05-22 15:00'],
+            ['Friday 2018-05-18 17:00', 2, 'Tuesday 2018-05-22 17:00'],
+            ['Friday 2018-05-18 17:00', 3, 'Wednesday 2018-05-23 17:00'],
+            // Negative values.
+            ['Friday 2018-05-18 00:00', -0, 'Friday 2018-05-18 00:00'],
+            ['Friday 2018-05-18 17:00', -0, 'Friday 2018-05-18 17:00'],
+            ['Friday 2018-05-18 17:00', -0.25, 'Friday 2018-05-18 15:00'],
+            ['Friday 2018-05-18 17:00', -0.5, 'Friday 2018-05-18 13:00'],
+            ['Friday 2018-05-18 17:00', -0.75, 'Friday 2018-05-18 11:00'],
+            ['Friday 2018-05-18 17:00', -1, 'Thursday 2018-05-17 17:00'],
+            ['Friday 2018-05-18 17:00', -1.25, 'Thursday 2018-05-17 15:00'],
+            ['Friday 2018-05-18 17:00', -1.5, 'Thursday 2018-05-17 13:00'],
+            ['Friday 2018-05-18 17:00', -1.75, 'Thursday 2018-05-17 11:00'],
+            ['Friday 2018-05-18 17:00', -2, 'Wednesday 2018-05-16 17:00'],
         ];
     }
 }

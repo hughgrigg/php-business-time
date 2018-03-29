@@ -35,8 +35,7 @@ class AddBusinessHoursTest extends TestCase
         // Then we should get the expected new time.
         self::assertSame(
             $expectedNewTime,
-            // TODO: use short date format.
-            $nextBusinessHour->format('l jS F Y H:i')
+            $nextBusinessHour->format('l Y-m-d H:i')
         );
     }
 
@@ -49,30 +48,29 @@ class AddBusinessHoursTest extends TestCase
      */
     public function addBusinessHourProvider(): array
     {
-        // TODO: use short date format.
         return [
-            ['Monday 14th May 2018 00:00', 'Monday 14th May 2018 10:00'],
-            ['Monday 14th May 2018 08:00', 'Monday 14th May 2018 10:00'],
-            ['Monday 14th May 2018 09:00', 'Monday 14th May 2018 10:00'],
-            ['Monday 14th May 2018 09:15', 'Monday 14th May 2018 10:15'],
-            ['Monday 14th May 2018 09:30', 'Monday 14th May 2018 10:30'],
-            ['Monday 14th May 2018 09:45', 'Monday 14th May 2018 10:45'],
-            ['Monday 14th May 2018 10:00', 'Monday 14th May 2018 11:00'],
-            ['Monday 14th May 2018 11:00', 'Monday 14th May 2018 12:00'],
-            ['Monday 14th May 2018 12:00', 'Monday 14th May 2018 13:00'],
-            ['Monday 14th May 2018 13:00', 'Monday 14th May 2018 14:00'],
-            ['Monday 14th May 2018 14:00', 'Monday 14th May 2018 15:00'],
-            ['Monday 14th May 2018 15:00', 'Monday 14th May 2018 16:00'],
-            ['Monday 14th May 2018 16:00', 'Monday 14th May 2018 17:00'],
-            ['Monday 14th May 2018 17:00', 'Tuesday 15th May 2018 10:00'],
-            ['Monday 14th May 2018 18:00', 'Tuesday 15th May 2018 10:00'],
-            ['Monday 14th May 2018 23:00', 'Tuesday 15th May 2018 10:00'],
-            ['Friday 18th May 2018 16:00', 'Friday 18th May 2018 17:00'],
-            ['Friday 18th May 2018 17:00', 'Monday 21st May 2018 10:00'],
-            ['Saturday 19th May 2018 08:00', 'Monday 21st May 2018 10:00'],
-            ['Saturday 19th May 2018 18:00', 'Monday 21st May 2018 10:00'],
-            ['Sunday 19th May 2018 07:00', 'Monday 21st May 2018 10:00'],
-            ['Sunday 19th May 2018 19:00', 'Monday 21st May 2018 10:00'],
+            ['Monday 2018-05-14 00:00', 'Monday 2018-05-14 10:00'],
+            ['Monday 2018-05-14 08:00', 'Monday 2018-05-14 10:00'],
+            ['Monday 2018-05-14 09:00', 'Monday 2018-05-14 10:00'],
+            ['Monday 2018-05-14 09:15', 'Monday 2018-05-14 10:15'],
+            ['Monday 2018-05-14 09:30', 'Monday 2018-05-14 10:30'],
+            ['Monday 2018-05-14 09:45', 'Monday 2018-05-14 10:45'],
+            ['Monday 2018-05-14 10:00', 'Monday 2018-05-14 11:00'],
+            ['Monday 2018-05-14 11:00', 'Monday 2018-05-14 12:00'],
+            ['Monday 2018-05-14 12:00', 'Monday 2018-05-14 13:00'],
+            ['Monday 2018-05-14 13:00', 'Monday 2018-05-14 14:00'],
+            ['Monday 2018-05-14 14:00', 'Monday 2018-05-14 15:00'],
+            ['Monday 2018-05-14 15:00', 'Monday 2018-05-14 16:00'],
+            ['Monday 2018-05-14 16:00', 'Monday 2018-05-14 17:00'],
+            ['Monday 2018-05-14 17:00', 'Tuesday 2018-05-15 10:00'],
+            ['Monday 2018-05-14 18:00', 'Tuesday 2018-05-15 10:00'],
+            ['Monday 2018-05-14 23:00', 'Tuesday 2018-05-15 10:00'],
+            ['Friday 2018-05-18 16:00', 'Friday 2018-05-18 17:00'],
+            ['Friday 2018-05-18 17:00', 'Monday 2018-05-21 10:00'],
+            ['Saturday 2018-05-19 08:00', 'Monday 2018-05-21 10:00'],
+            ['Saturday 2018-05-19 18:00', 'Monday 2018-05-21 10:00'],
+            ['Sunday 2018-05-20 07:00', 'Monday 2018-05-21 10:00'],
+            ['Sunday 2018-05-20 19:00', 'Monday 2018-05-21 10:00'],
         ];
     }
 
@@ -101,8 +99,7 @@ class AddBusinessHoursTest extends TestCase
         $added = $businessTime->addBusinessHours($businessHoursToAdd);
 
         // Then we should get the expected new time.
-        // TODO: use short date format.
-        self::assertSame($expectedNewTime, $added->format('l jS F Y H:i'));
+        self::assertSame($expectedNewTime, $added->format('l Y-m-d H:i'));
     }
 
     /**
@@ -115,38 +112,37 @@ class AddBusinessHoursTest extends TestCase
      */
     public function addBusinessHoursProvider(): array
     {
-        // TODO: use short date format.
         return [
             // Adding less than a day.
-            ['Monday 14th May 2018 09:00', 0, 'Monday 14th May 2018 09:00'],
-            ['Monday 14th May 2018 09:00', 0.25, 'Monday 14th May 2018 09:15'],
-            ['Monday 14th May 2018 09:00', 0.5, 'Monday 14th May 2018 09:30'],
-            ['Monday 14th May 2018 09:00', 0.75, 'Monday 14th May 2018 09:45'],
-            ['Monday 14th May 2018 09:00', 1, 'Monday 14th May 2018 10:00'],
-            ['Monday 14th May 2018 09:00', 1.25, 'Monday 14th May 2018 10:15'],
-            ['Monday 14th May 2018 09:00', 1.5, 'Monday 14th May 2018 10:30'],
-            ['Monday 14th May 2018 09:00', 1.75, 'Monday 14th May 2018 10:45'],
-            ['Monday 14th May 2018 09:00', 2, 'Monday 14th May 2018 11:00'],
-            ['Monday 14th May 2018 09:00', 7.75, 'Monday 14th May 2018 16:45'],
+            ['Monday 2018-05-14 09:00', 0, 'Monday 2018-05-14 09:00'],
+            ['Monday 2018-05-14 09:00', 0.25, 'Monday 2018-05-14 09:15'],
+            ['Monday 2018-05-14 09:00', 0.5, 'Monday 2018-05-14 09:30'],
+            ['Monday 2018-05-14 09:00', 0.75, 'Monday 2018-05-14 09:45'],
+            ['Monday 2018-05-14 09:00', 1, 'Monday 2018-05-14 10:00'],
+            ['Monday 2018-05-14 09:00', 1.25, 'Monday 2018-05-14 10:15'],
+            ['Monday 2018-05-14 09:00', 1.5, 'Monday 2018-05-14 10:30'],
+            ['Monday 2018-05-14 09:00', 1.75, 'Monday 2018-05-14 10:45'],
+            ['Monday 2018-05-14 09:00', 2, 'Monday 2018-05-14 11:00'],
+            ['Monday 2018-05-14 09:00', 7.75, 'Monday 2018-05-14 16:45'],
             // Adding a whole business day or more.
-            ['Monday 14th May 2018 09:00', 8, 'Monday 14th May 2018 17:00'],
-            ['Monday 14th May 2018 09:00', 8.25, 'Tuesday 15th May 2018 09:15'],
-            ['Monday 14th May 2018 09:00', 8.5, 'Tuesday 15th May 2018 09:30'],
-            ['Monday 14th May 2018 09:00', 8.75, 'Tuesday 15th May 2018 09:45'],
-            ['Monday 14th May 2018 09:00', 9, 'Tuesday 15th May 2018 10:00'],
-            ['Monday 14th May 2018 09:00', 16, 'Tuesday 15th May 2018 17:00'],
-            ['Monday 14th May 2018 09:00', 23, 'Wednesday 16th May 2018 16:00'],
-            ['Monday 14th May 2018 09:00', 24, 'Wednesday 16th May 2018 17:00'],
+            ['Monday 2018-05-14 09:00', 8, 'Monday 2018-05-14 17:00'],
+            ['Monday 2018-05-14 09:00', 8.25, 'Tuesday 2018-05-15 09:15'],
+            ['Monday 2018-05-14 09:00', 8.5, 'Tuesday 2018-05-15 09:30'],
+            ['Monday 2018-05-14 09:00', 8.75, 'Tuesday 2018-05-15 09:45'],
+            ['Monday 2018-05-14 09:00', 9, 'Tuesday 2018-05-15 10:00'],
+            ['Monday 2018-05-14 09:00', 16, 'Tuesday 2018-05-15 17:00'],
+            ['Monday 2018-05-14 09:00', 23, 'Wednesday 2018-05-16 16:00'],
+            ['Monday 2018-05-14 09:00', 24, 'Wednesday 2018-05-16 17:00'],
             // Negative values.
-            ['Monday 14th May 2018 09:00', -0, 'Monday 14th May 2018 09:00'],
-            ['Monday 14th May 2018 09:00', -0.25, 'Friday 11th May 2018 16:45'],
-            ['Monday 14th May 2018 09:00', -0.5, 'Friday 11th May 2018 16:30'],
-            ['Monday 14th May 2018 09:00', -0.75, 'Friday 11th May 2018 16:15'],
-            ['Monday 14th May 2018 09:00', -1, 'Friday 11th May 2018 16:00'],
-            ['Monday 14th May 2018 09:00', -1.25, 'Friday 11th May 2018 15:45'],
-            ['Monday 14th May 2018 09:00', -1.5, 'Friday 11th May 2018 15:30'],
-            ['Monday 14th May 2018 09:00', -1.75, 'Friday 11th May 2018 15:15'],
-            ['Monday 14th May 2018 09:00', -2, 'Friday 11th May 2018 15:00'],
+            ['Monday 2018-05-14 09:00', -0, 'Monday 2018-05-14 09:00'],
+            ['Monday 2018-05-14 09:00', -0.25, 'Friday 2018-05-11 16:45'],
+            ['Monday 2018-05-14 09:00', -0.5, 'Friday 2018-05-11 16:30'],
+            ['Monday 2018-05-14 09:00', -0.75, 'Friday 2018-05-11 16:15'],
+            ['Monday 2018-05-14 09:00', -1, 'Friday 2018-05-11 16:00'],
+            ['Monday 2018-05-14 09:00', -1.25, 'Friday 2018-05-11 15:45'],
+            ['Monday 2018-05-14 09:00', -1.5, 'Friday 2018-05-11 15:30'],
+            ['Monday 2018-05-14 09:00', -1.75, 'Friday 2018-05-11 15:15'],
+            ['Monday 2018-05-14 09:00', -2, 'Friday 2018-05-11 15:00'],
         ];
     }
 
@@ -180,8 +176,7 @@ class AddBusinessHoursTest extends TestCase
         $added = $businessTime->addBusinessHours($businessHoursToAdd);
 
         // Then we should get the expected new time.
-        // TODO: use short date format.
-        self::assertSame($expectedNewTime, $added->format('l jS F Y H:i'));
+        self::assertSame($expectedNewTime, $added->format('l Y-m-d H:i'));
     }
 
     /**
@@ -192,34 +187,33 @@ class AddBusinessHoursTest extends TestCase
      */
     public function addBusinessHoursConstraintProvider(): array
     {
-        // TODO: use short date format.
         return [
             [
-                'Monday 14th May 2018 09:00',
+                'Monday 2018-05-14 09:00',
                 // Exclude lunch time.
                 (new BetweenHoursOfDay(9, 17))->except(
                     new BetweenHoursOfDay(13, 14)
                 ),
                 4,
-                'Monday 14th May 2018 13:00',
+                'Monday 2018-05-14 13:00',
             ],
             [
-                'Monday 14th May 2018 09:00',
+                'Monday 2018-05-14 09:00',
                 // Exclude lunch time.
                 (new BetweenHoursOfDay(9, 17))->except(
                     new BetweenHoursOfDay(13, 14)
                 ),
                 5, // Would be 14:00, but we're not counting lunch time.
-                'Monday 14th May 2018 15:00',
+                'Monday 2018-05-14 15:00',
             ],
             [
-                'Monday 14th May 2018 09:00',
+                'Monday 2018-05-14 09:00',
                 // Exclude lunch time.
                 (new BetweenHoursOfDay(9, 17))->except(
                     new BetweenHoursOfDay(13, 14)
                 ),
                 7 + 5, // 1 full day, plus 5 hours.
-                'Tuesday 15th May 2018 15:00',
+                'Tuesday 2018-05-15 15:00',
             ],
         ];
     }
