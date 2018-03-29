@@ -35,6 +35,7 @@ class AddBusinessHoursTest extends TestCase
         // Then we should get the expected new time.
         self::assertSame(
             $expectedNewTime,
+            // TODO: use short date format.
             $nextBusinessHour->format('l jS F Y H:i')
         );
     }
@@ -48,6 +49,7 @@ class AddBusinessHoursTest extends TestCase
      */
     public function addBusinessHourProvider(): array
     {
+        // TODO: use short date format.
         return [
             ['Monday 14th May 2018 00:00', 'Monday 14th May 2018 10:00'],
             ['Monday 14th May 2018 08:00', 'Monday 14th May 2018 10:00'],
@@ -99,6 +101,7 @@ class AddBusinessHoursTest extends TestCase
         $added = $businessTime->addBusinessHours($businessHoursToAdd);
 
         // Then we should get the expected new time.
+        // TODO: use short date format.
         self::assertSame($expectedNewTime, $added->format('l jS F Y H:i'));
     }
 
@@ -112,6 +115,7 @@ class AddBusinessHoursTest extends TestCase
      */
     public function addBusinessHoursProvider(): array
     {
+        // TODO: use short date format.
         return [
             // Adding less than a day.
             ['Monday 14th May 2018 09:00', 0, 'Monday 14th May 2018 09:00'],
@@ -176,6 +180,7 @@ class AddBusinessHoursTest extends TestCase
         $added = $businessTime->addBusinessHours($businessHoursToAdd);
 
         // Then we should get the expected new time.
+        // TODO: use short date format.
         self::assertSame($expectedNewTime, $added->format('l jS F Y H:i'));
     }
 
@@ -187,6 +192,7 @@ class AddBusinessHoursTest extends TestCase
      */
     public function addBusinessHoursConstraintProvider(): array
     {
+        // TODO: use short date format.
         return [
             [
                 'Monday 14th May 2018 09:00',
