@@ -73,14 +73,14 @@ class BusinessTime extends Carbon
         // problem" that Monday 09:00 + 1 business day could technically be
         // Monday 17:00, but intuitively should be Tuesday 09:00.
         $daysToJump = (int) $businessDaysToAdd;
-        $next = $this->copy()->addDays($daysToJump);
+        $next       = $this->copy()->addDays($daysToJump);
 
         // We need to check how much business time we actually covered by
         // skipping ahead in days.
         $businessDaysToAdd -= $this->diffInPartialBusinessDays($next);
 
         $decrement = $this->precision()->inDays()
-            / $this->lengthOfBusinessDay()->inDays();
+                     / $this->lengthOfBusinessDay()->inDays();
 
         while ($businessDaysToAdd > 0) {
             if ($next->isBusinessTime()) {
@@ -126,14 +126,14 @@ class BusinessTime extends Carbon
         // problem" that Tuesday 17:00 - 1 business day could technically be
         // Tuesday 09:00, but intuitively should be Monday 17:00.
         $daysToJump = (int) $businessDaysToSub;
-        $prev = $this->copy()->subDays($daysToJump);
+        $prev       = $this->copy()->subDays($daysToJump);
 
         // We need to check how much business time we actually covered by
         // skipping back in days.
         $businessDaysToSub -= $this->diffInPartialBusinessDays($prev);
 
         $decrement = $this->precision()->inDays()
-            / $this->lengthOfBusinessDay()->inDays();
+                     / $this->lengthOfBusinessDay()->inDays();
 
         while ($businessDaysToSub > 0) {
             $prev = $prev->sub($this->precision());
@@ -174,7 +174,7 @@ class BusinessTime extends Carbon
             return $this->subBusinessHours($businessHoursToAdd * -1);
         }
 
-        $next = $this->copy();
+        $next      = $this->copy();
         $decrement = $this->precision()->inHours();
         while ($businessHoursToAdd > 0) {
             if ($next->isBusinessTime()) {
@@ -215,7 +215,7 @@ class BusinessTime extends Carbon
             return $this->addBusinessHours($businessHoursToSub * -1);
         }
 
-        $prev = $this->copy();
+        $prev      = $this->copy();
         $decrement = $this->precision()->inHours();
         while ($businessHoursToSub > 0) {
             $prev = $prev->sub($this->precision());
@@ -279,7 +279,7 @@ class BusinessTime extends Carbon
         bool $absolute = true
     ): float {
         return $this->diffInBusinessTime($time, $absolute)
-            / $this->lengthOfBusinessDay()->asMultipleOf($this->precision());
+               / $this->lengthOfBusinessDay()->asMultipleOf($this->precision());
     }
 
     /**
@@ -298,7 +298,7 @@ class BusinessTime extends Carbon
         bool $absolute = true
     ): float {
         return $this->diffInBusinessTime($time, $absolute)
-            * $this->precision()->inHours();
+               * $this->precision()->inHours();
     }
 
     /**
@@ -372,7 +372,7 @@ class BusinessTime extends Carbon
     public function floor(?DateInterval $precision = null): self
     {
         $seconds = Interval::instance($precision ?: $this->precision())
-            ->inSeconds();
+                           ->inSeconds();
 
         return $this->copy()->setTimestamp(
             floor($this->timestamp / $seconds) * $seconds
@@ -391,7 +391,7 @@ class BusinessTime extends Carbon
     public function round(?DateInterval $precision = null): self
     {
         $seconds = Interval::instance($precision ?: $this->precision())
-            ->inSeconds();
+                           ->inSeconds();
 
         return $this->copy()->setTimestamp(
             round($this->timestamp / $seconds) * $seconds
@@ -413,7 +413,7 @@ class BusinessTime extends Carbon
     public function ceil(?DateInterval $precision = null): self
     {
         $seconds = Interval::instance($precision ?: $this->precision())
-            ->inSeconds();
+                           ->inSeconds();
 
         return $this->copy()->setTimestamp(
             ceil($this->timestamp / $seconds) * $seconds
@@ -484,8 +484,8 @@ ERR
 
         return $this->setLengthOfBusinessDay(
             $this->copy()
-                ->setTimestamp($typicalDay->startOfDay()->getTimestamp())
-                ->diffBusiness($typicalDay->endOfDay())
+                 ->setTimestamp($typicalDay->startOfDay()->getTimestamp())
+                 ->diffBusiness($typicalDay->endOfDay())
         );
     }
 
@@ -498,21 +498,6 @@ ERR
         BusinessTimeConstraint ...$constraints
     ): self {
         $this->businessTimeConstraints = new All(...$constraints);
-
-        return $this;
-    }
-
-    /**
-     * @param BusinessTimeConstraint ...$constraints
-     *
-     * @return BusinessTime
-     */
-    public function addBusinessTimeConstraints(
-        BusinessTimeConstraint ...$constraints
-    ): self {
-        $this->setBusinessTimeConstraints(
-            new All($constraints, ...$this->businessTimeConstraints())
-        );
 
         return $this;
     }
@@ -596,12 +581,12 @@ ERR
         // it turns out to be ~25% faster than using Carbon::diffFiltered().
 
         $start = $this;
-        $end = $time;
-        $sign = 1;
+        $end   = $time;
+        $sign  = 1;
         // Swap if we're diffing back in time.
         if ($this > $time) {
             $start = $time;
-            $end = $this;
+            $end   = $this;
             // We only need to negate if absolute is false.
             $sign = $absolute ? 1 : -1;
         }

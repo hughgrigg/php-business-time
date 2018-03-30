@@ -5,9 +5,12 @@ namespace BusinessTime\Constraint;
 /**
  * Constraint that matches the given hours of the day with their numeric index.
  *
- * E.g. 1pm = 13
+ * e.g.
+ * new HoursOfDay(8, 13, 23) matches 8am, 1pm and 11pm.
  *
  * @see BetweenHoursOfDay
+ *
+ * @see HoursOfDayTest
  */
 class HoursOfDay extends FormatConstraint
 {
@@ -18,6 +21,6 @@ class HoursOfDay extends FormatConstraint
      */
     public function __construct(int ...$hoursOfDay)
     {
-        parent::__construct('H', ...$hoursOfDay);
+        parent::__construct('G', ...$hoursOfDay);
     }
 }
