@@ -8,6 +8,7 @@ use BusinessTime\Constraint\BetweenHoursOfDay;
 use BusinessTime\Constraint\BusinessTimeConstraint;
 use BusinessTime\Constraint\WeekDays;
 use BusinessTime\Interval;
+use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -138,5 +139,31 @@ class LengthOfBusinessDayTest extends TestCase
                 '6 hours',
             ],
         ];
+    }
+
+    /**
+     * Should not be able to set a business day to zero length.
+     */
+    public function testCantSetZeroLengthBusinessDay(): void
+    {
+        // We should get an error;
+        $this->expectException(InvalidArgumentException::class);
+
+        // When we try to set a zero-length business day.
+        $time = new BusinessTime();
+        $time->setLengthOfBusinessDay(Interval::hours(0));
+    }
+
+    /**
+     * Should not be able to set the length of a business day over one day.
+     */
+    public function testCantSetBusinessDayLengthOverOneDay(): void
+    {
+        // We should get an error;
+        $this->expectException(InvalidArgumentException::class);
+
+        // When we try to set a business day length over one day.
+        $time = new BusinessTime();
+        $time->setLengthOfBusinessDay(Interval::hours(25));
     }
 }
