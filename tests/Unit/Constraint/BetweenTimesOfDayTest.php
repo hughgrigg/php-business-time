@@ -15,19 +15,19 @@ class BetweenTimesOfDayTest extends TestCase
     /**
      * @dataProvider betweenTimesOfDayProvider
      *
-     * @param string $min
-     * @param string $max
+     * @param string $minTimeOfDay
+     * @param string $maxTimeOfDay
      * @param string $time
      * @param bool   $shouldMatch
      */
     public function testBetweenTimesOfDay(
-        string $min,
-        string $max,
+        string $minTimeOfDay,
+        string $maxTimeOfDay,
         string $time,
         bool $shouldMatch
     ): void {
         // Given we have a constraint for between times of the day;
-        $constraint = new BetweenTimesOfDay($min, $max);
+        $constraint = new BetweenTimesOfDay($minTimeOfDay, $maxTimeOfDay);
 
         // And a business time for a specific time;
         $businessTime = new BusinessTime($time);

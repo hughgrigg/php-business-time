@@ -8,8 +8,10 @@ use DateTime;
 /**
  * Constraint that matches business time by comparing to an integer range.
  *
- * Note that the minimum is inclusive while the maximum is exclusive. For
- * example, a range of 9 to 17 matches 9 but does not match 17.
+ * The minimum and maximum are inclusive, i.e. >= and <=.
+ *
+ * Some implementing classes override this to make the max exclusive, as that
+ * is more intuitive for e.g. 17 should exclude times from 5pm onwards.
  */
 abstract class RangeConstraint implements BusinessTimeConstraint
 {
@@ -48,7 +50,7 @@ abstract class RangeConstraint implements BusinessTimeConstraint
     public function isBusinessTime(DateTime $time): bool
     {
         return ($this->relevantValueOf($time) >= $this->min)
-               && ($this->relevantValueOf($time) < $this->max);
+               && ($this->relevantValueOf($time) <= $this->max);
     }
 
     /**

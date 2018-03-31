@@ -16,6 +16,18 @@ use DateTime;
 class BetweenHoursOfDay extends RangeConstraint
 {
     /**
+     * @param int $min
+     * @param int $max
+     */
+    public function __construct(int $min, int $max)
+    {
+        // Subtract one from the max as we want to match it exclusively for
+        // times of day. E.g. 17 should be a cut off at 5pm, excluding times
+        // from 5pm onwards.
+        parent::__construct($min, $max - 1);
+    }
+
+    /**
      * @param DateTime $time
      *
      * @return int

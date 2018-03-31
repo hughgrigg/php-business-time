@@ -24,7 +24,8 @@ class BetweenTimesOfDay extends RangeConstraint
         // Convert the given string times to their comparable minute of the day.
         parent::__construct(
             $this->minuteOfDay(new DateTime($min)),
-            $this->minuteOfDay(new DateTime($max))
+            // Subtract one minute from the max to make it exclusive.
+            $this->minuteOfDay(new DateTime($max)) - 1
         );
     }
 
