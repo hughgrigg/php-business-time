@@ -192,7 +192,6 @@ The following constraints are available out-of-the-box, some of which can be
 customised via their constructors:
 
 ```php
-new BusinessTimeConstraint\TimesOfDay('11:23', '17:42');
 new BusinessTime\Constraint\HoursOfDay(10, 13, 17);
 new BusinessTime\Constraint\BetweenHoursOfDay(9, 17);
 new BusinessTime\Constraint\BetweenTimesOfDay('08:45', '17:30');
@@ -220,7 +219,7 @@ You can wrap any business time constraint in a `Not` constraint to invert it.
 For example:
 
 ```php
-$decemberOff = new BusinessTime\Constraint\Not(
+$decemberOff = new BusinessTime\Constraint\Composite\Not(
     BusinessTime\Constraint\MonthsOfYear('December')
 );
 ```
@@ -275,7 +274,7 @@ The constraint must take an instance of `DateTime` and return whether or not it
 should be considered business time.
 
 If you want to enable combinatorial logic for your custom constraint, use the
-`BusinessTime\Constraint\Combinations` trait.
+`BusinessTime\Constraint\Composite\Combinations` trait.
 
 *Tip*: It's usually better to use multiple simple constraints together than to
 make one big, complex one.
@@ -295,7 +294,7 @@ $businessTime->setBusinessTimeConstraints(
     ), // Week days, but let's take Thursdays off.
     new BusinessTime\Constraint\BetweenMonthsOfYear('January', 'November'),
     // No-one does any work in December anyway.
-    new BusinessTime\Constraint\Not(
+    new BusinessTime\Constraint\Composite\Not(
         new BusinessTime\Constraint\DaysOfYear('August 23rd', 'October 20th')
     ) // Why not take off your birthday and wedding anniversary?
 );

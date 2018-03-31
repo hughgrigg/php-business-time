@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * Test the andAlso() combination method on business time constraints.
  *
- * @see \BusinessTime\Constraint\Combinations
+ * @see \BusinessTime\Constraint\Composite\Combinations
  */
 class AndAlsoCombinationTest extends TestCase
 {

@@ -2,8 +2,8 @@
 
 namespace BusinessTime\Tests\Unit\Constraint\Composite;
 
-use BusinessTime\Constraint\All;
 use BusinessTime\Constraint\BusinessTimeConstraint;
+use BusinessTime\Constraint\Composite\All;
 use PHPUnit\Framework\TestCase;
 
 /**

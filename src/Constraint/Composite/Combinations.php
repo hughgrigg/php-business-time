@@ -1,7 +1,8 @@
 <?php
 
-namespace BusinessTime\Constraint;
+namespace BusinessTime\Constraint\Composite;
 
+use BusinessTime\Constraint\BusinessTimeConstraint;
 use BusinessTime\Tests\Unit\Constraint\Composite\AndAlsoCombinationTest;
 use BusinessTime\Tests\Unit\Constraint\Composite\OrAlternativelyCombinationTest;
 

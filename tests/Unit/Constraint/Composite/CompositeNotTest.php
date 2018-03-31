@@ -3,7 +3,7 @@
 namespace BusinessTime\Tests\Unit\Constraint\Composite;
 
 use BusinessTime\Constraint\BusinessTimeConstraint;
-use BusinessTime\Constraint\Not;
+use BusinessTime\Constraint\Composite\Not;
 use PHPUnit\Framework\TestCase;
 
 /**
