@@ -15,7 +15,7 @@ class DaysOfMonthTest extends TestCase
      * @dataProvider daysOfMonthProvider
      *
      * @param string $time
-     * @param array  $daysOfMonth
+     * @param int[]  $daysOfMonth
      * @param bool   $shouldMatch
      */
     public function testDaysOfMonth(
