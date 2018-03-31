@@ -29,6 +29,11 @@ abstract class RangeConstraint implements BusinessTimeConstraint
      */
     public function __construct(int $min, int $max)
     {
+        // Allow backwards order.
+        if ($min > $max) {
+            [$min, $max] = [$max, $min];
+        }
+
         $this->min = $min;
         $this->max = $max;
     }
