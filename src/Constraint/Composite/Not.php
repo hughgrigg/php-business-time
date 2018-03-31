@@ -1,18 +1,20 @@
 <?php
 
-namespace BusinessTime\Constraint;
+namespace BusinessTime\Constraint\Composite;
 
-use BusinessTime\Tests\Unit\Constraint\Composite\CompositeAnyTest;
+use BusinessTime\Constraint\BusinessTimeConstraint;
+use BusinessTime\Tests\Unit\Constraint\Composite\CompositeNotTest;
 use DateTime;
 
 /**
- * A set of constraints that matches if any of the included constraints matches.
+ * A set of constraints that matches if none of the included constraints
+ * matches.
  *
- * This is equivalent to logical OR.
+ * This is equivalent to logical NOT.
  *
- * @see CompositeAnyTest
+ * @see CompositeNotTest
  */
-class Any implements BusinessTimeConstraint
+class Not implements BusinessTimeConstraint
 {
     use Combinations;
 
@@ -20,7 +22,7 @@ class Any implements BusinessTimeConstraint
     private $constraints;
 
     /**
-     * @param BusinessTimeConstraint[] $constraints
+     * @param BusinessTimeConstraint ...$constraints
      */
     public function __construct(BusinessTimeConstraint ...$constraints)
     {
@@ -28,6 +30,8 @@ class Any implements BusinessTimeConstraint
     }
 
     /**
+     * Is the given time business time according to this constraint?
+     *
      * @param DateTime $time
      *
      * @return bool
@@ -36,10 +40,10 @@ class Any implements BusinessTimeConstraint
     {
         foreach ($this->constraints as $constraint) {
             if ($constraint->isBusinessTime($time)) {
-                return true;
+                return false;
             }
         }
 
-        return false;
+        return true;
     }
 }

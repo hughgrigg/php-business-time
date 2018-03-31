@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * Test the orAlternatively() combination method on business time constraints.
  *
- * @see \BusinessTime\Constraint\Combinations
+ * @see \BusinessTime\Constraint\Composite\Combinations
  */
 class OrAlternativelyCombinationTest extends TestCase
 {

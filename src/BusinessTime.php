@@ -2,9 +2,9 @@
 
 namespace BusinessTime;
 
-use BusinessTime\Constraint\All;
 use BusinessTime\Constraint\BetweenHoursOfDay;
 use BusinessTime\Constraint\BusinessTimeConstraint;
+use BusinessTime\Constraint\Composite\All;
 use BusinessTime\Constraint\WeekDays;
 use Carbon\Carbon;
 use DateInterval;
