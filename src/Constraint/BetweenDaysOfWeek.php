@@ -55,10 +55,6 @@ class BetweenDaysOfWeek extends RangeConstraint
             $max = 7;
         }
 
-        // It's more intuitive that "Monday to Friday" includes Friday, but the
-        // default range logic is to treat the max exclusively, so we add 1.
-        ++$max;
-
         parent::__construct($min, $max);
     }
 
