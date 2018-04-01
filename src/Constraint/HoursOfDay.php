@@ -17,10 +17,10 @@ class HoursOfDay extends FormatConstraint
     /**
      * HoursOfDay constructor.
      *
-     * @param int ...$hoursOfDay e.g. 8, 13, 23
+     * @param int ...$hoursOfDays e.g. 8, 13, 23
      */
-    public function __construct(int ...$hoursOfDay)
+    public function __construct(int ...$hoursOfDays)
     {
-        parent::__construct('G', ...$hoursOfDay);
+        parent::__construct('G', ...$hoursOfDays);
     }
 }
