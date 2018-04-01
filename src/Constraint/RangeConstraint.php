@@ -31,6 +31,10 @@ abstract class RangeConstraint implements BusinessTimeConstraint
      */
     public function __construct(int $min, int $max)
     {
+        // Keep the min and max within the valid range.
+        $min = max($min, $this->minMin());
+        $max = min($max, $this->maxMax());
+
         // Allow backwards order.
         if ($min > $max) {
             [$min, $max] = [$max, $min];
@@ -61,4 +65,37 @@ abstract class RangeConstraint implements BusinessTimeConstraint
      * @return int
      */
     abstract public function relevantValueOf(DateTime $time): int;
+
+    /**
+     * Get the maximum possible value of the range.
+     *
+     * @return int
+     */
+    abstract public function maxMax(): int;
+
+    /**
+     * Get the minimum possible value of the range.
+     *
+     * @return int
+     */
+    abstract public function minMin(): int;
+
+    /**
+     * Helper function for converting names to a given numeric index.
+     *
+     * E.g. converts "January" to 1.
+     *
+     * @param string|int $name
+     * @param array      $index
+     *
+     * @return int
+     */
+    public function nameToIndex(string $name, array $index): int
+    {
+        if (!is_numeric($name)) {
+            $name = $index[$name];
+        }
+
+        return (int) $name;
+    }
 }
