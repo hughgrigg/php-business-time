@@ -32,27 +32,14 @@ class BetweenDaysOfWeek extends RangeConstraint
     public function __construct(string $min, string $max)
     {
         // Convert named days of the week to numeric indexes.
-        if (!is_numeric($min)) {
-            $min = DaysOfWeek::NAME_INDEX[$min];
-        }
-        if (!is_numeric($max)) {
-            $max = DaysOfWeek::NAME_INDEX[$max];
-        }
-
-        // Keep the days within the valid range.
-        $min = max((int) $min, 1);
-        $max = min((int) $max, 7);
-
-        // Allow backwards order.
-        if ($min > $max) {
-            [$min, $max] = [$max, $min];
-        }
+        $min = $this->nameToIndex($min, DaysOfWeek::NAME_INDEX);
+        $max = $this->nameToIndex($max, DaysOfWeek::NAME_INDEX);
 
         // Interpret passing the same day as min and max as meaning any day of
         // the week.
         if ($min === $max) {
-            $min = 1;
-            $max = 7;
+            $min = $this->minMin();
+            $max = $this->maxMax();
         }
 
         parent::__construct($min, $max);
@@ -66,5 +53,25 @@ class BetweenDaysOfWeek extends RangeConstraint
     public function relevantValueOf(DateTime $time): int
     {
         return Carbon::instance($time)->dayOfWeekIso;
+    }
+
+    /**
+     * Get the maximum possible value of the range.
+     *
+     * @return int
+     */
+    public function maxMax(): int
+    {
+        return 7;
+    }
+
+    /**
+     * Get the minimum possible value of the range.
+     *
+     * @return int
+     */
+    public function minMin(): int
+    {
+        return 1;
     }
 }

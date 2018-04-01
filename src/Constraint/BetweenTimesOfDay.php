@@ -52,4 +52,24 @@ class BetweenTimesOfDay extends RangeConstraint
     {
         return ($time->format('G') * 60) + (int) $time->format('i');
     }
+
+    /**
+     * Get the maximum possible value of the range.
+     *
+     * @return int
+     */
+    public function maxMax(): int
+    {
+        return 1440;
+    }
+
+    /**
+     * Get the minimum possible value of the range.
+     *
+     * @return int
+     */
+    public function minMin(): int
+    {
+        return 0;
+    }
 }

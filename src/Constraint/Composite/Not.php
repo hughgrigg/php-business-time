@@ -8,7 +8,7 @@ use DateTime;
 
 /**
  * A set of constraints that matches if none of the included constraints
- * matches.
+ * matches. Could also be called "NotAny".
  *
  * This is equivalent to logical NOT.
  *

@@ -26,4 +26,24 @@ class BetweenDaysOfMonth extends RangeConstraint
     {
         return (int) $time->format('j');
     }
+
+    /**
+     * Get the maximum possible value of the range.
+     *
+     * @return int
+     */
+    public function maxMax(): int
+    {
+        return 31;
+    }
+
+    /**
+     * Get the minimum possible value of the range.
+     *
+     * @return int
+     */
+    public function minMin(): int
+    {
+        return 1;
+    }
 }
