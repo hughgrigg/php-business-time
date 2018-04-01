@@ -18,10 +18,10 @@ abstract class RangeConstraint implements BusinessTimeConstraint
     use Combinations;
 
     /** @var int */
-    private $min;
+    protected $min;
 
     /** @var int */
-    private $max;
+    protected $max;
 
     /**
      * RangeConstraint constructor.
