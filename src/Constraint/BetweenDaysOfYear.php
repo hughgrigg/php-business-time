@@ -14,67 +14,67 @@ use DateTime;
  *
  * @see BetweenDaysOfYearTest
  */
-class BetweenDaysOfYear extends RangeConstraint
+class BetweenDaysOfYear implements BusinessTimeConstraint
 {
-    private const FORMAT       = 'z';
-    public const  INDEX_FEB_29 = 59;
+    /** @var string */
+    private $minDayOfYear;
+
+    /** @var string */
+    private $maxDayOfYear;
 
     /**
-     * BetweenDaysOfYear constructor.
-     *
-     * @param string|int $min e.g. '10th May'
-     * @param string|int $max e.g. '10th June'
+     * @param string $minDayOfYear e.g. '10th May'
+     * @param string $maxDayOfYear e.g. '10th June'
      */
-    public function __construct(string $min, string $max)
+    public function __construct(string $minDayOfYear, string $maxDayOfYear)
     {
-        if (!is_numeric($min)) {
-            $min = (new DateTime($min))->format(self::FORMAT);
-        }
-        if (!is_numeric($max)) {
-            $max = (new DateTime($max))->format(self::FORMAT);
-        }
-
-        parent::__construct((int) $min, (int) $max);
+        $this->minDayOfYear = $minDayOfYear;
+        $this->maxDayOfYear = $maxDayOfYear;
     }
 
     /**
-     * Get an integer value from the time that is to be compared to this range.
+     * Is the given time business time according to this constraint?
      *
      * @param DateTime $time
      *
-     * @return int
+     * @return bool
      */
-    public function relevantValueOf(DateTime $time): int
+    public function isBusinessTime(DateTime $time): bool
     {
-        $dayOfYear = (int) $time->format(self::FORMAT);
+        // Compare by month and day of month within the same year.
+        // This allows leap years and non-leap years to be handled correctly,
+        // as the index of the day of the year differs after 28th February
+        // between leap years and non-leap years.
+        $time         = Carbon::instance($time);
+        $minDayOfYear = new Carbon("{$this->minDayOfYear} {$time->year}");
+        $maxDayOfYear = new Carbon("{$this->maxDayOfYear} {$time->year}");
 
-        // Allow for leap years.
-        $carbon = Carbon::instance($time);
-        if ($carbon->dayOfYear > self::INDEX_FEB_29 && $carbon->isLeapYear()) {
-            // Use the index - 1 to allow for the 29th February.
-            return $dayOfYear - 1;
+        // Beyond the min month and before the max month is a match regardless
+        // of the day of the month.
+        if ($time->month > $minDayOfYear->month
+            && $time->month < $maxDayOfYear->month) {
+            return true;
         }
 
-        return $dayOfYear;
-    }
+        // If the min and max months are the same, then just compare the day
+        // of the month.
+        if ($time->month === $minDayOfYear->month
+            && $time->month === $maxDayOfYear->month) {
+            return $time->day >= $minDayOfYear->day
+                   && $time->day <= $maxDayOfYear->day;
+        }
 
-    /**
-     * Get the maximum possible value of the range.
-     *
-     * @return int
-     */
-    public function maxMax(): int
-    {
-        return 365; // = 31st December on a leap year, zero-indexed.
-    }
+        // If we're in the min month and past the min day, it's a match.
+        if ($time->month === $minDayOfYear->month) {
+            return $time->day >= $minDayOfYear->day;
+        }
 
-    /**
-     * Get the minimum possible value of the range.
-     *
-     * @return int
-     */
-    public function minMin(): int
-    {
-        return 0; // = 1st January.
+        // If we're in the max month and before the max day, it's a match.
+        if ($time->month === $maxDayOfYear->month) {
+            return $time->day <= $maxDayOfYear->day;
+        }
+
+        // Otherwise it's not a match.
+        return false;
     }
 }
