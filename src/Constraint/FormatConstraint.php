@@ -4,6 +4,7 @@ namespace BusinessTime\Constraint;
 
 use BusinessTime\Constraint\Composite\Combinations;
 use DateTime;
+use DateTimeInterface;
 
 /**
  * Constraint that matches business times using a date time format and
@@ -35,11 +36,11 @@ class FormatConstraint implements BusinessTimeConstraint
     /**
      * Is the given time business time according to this constraint?
      *
-     * @param DateTime $time
+     * @param DateTimeInterface $time
      *
      * @return bool
      */
-    public function isBusinessTime(DateTime $time): bool
+    public function isBusinessTime(DateTimeInterface $time): bool
     {
         return \in_array($time->format($this->format), $this->matches, true);
     }

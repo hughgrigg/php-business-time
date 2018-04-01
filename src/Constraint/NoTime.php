@@ -4,6 +4,7 @@ namespace BusinessTime\Constraint;
 
 use BusinessTime\Constraint\Composite\Combinations;
 use DateTime;
+use DateTimeInterface;
 
 /**
  * Constraint that matches no times as business time.
@@ -15,11 +16,11 @@ class NoTime implements BusinessTimeConstraint
     /**
      * Is the given time business time according to this constraint?
      *
-     * @param DateTime $time
+     * @param DateTimeInterface $time
      *
      * @return bool
      */
-    public function isBusinessTime(DateTime $time): bool
+    public function isBusinessTime(DateTimeInterface $time): bool
     {
         return false;
     }
