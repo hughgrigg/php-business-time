@@ -59,8 +59,13 @@ class BetweenDaysOfYearTest extends TestCase
             ['2018-06-11', '10th May', '10th June', false],
             ['2020-02-29', '1st February', '1st March', true],
             ['2020-02-29', '29th February', '29th February', true],
+            ['2020-01-01', '1st January', '31st December', true],
+            ['2020-02-29', '1st January', '31st December', true],
+            ['2020-03-01', '1st January', '31st December', true],
             ['2020-12-31', '1st January', '31st December', true],
             ['2019-02-28', '29th February', '29th February', false],
+            ['2018-02-28', '29th February', '2nd March', false],
+            ['2018-03-01', '29th February', '2nd March', true],
             ['now', '1st January', '31st December', true],
         ];
     }
