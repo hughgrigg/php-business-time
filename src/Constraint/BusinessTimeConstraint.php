@@ -2,7 +2,7 @@
 
 namespace BusinessTime\Constraint;
 
-use DateTime;
+use DateTimeInterface;
 
 /**
  * A constraint rule to determine whether a given time is business time or not.
@@ -12,9 +12,9 @@ interface BusinessTimeConstraint
     /**
      * Is the given time business time according to this constraint?
      *
-     * @param DateTime $time
+     * @param DateTimeInterface $time
      *
      * @return bool
      */
-    public function isBusinessTime(DateTime $time): bool;
+    public function isBusinessTime(DateTimeInterface $time): bool;
 }

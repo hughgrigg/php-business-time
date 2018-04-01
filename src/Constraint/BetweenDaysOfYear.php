@@ -4,6 +4,7 @@ namespace BusinessTime\Constraint;
 
 use Carbon\Carbon;
 use DateTime;
+use DateTimeInterface;
 
 /**
  * Business time constraint that matches times between certain days of the year.
@@ -35,11 +36,11 @@ class BetweenDaysOfYear implements BusinessTimeConstraint
     /**
      * Is the given time business time according to this constraint?
      *
-     * @param DateTime $time
+     * @param DateTimeInterface $time
      *
      * @return bool
      */
-    public function isBusinessTime(DateTime $time): bool
+    public function isBusinessTime(DateTimeInterface $time): bool
     {
         // Compare by month and day of month within the same year.
         // This allows leap years and non-leap years to be handled correctly,

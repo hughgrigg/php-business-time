@@ -4,6 +4,7 @@ namespace BusinessTime\Constraint;
 
 use BusinessTime\Constraint\Composite\Combinations;
 use DateTime;
+use DateTimeInterface;
 
 /**
  * Constraint that matches business time by comparing to an integer range.
@@ -47,11 +48,11 @@ abstract class RangeConstraint implements BusinessTimeConstraint
     /**
      * Is the given time business time according to this constraint?
      *
-     * @param DateTime $time
+     * @param DateTimeInterface $time
      *
      * @return bool
      */
-    public function isBusinessTime(DateTime $time): bool
+    public function isBusinessTime(DateTimeInterface $time): bool
     {
         return ($this->relevantValueOf($time) >= $this->min)
                && ($this->relevantValueOf($time) <= $this->max);

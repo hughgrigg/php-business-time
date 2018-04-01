@@ -5,6 +5,7 @@ namespace BusinessTime\Constraint\Composite;
 use BusinessTime\Constraint\BusinessTimeConstraint;
 use BusinessTime\Tests\Unit\Constraint\Composite\CompositeAllTest;
 use DateTime;
+use DateTimeInterface;
 
 /**
  * A set of constraints that matches if all of the included constraints match.
@@ -29,11 +30,11 @@ class All implements BusinessTimeConstraint
     }
 
     /**
-     * @param DateTime $time
+     * @param DateTimeInterface $time
      *
      * @return bool
      */
-    public function isBusinessTime(DateTime $time): bool
+    public function isBusinessTime(DateTimeInterface $time): bool
     {
         foreach ($this->constraints as $constraint) {
             if (!$constraint->isBusinessTime($time)) {
