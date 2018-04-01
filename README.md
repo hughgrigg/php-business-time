@@ -207,8 +207,6 @@ new BusinessTime\Constraint\DaysOfYear('January 8th', 'March 16th', 'July 4th');
 new BusinessTime\Constraint\BetweenDaysOfYear('January 1st', 'December 5th');
 new BusinessTime\Constraint\Dates('2019-01-17', '2019-09-23', '2020-05-11');
 new BusinessTime\Constraint\BetweenDates('2018-01-11', '2018-12-31');
-new BusinessTime\Constraint\DateTimes('2019-01-17 16:30');
-new BusinessTime\Constraint\BetweenDateTimes('2018-01-11 08:42', '2018-12-31 17:23');
 new BusinessTime\Constraint\AnyTime(); // Oh dear.
 ```
 
