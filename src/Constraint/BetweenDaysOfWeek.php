@@ -20,7 +20,6 @@ use DateTime;
  *
  * @see DaysOfWeek
  * @see WeekDays
- *
  * @see BetweenDaysOfWeekTest
  */
 class BetweenDaysOfWeek extends RangeConstraint

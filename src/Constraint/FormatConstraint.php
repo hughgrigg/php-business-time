@@ -3,7 +3,6 @@
 namespace BusinessTime\Constraint;
 
 use BusinessTime\Constraint\Composite\Combinations;
-use DateTime;
 use DateTimeInterface;
 
 /**
@@ -29,7 +28,7 @@ class FormatConstraint implements BusinessTimeConstraint
      */
     public function __construct(string $format, string ...$matches)
     {
-        $this->format  = $format;
+        $this->format = $format;
         $this->matches = $matches;
     }
 

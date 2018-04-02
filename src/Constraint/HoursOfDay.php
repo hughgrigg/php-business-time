@@ -9,7 +9,6 @@ namespace BusinessTime\Constraint;
  * new HoursOfDay(8, 13, 23) matches 8am, 1pm and 11pm.
  *
  * @see BetweenHoursOfDay
- *
  * @see HoursOfDayTest
  */
 class HoursOfDay extends FormatConstraint
