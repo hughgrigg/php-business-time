@@ -14,7 +14,6 @@ class BetweenDaysOfWeekTest extends TestCase
     /**
      * @dataProvider betweenDaysOfWeekProvider
      *
-     *
      * @param string $time
      * @param string $minDayOfWeek
      * @param string $maxDayOfWeek

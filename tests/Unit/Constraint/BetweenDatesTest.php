@@ -7,7 +7,7 @@ use BusinessTime\Constraint\BetweenDates;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Test the BetweenDates business time constraint
+ * Test the BetweenDates business time constraint.
  */
 class BetweenDatesTest extends TestCase
 {

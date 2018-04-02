@@ -38,7 +38,7 @@ class DatesTest extends TestCase
 
     /**
      * Provides times with sets of dates and whether the time should be matched
-     * as business time accordingly
+     * as business time accordingly.
      *
      * @return array[]
      */
