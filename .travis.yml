@@ -2,4 +2,6 @@ language: php
 php:
   - '7.2'
 script:
-  - make reports
+  - make coverage
+after_success:
+  - travis_retry php vendor/bin/php-coveralls -v

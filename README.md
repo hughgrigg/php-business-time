@@ -1,5 +1,8 @@
 # Business Time in PHP
 
+[![Build Status](https://travis-ci.org/hughgrigg/php-business-time.svg?branch=master)](https://travis-ci.org/hughgrigg/php-business-time)
+[![Coverage Status](https://coveralls.io/repos/github/hughgrigg/php-business-time/badge.svg)](https://coveralls.io/github/hughgrigg/php-business-time)
+
 "Business time" logic in PHP (aka "business hours", "working days" etc). This
 can be useful for calculating shipping dates, for example.
 

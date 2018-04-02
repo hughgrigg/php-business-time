@@ -11,7 +11,8 @@
         "phpunit/phpunit": "^7.0",
         "phpmd/phpmd": "@stable",
         "squizlabs/php_codesniffer": "@stable",
-        "johnkary/phpunit-speedtrap": "^3.0"
+        "johnkary/phpunit-speedtrap": "^3.0",
+        "php-coveralls/php-coveralls": "^2.0"
     },
     "license": "MIT License",
     "authors": [

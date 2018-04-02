@@ -8,14 +8,14 @@ test: src tests vendor
 vendor: composer.lock
 	composer install
 
-.PHONY: reports
-reports: src tests vendor
-	mkdir -p reports
-	rm -rf reports/*
+.PHONY: coverage
+coverage: src tests vendor
+	mkdir -p build
+	rm -rf build/*
 	./vendor/phpmd/phpmd/src/bin/phpmd src text \
 			controversial,design,naming,unusedcode \
-			--reportfile ./reports/phpmd.xml
+			--reportfile ./build/phpmd.xml
 	./vendor/squizlabs/php_codesniffer/bin/phpcs --standard=PSR2 --colors src \
-		--report-file=./reports/phpcs.xml
-	./vendor/phpunit/phpunit/phpunit --coverage-clover=reports/coverage.xml \
-		--coverage-html=reports/coverage
+		--report-file=./build/phpcs.xml
+	./vendor/phpunit/phpunit/phpunit --coverage-clover=build/logs/clover.xml \
+		--coverage-html=build/coverage
