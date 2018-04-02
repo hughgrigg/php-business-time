@@ -3,7 +3,6 @@
 namespace BusinessTime\Constraint;
 
 use Carbon\Carbon;
-use DateTime;
 use DateTimeInterface;
 
 /**
@@ -46,7 +45,7 @@ class BetweenDaysOfYear implements BusinessTimeConstraint
         // This allows leap years and non-leap years to be handled correctly,
         // as the index of the day of the year differs after 28th February
         // between leap years and non-leap years.
-        $time         = Carbon::instance($time);
+        $time = Carbon::instance($time);
         $minDayOfYear = new Carbon("{$this->minDayOfYear} {$time->year}");
         $maxDayOfYear = new Carbon("{$this->maxDayOfYear} {$time->year}");
 

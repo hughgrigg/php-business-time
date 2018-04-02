@@ -3,7 +3,6 @@
 namespace BusinessTime\Constraint;
 
 use BusinessTime\Constraint\Composite\Combinations;
-use DateTime;
 use DateTimeInterface;
 
 /**
