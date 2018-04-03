@@ -382,10 +382,10 @@ class BusinessTime extends Carbon
     public function floor(?DateInterval $precision = null): self
     {
         $seconds = Interval::instance($precision ?: $this->precision())
-                            ->inSeconds();
+            ->inSeconds();
 
         return $this->copy()->setTimestamp(
-            floor($this->timestamp / $seconds) * $seconds
+            (int) (floor($this->timestamp / $seconds) * $seconds)
         );
     }
 
@@ -401,10 +401,10 @@ class BusinessTime extends Carbon
     public function round(?DateInterval $precision = null): self
     {
         $seconds = Interval::instance($precision ?: $this->precision())
-                            ->inSeconds();
+            ->inSeconds();
 
         return $this->copy()->setTimestamp(
-            round($this->timestamp / $seconds) * $seconds
+            (int) (round($this->timestamp / $seconds) * $seconds)
         );
     }
 
@@ -423,10 +423,10 @@ class BusinessTime extends Carbon
     public function ceil(?DateInterval $precision = null): self
     {
         $seconds = Interval::instance($precision ?: $this->precision())
-                            ->inSeconds();
+            ->inSeconds();
 
         return $this->copy()->setTimestamp(
-            ceil($this->timestamp / $seconds) * $seconds
+            (int) (ceil($this->timestamp / $seconds) * $seconds)
         );
     }
 
@@ -497,8 +497,8 @@ ERR
 
         return $this->setLengthOfBusinessDay(
             $this->copy()
-                    ->setTimestamp($typicalDay->startOfDay()->getTimestamp())
-                    ->diffBusiness($typicalDay->endOfDay())
+                ->setTimestamp($typicalDay->startOfDay()->getTimestamp())
+                ->diffBusiness($typicalDay->endOfDay())
         );
     }
 
@@ -594,6 +594,7 @@ ERR
         // We're taking a basic approach with some variables and a loop here as
         // it turns out to be ~25% faster than using Carbon::diffFiltered().
 
+        /** @var BusinessTime $start */
         $start = $this;
         $end = $time;
         $sign = 1;
@@ -608,6 +609,7 @@ ERR
         // Count the business time diff by iterating in steps the length of the
         // precision and checking if each step counts as business time.
         $diff = 0;
+        /** @var BusinessTime $next */
         $next = $start->copy();
         while ($next < $end) {
             if ($next->isBusinessTime()) {

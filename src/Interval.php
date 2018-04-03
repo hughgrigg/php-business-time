@@ -11,10 +11,11 @@ use DateInterval;
  *
  * Ensure correct type-hinting on these methods.
  *
- * @method static seconds(int $seconds = null)
- * @method static minutes(int $minutes = null)
- * @method static hours(int $hours = null)
- * @method static days(int $days = null)
+ * @method static seconds(int $seconds = 1)
+ * @method static minutes(int $minutes = 1)
+ * @method static hour(int $hours = 1)
+ * @method static hours(int $hours = 1)
+ * @method static days(int $days = 1)
  */
 class Interval extends CarbonInterval
 {
