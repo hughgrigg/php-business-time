@@ -86,7 +86,7 @@ class BusinessTime extends Carbon
                      / $this->lengthOfBusinessDay()->inDays();
 
         while ($businessDaysToAdd > 0) {
-            /** @scrutinizer ignore-call */
+            /* @scrutinizer ignore-call */
             if ($next->isBusinessTime()) {
                 $businessDaysToAdd -= $decrement;
             }
@@ -186,7 +186,7 @@ class BusinessTime extends Carbon
         $next = $this->copy();
         $decrement = $this->precision()->inHours();
         while ($businessHoursToAdd > 0) {
-            /** @scrutinizer ignore-call */
+            /* @scrutinizer ignore-call */
             if ($next->isBusinessTime()) {
                 $businessHoursToAdd -= $decrement;
             }
@@ -617,7 +617,7 @@ ERR
         /** @scrutinizer ignore-call */
         $next = $start->copy();
         while ($next < $end) {
-            /** @scrutinizer ignore-call */
+            /* @scrutinizer ignore-call */
             if ($next->isBusinessTime()) {
                 $diff++;
             }
