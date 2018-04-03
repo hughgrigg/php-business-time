@@ -28,8 +28,10 @@ trait Combinations
     public function andAlso(
         BusinessTimeConstraint ...$additional
     ): BusinessTimeConstraint {
+        return new All(
         /* @scrutinizer ignore-type */
-        return new All($this, ...$additional);
+            $this, ...$additional
+        );
     }
 
     /**
@@ -43,8 +45,10 @@ trait Combinations
     public function orAlternatively(
         BusinessTimeConstraint ...$alternatives
     ): BusinessTimeConstraint {
+        return new Any(
         /* @scrutinizer ignore-type */
-        return new Any($this, ...$alternatives);
+            $this, ...$alternatives
+        );
     }
 
     /**
@@ -58,7 +62,9 @@ trait Combinations
     public function except(
         BusinessTimeConstraint ...$exceptions
     ): BusinessTimeConstraint {
+        return new All(
         /* @scrutinizer ignore-type */
-        return new All($this, new Not(...$exceptions));
+            $this, new Not(...$exceptions)
+        );
     }
 }

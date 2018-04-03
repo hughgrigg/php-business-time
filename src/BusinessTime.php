@@ -75,6 +75,7 @@ class BusinessTime extends Carbon
         // problem" that Monday 09:00 + 1 business day could technically be
         // Monday 17:00, but intuitively should be Tuesday 09:00.
         $daysToJump = (int) $businessDaysToAdd;
+        /** @var BusinessTime $next */
         $next = $this->copy()->addDays($daysToJump);
 
         // We need to check how much business time we actually covered by
@@ -85,6 +86,7 @@ class BusinessTime extends Carbon
                      / $this->lengthOfBusinessDay()->inDays();
 
         while ($businessDaysToAdd > 0) {
+            /** @scrutinizer ignore-call */
             if ($next->isBusinessTime()) {
                 $businessDaysToAdd -= $decrement;
             }
@@ -180,9 +182,11 @@ class BusinessTime extends Carbon
             return $this->subBusinessHours($businessHoursToAdd * -1);
         }
 
+        /** @var BusinessTime $next */
         $next = $this->copy();
         $decrement = $this->precision()->inHours();
         while ($businessHoursToAdd > 0) {
+            /** @scrutinizer ignore-call */
             if ($next->isBusinessTime()) {
                 $businessHoursToAdd -= $decrement;
             }
@@ -613,6 +617,7 @@ ERR
         /** @scrutinizer ignore-call */
         $next = $start->copy();
         while ($next < $end) {
+            /** @scrutinizer ignore-call */
             if ($next->isBusinessTime()) {
                 $diff++;
             }
