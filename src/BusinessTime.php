@@ -41,8 +41,9 @@ class BusinessTime extends Carbon
      *
      * @see AddBusinessDaysTest
      *
-     * @return BusinessTime
      * @throws \InvalidArgumentException
+     *
+     * @return BusinessTime
      */
     public function addBusinessDay(): self
     {
@@ -59,8 +60,9 @@ class BusinessTime extends Carbon
      *
      * @param float $businessDaysToAdd
      *
-     * @return BusinessTime
      * @throws \InvalidArgumentException
+     *
+     * @return BusinessTime
      */
     public function addBusinessDays(float $businessDaysToAdd): self
     {
@@ -73,7 +75,7 @@ class BusinessTime extends Carbon
         // problem" that Monday 09:00 + 1 business day could technically be
         // Monday 17:00, but intuitively should be Tuesday 09:00.
         $daysToJump = (int) $businessDaysToAdd;
-        $next       = $this->copy()->addDays($daysToJump);
+        $next = $this->copy()->addDays($daysToJump);
 
         // We need to check how much business time we actually covered by
         // skipping ahead in days.
@@ -97,8 +99,9 @@ class BusinessTime extends Carbon
      *
      * @see SubBusinessDaysTest
      *
-     * @return BusinessTime
      * @throws \InvalidArgumentException
+     *
+     * @return BusinessTime
      */
     public function subBusinessDay(): self
     {
@@ -112,8 +115,9 @@ class BusinessTime extends Carbon
      *
      * @param float $businessDaysToSub
      *
-     * @return BusinessTime
      * @throws \InvalidArgumentException
+     *
+     * @return BusinessTime
      */
     public function subBusinessDays(float $businessDaysToSub): self
     {
@@ -126,7 +130,7 @@ class BusinessTime extends Carbon
         // problem" that Tuesday 17:00 - 1 business day could technically be
         // Tuesday 09:00, but intuitively should be Monday 17:00.
         $daysToJump = (int) $businessDaysToSub;
-        $prev       = $this->copy()->subDays($daysToJump);
+        $prev = $this->copy()->subDays($daysToJump);
 
         // We need to check how much business time we actually covered by
         // skipping back in days.
@@ -150,8 +154,9 @@ class BusinessTime extends Carbon
      *
      * @see AddBusinessHoursTest
      *
-     * @return BusinessTime
      * @throws \InvalidArgumentException
+     *
+     * @return BusinessTime
      */
     public function addBusinessHour(): self
     {
@@ -165,8 +170,9 @@ class BusinessTime extends Carbon
      *
      * @see AddBusinessHoursTest
      *
-     * @return BusinessTime
      * @throws \InvalidArgumentException
+     *
+     * @return BusinessTime
      */
     public function addBusinessHours(float $businessHoursToAdd): self
     {
@@ -174,7 +180,7 @@ class BusinessTime extends Carbon
             return $this->subBusinessHours($businessHoursToAdd * -1);
         }
 
-        $next      = $this->copy();
+        $next = $this->copy();
         $decrement = $this->precision()->inHours();
         while ($businessHoursToAdd > 0) {
             if ($next->isBusinessTime()) {
@@ -191,8 +197,9 @@ class BusinessTime extends Carbon
      *
      * @see SubBusinessHoursTest
      *
-     * @return BusinessTime
      * @throws \InvalidArgumentException
+     *
+     * @return BusinessTime
      */
     public function subBusinessHour(): self
     {
@@ -206,8 +213,9 @@ class BusinessTime extends Carbon
      *
      * @param float $businessHoursToSub
      *
-     * @return BusinessTime
      * @throws \InvalidArgumentException
+     *
+     * @return BusinessTime
      */
     public function subBusinessHours(float $businessHoursToSub): self
     {
@@ -215,7 +223,7 @@ class BusinessTime extends Carbon
             return $this->addBusinessHours($businessHoursToSub * -1);
         }
 
-        $prev      = $this->copy();
+        $prev = $this->copy();
         $decrement = $this->precision()->inHours();
         while ($businessHoursToSub > 0) {
             $prev = $prev->sub($this->precision());
@@ -235,8 +243,9 @@ class BusinessTime extends Carbon
      * @param DateTimeInterface $time
      * @param bool              $absolute
      *
-     * @return int
      * @throws \InvalidArgumentException
+     *
+     * @return int
      */
     public function diffInBusinessDays(
         ?DateTimeInterface $time = null,
@@ -271,8 +280,9 @@ class BusinessTime extends Carbon
      * @param DateTimeInterface $time
      * @param bool              $absolute
      *
-     * @return float
      * @throws InvalidArgumentException
+     *
+     * @return float
      */
     public function diffInPartialBusinessDays(
         ?DateTimeInterface $time = null,
@@ -421,8 +431,9 @@ class BusinessTime extends Carbon
     }
 
     /**
-     * @return Interval
      * @throws InvalidArgumentException
+     *
+     * @return Interval
      */
     public function lengthOfBusinessDay(): Interval
     {
@@ -438,8 +449,9 @@ class BusinessTime extends Carbon
     /**
      * @param DateInterval $length
      *
-     * @return BusinessTime
      * @throws InvalidArgumentException
+     *
+     * @return BusinessTime
      */
     public function setLengthOfBusinessDay(DateInterval $length): self
     {
@@ -467,8 +479,9 @@ ERR
     /**
      * @param DateTime $typicalDay
      *
-     * @return BusinessTime
      * @throws InvalidArgumentException
+     *
+     * @return BusinessTime
      */
     public function determineLengthOfBusinessDay(
         ?DateTime $typicalDay = null
@@ -551,8 +564,9 @@ ERR
      *
      * @param DateInterval $precision
      *
-     * @return BusinessTime
      * @throws InvalidArgumentException
+     *
+     * @return BusinessTime
      */
     public function setPrecision(DateInterval $precision): self
     {
@@ -581,12 +595,12 @@ ERR
         // it turns out to be ~25% faster than using Carbon::diffFiltered().
 
         $start = $this;
-        $end   = $time;
-        $sign  = 1;
+        $end = $time;
+        $sign = 1;
         // Swap if we're diffing back in time.
         if ($this > $time) {
             $start = $time;
-            $end   = $this;
+            $end = $this;
             // We only need to negate if absolute is false.
             $sign = $absolute ? 1 : -1;
         }
@@ -597,7 +611,7 @@ ERR
         $next = $start->copy();
         while ($next < $end) {
             if ($next->isBusinessTime()) {
-                ++$diff;
+                $diff++;
             }
             $next = $next->add($this->precision());
         }

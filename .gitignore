@@ -1,2 +1,4 @@
 vendor/
 reports/
+build/
+coverage/

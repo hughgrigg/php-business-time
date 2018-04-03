@@ -4,7 +4,6 @@ namespace BusinessTime\Constraint\Composite;
 
 use BusinessTime\Constraint\BusinessTimeConstraint;
 use BusinessTime\Tests\Unit\Constraint\Composite\CompositeAllTest;
-use DateTime;
 use DateTimeInterface;
 
 /**

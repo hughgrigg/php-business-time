@@ -98,8 +98,7 @@ trait CompositeConstraintProviders
             yield [
                 array_merge(
                     $allMatch[0],
-                    $this->noneMatchProvider()
-                    [$i][0]
+                    $this->noneMatchProvider()[$i][0]
                 ),
             ];
         }

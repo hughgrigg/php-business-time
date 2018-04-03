@@ -1,5 +1,9 @@
 # Business Time in PHP
 
+[![Build Status](https://travis-ci.org/hughgrigg/php-business-time.svg?branch=master)](https://travis-ci.org/hughgrigg/php-business-time)
+[![Coverage Status](https://coveralls.io/repos/github/hughgrigg/php-business-time/badge.svg)](https://coveralls.io/github/hughgrigg/php-business-time)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/ef5b774bce624ab2b1f3632e9307a909)](https://app.codacy.com/app/hugh_2/php-business-time?utm_source=github.com&utm_medium=referral&utm_content=hughgrigg/php-business-time&utm_campaign=badger)
+
 "Business time" logic in PHP (aka "business hours", "working days" etc). This
 can be useful for calculating shipping dates, for example.
 
@@ -40,7 +44,7 @@ You can add or subtract business days from a given starting date:
 $friday = new BusinessTime\BusinessTime('Friday');
 $nextBusinessDay = $friday->addBusinessDay();
 // = Monday
-$threeBusinessTime = $friday->addBusinessTime(3);
+$threeBusinessTime = $friday->addBusinessDays(3);
 // = Wednesday
 ```
 
@@ -48,7 +52,7 @@ $threeBusinessTime = $friday->addBusinessTime(3);
 $monday = new BusinessTime\BusinessTime('Monday');
 $previousBusinessDay = $now->subBusinessDay();
 // = Friday
-$threeBusinessTimeAgo = $now->subBusinessTime(3);
+$threeBusinessTimeAgo = $now->subBusinessDays(3);
 // = Wednesday
 ```
 
@@ -60,7 +64,7 @@ of business days between two given dates.
 ```php
 $now = BusinessTime\BusinessTime::now();
 $nextWeek = $now->addWeek(); // a full 7-day week.
-$diffInBusinessTime = $now->diffInBusinessTime($nextWeek);
+$diff = $now->diffInBusinessDays($nextWeek);
 // = 5
 ```
 
@@ -76,7 +80,7 @@ For example, if we ask how many business days there are between 10am Friday and
 ```php
 $fridayTenAm = new BusinessTime\BusinessTime('Friday 10am');
 $saturdayTenAm = $fridayTenAm->addDay(); // Add a full day.
-$fridayTenAm->diffInBusinessTime($saturdayTenAm);
+$fridayTenAm->diffInBusinessDays($saturdayTenAm);
 // = 0
 ```
 
@@ -120,21 +124,14 @@ See https://secure.php.net/manual/en/class.dateinterval.php
 
 If you have complicated business time constraints (see below), it might be
 helpful to let BusinessTime calculate the length of a business day for you. You
-can do that by passing in a `DatePeriod` representing your standard business day
+can do that by passing in a `DateTime` representing your standard business day
 to the `determineLengthOfBusinessDay()` method. BusinessTime will then calculate
 the length of the business day based on that using its constraints.
 
 ```php
 $businessTime = new BusinessTime\BusinessTime();
-$businessTime->determineLengthOfBusinessDay(
-    new DatePeriod(
-        new BusinessTime\BusinessTime('Monday 9am'),
-        new BusinessTime\BusinessTime('Monday 5pm')
-    )
-);
+$businessTime->determineLengthOfBusinessDay(new DateTime('Monday'));
 ```
-
-See https://secure.php.net/manual/en/class.dateperiod.php
 
 ### Business hours
 
@@ -159,7 +156,7 @@ and forces explicitness, e.g. with `$now->addBusinessTime(30)`.
 
 Similarly, no unit smaller than an hour is included out-of-the-box because the
 concept of a "business minute" is questionable for most use cases. You can
-easily calculate minutes by multipying by 60. Note that because the default
+easily calculate minutes by multiplying by 60. Note that because the default
 precision is one hour, you may well need to adjust the precision to e.g 15
 minutes to get accurate calculations (see the note on precision and
 performance).
@@ -264,12 +261,12 @@ You can implement your own custom constraints by implementing the
 ```php
 interface BusinessTimeConstraint
 {
-    public function isBusinessTime(DateTime $time): bool;
+    public function isBusinessTime(DateTimeInterface $time): bool;
 }
 ```
 
-The constraint must take an instance of `DateTime` and return whether or not it
-should be considered business time.
+The constraint must take an instance of `DateTimeInterface` and return whether
+or not it should be considered business time.
 
 If you want to enable combinatorial logic for your custom constraint, use the
 `BusinessTime\Constraint\Composite\Combinations` trait.
@@ -298,7 +295,7 @@ $businessTime->setBusinessTimeConstraints(
 );
 ```
 
-#### Describing business time constraints
+#### Describing business time constraints (WIP)
 
 In some situations it's useful to have meaningful descriptions for business and
 non-business times. For example, you might want to tell your customer that you
@@ -343,7 +340,7 @@ constraint (and is therefore probably more important).
 *Note*: if you're using a translation system, then pass in your translation keys
 as the descriptions, then fetch the translations for them at run time.
 
-## Incorporating business time data from a remote source
+## Incorporating business time data from a remote source (WIP)
 
 Whilst you could try to set up constraints covering all the public holidays in
 your country, it's probably easier to just retrieve them from a remote source.
@@ -390,7 +387,7 @@ $businessTime->endOfBusinessDay();
 // = BusinessTime instance for e.g. 17:00
 ```
 
-## Recurring business deadlines
+## Recurring business deadlines (WIP)
 
 As well as calculating business time, it's often useful to make calculations
 about deadlines or "cut-off" times. For example, the cut-off time for
@@ -449,7 +446,7 @@ $time->gt($deadline);
 // = true if the moment has passed.
 ```
 
-## Business time factory
+## Business time factory (WIP)
 
 You probably don't want to have to set up an instance of
 `BusinessTime\BusinessTime` in every place you want to use one in your code.
@@ -479,7 +476,7 @@ $date = $factory->make('2018-03-21');
 $now = $factory->now();
 ```
 
-## Loading from a cache, database, file system etc
+## Loading from a cache, database, file system etc (WIP)
 
 If you're loading dates from remote sources, you most likely want to cache them
 to keep your application fast.
