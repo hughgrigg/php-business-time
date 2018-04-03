@@ -610,6 +610,7 @@ ERR
         // precision and checking if each step counts as business time.
         $diff = 0;
         /** @var BusinessTime $next */
+        /** @scrutinizer ignore-call */
         $next = $start->copy();
         while ($next < $end) {
             if ($next->isBusinessTime()) {

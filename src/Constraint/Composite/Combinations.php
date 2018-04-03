@@ -12,6 +12,8 @@ use BusinessTime\Tests\Unit\Constraint\Composite\OrAlternativelyCombinationTest;
  * @see AndAlsoCombinationTest
  * @see OrAlternativelyCombinationTest
  * @see ExceptCombinationTest
+ *
+ * @mixin BusinessTimeConstraint
  */
 trait Combinations
 {
@@ -26,6 +28,7 @@ trait Combinations
     public function andAlso(
         BusinessTimeConstraint ...$additional
     ): BusinessTimeConstraint {
+        /** @scrutinizer ignore-type */
         return new All($this, ...$additional);
     }
 
@@ -40,6 +43,7 @@ trait Combinations
     public function orAlternatively(
         BusinessTimeConstraint ...$alternatives
     ): BusinessTimeConstraint {
+        /** @scrutinizer ignore-type */
         return new Any($this, ...$alternatives);
     }
 
@@ -54,6 +58,7 @@ trait Combinations
     public function except(
         BusinessTimeConstraint ...$exceptions
     ): BusinessTimeConstraint {
+        /** @scrutinizer ignore-type */
         return new All($this, new Not(...$exceptions));
     }
 }
