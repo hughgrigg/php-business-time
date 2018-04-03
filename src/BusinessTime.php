@@ -2,9 +2,12 @@
 
 namespace BusinessTime;
 
+use BusinessTime\Constraint\AnyTime;
 use BusinessTime\Constraint\BetweenHoursOfDay;
 use BusinessTime\Constraint\BusinessTimeConstraint;
 use BusinessTime\Constraint\Composite\All;
+use BusinessTime\Constraint\Narration\BusinessTimeNarrator;
+use BusinessTime\Constraint\Narration\DefaultNarrator;
 use BusinessTime\Constraint\WeekDays;
 use Carbon\Carbon;
 use DateInterval;
@@ -338,6 +341,14 @@ class BusinessTime extends Carbon
     }
 
     /**
+     * @return string
+     */
+    public function businessName(): string
+    {
+        return $this->canonicalNarrator()->narrate($this);
+    }
+
+    /**
      * Get the first business time after the start of this day.
      *
      * @return BusinessTime
@@ -522,9 +533,9 @@ ERR
     /**
      * Get the business time constraints.
      *
-     * @return BusinessTimeConstraint
+     * @return All
      */
-    public function businessTimeConstraints(): BusinessTimeConstraint
+    public function businessTimeConstraints(): All
     {
         if ($this->businessTimeConstraints === null) {
             // Default to week days 09:00 - 17:00.
@@ -638,5 +649,31 @@ ERR
         }
 
         return $diff * $sign;
+    }
+
+    /**
+     * Get a narrator for the first business time constraint that determines
+     * whether this time is business time or not.
+     *
+     * @return BusinessTimeNarrator
+     */
+    private function canonicalNarrator(): BusinessTimeNarrator
+    {
+        if (!$this->isBusinessTime()) {
+            foreach ($this->businessTimeConstraints() as $constraint) {
+                if (!$constraint->isBusinessTime($this)) {
+                    return new DefaultNarrator($constraint);
+                }
+            }
+        }
+        if ($this->isBusinessTime()) {
+            foreach ($this->businessTimeConstraints() as $constraint) {
+                if ($constraint->isBusinessTime($this)) {
+                    return new DefaultNarrator($constraint);
+                }
+            }
+        }
+
+        return new AnyTime();
     }
 }

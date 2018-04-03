@@ -3,6 +3,7 @@
 namespace BusinessTime\Constraint;
 
 use BusinessTime\Constraint\Composite\Combinations;
+use BusinessTime\Constraint\Narration\BusinessTimeNarrator;
 use DateTimeInterface;
 
 /**
@@ -12,7 +13,7 @@ use DateTimeInterface;
  * e.g. new FormatConstraint('l', 'Monday') matches any time on a Monday as
  * business time.
  */
-class FormatConstraint implements BusinessTimeConstraint
+class FormatConstraint implements BusinessTimeConstraint, BusinessTimeNarrator
 {
     use Combinations;
 
@@ -42,5 +43,17 @@ class FormatConstraint implements BusinessTimeConstraint
     public function isBusinessTime(DateTimeInterface $time): bool
     {
         return \in_array($time->format($this->format), $this->matches, true);
+    }
+
+    /**
+     * Get a business-relevant description for the given time.
+     *
+     * @param DateTimeInterface $time
+     *
+     * @return string
+     */
+    public function narrate(DateTimeInterface $time): string
+    {
+        return $time->format($this->format);
     }
 }
