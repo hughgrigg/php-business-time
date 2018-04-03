@@ -4,6 +4,7 @@ namespace BusinessTime\Constraint;
 
 use Carbon\Carbon;
 use DateTime;
+use DateTimeInterface;
 
 /**
  * Constraint that matches business time between certain hours of the day.
@@ -28,13 +29,15 @@ class BetweenHoursOfDay extends RangeConstraint
     }
 
     /**
-     * @param DateTime $time
+     * @param DateTimeInterface $time
      *
      * @return int
      */
-    public function relevantValueOf(DateTime $time): int
+    public function relevantValueOf(DateTimeInterface $time): int
     {
-        return Carbon::instance($time)->hour;
+        return Carbon::instance(
+            (new DateTime())->setTimestamp($time->getTimestamp())
+        )->hour;
     }
 
     /**

@@ -4,6 +4,7 @@ namespace BusinessTime\Constraint;
 
 use Carbon\Carbon;
 use DateTime;
+use DateTimeInterface;
 
 /**
  * Constraint that matches business time between given days of the week,
@@ -45,13 +46,15 @@ class BetweenDaysOfWeek extends RangeConstraint
     }
 
     /**
-     * @param DateTime $time
+     * @param DateTimeInterface $time
      *
      * @return int
      */
-    public function relevantValueOf(DateTime $time): int
+    public function relevantValueOf(DateTimeInterface $time): int
     {
-        return Carbon::instance($time)->dayOfWeekIso;
+        return Carbon::instance(
+            (new DateTime())->setTimestamp($time->getTimestamp())
+        )->dayOfWeekIso;
     }
 
     /**

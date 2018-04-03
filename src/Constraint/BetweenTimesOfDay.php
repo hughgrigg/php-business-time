@@ -3,6 +3,7 @@
 namespace BusinessTime\Constraint;
 
 use DateTime;
+use DateTimeInterface;
 
 /**
  * A business time constraint that matches times between certain times of day
@@ -32,11 +33,11 @@ class BetweenTimesOfDay extends RangeConstraint
     /**
      * Get an integer value from the time that is to be compared to this range.
      *
-     * @param DateTime $time
+     * @param DateTimeInterface $time
      *
      * @return int
      */
-    public function relevantValueOf(DateTime $time): int
+    public function relevantValueOf(DateTimeInterface $time): int
     {
         return $this->minuteOfDay($time);
     }
@@ -44,11 +45,11 @@ class BetweenTimesOfDay extends RangeConstraint
     /**
      * @see BetweenTimesOfDayTest::testMinuteOfDay
      *
-     * @param DateTime $time
+     * @param DateTimeInterface $time
      *
      * @return int
      */
-    public function minuteOfDay(DateTime $time): int
+    public function minuteOfDay(DateTimeInterface $time): int
     {
         return ($time->format('G') * 60) + (int) $time->format('i');
     }
