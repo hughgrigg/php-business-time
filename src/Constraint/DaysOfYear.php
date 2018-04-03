@@ -29,7 +29,7 @@ class DaysOfYear extends FormatConstraint
         parent::__construct(
             self::FORMAT,
             ...array_map(
-                function(string $dayOfYear): string {
+                function (string $dayOfYear): string {
                     return (new DateTime($dayOfYear))->format(self::FORMAT);
                 },
                 $daysOfYear
