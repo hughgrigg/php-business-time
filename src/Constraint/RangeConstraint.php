@@ -38,7 +38,7 @@ abstract class RangeConstraint implements BusinessTimeConstraint
 
         // Allow backwards order.
         if ($min > $max) {
-            [$min, $max] = [$max, $min];
+            [ $min, $max ] = [$max, $min];
         }
 
         $this->min = $min;
