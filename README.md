@@ -4,6 +4,7 @@
 [![Coverage Status](https://coveralls.io/repos/github/hughgrigg/php-business-time/badge.svg)](https://coveralls.io/github/hughgrigg/php-business-time)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/ef5b774bce624ab2b1f3632e9307a909)](https://app.codacy.com/app/hugh_2/php-business-time?utm_source=github.com&utm_medium=referral&utm_content=hughgrigg/php-business-time&utm_campaign=badger)
 [![StyleCI](https://styleci.io/repos/126614310/shield?branch=master)](https://styleci.io/repos/126614310)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 "Business time" logic in PHP (aka "business hours", "working days" etc). This
 can be useful for calculating shipping dates, for example.
