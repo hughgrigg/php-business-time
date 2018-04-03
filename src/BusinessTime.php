@@ -586,7 +586,7 @@ ERR
      */
     public function copy(): self
     {
-        $copy = parent::copy();
+        $copy = clone $this;
         \assert($copy instanceof self);
 
         return $copy;
