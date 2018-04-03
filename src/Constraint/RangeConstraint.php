@@ -38,7 +38,7 @@ abstract class RangeConstraint implements BusinessTimeConstraint
 
         // Allow backwards order.
         if ($min > $max) {
-            [$min, $max] = [$max, $min];
+            [ $min, $max ] = [ $max, $min ];
         }
 
         $this->min = $min;
@@ -94,7 +94,7 @@ abstract class RangeConstraint implements BusinessTimeConstraint
     public function nameToIndex(string $name, array $index): int
     {
         if (!is_numeric($name)) {
-            $name = $index[$name];
+            $name = $index[ $name ];
         }
 
         return (int) $name;

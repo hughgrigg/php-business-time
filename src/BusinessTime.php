@@ -382,7 +382,7 @@ class BusinessTime extends Carbon
     public function floor(?DateInterval $precision = null): self
     {
         $seconds = Interval::instance($precision ?: $this->precision())
-                           ->inSeconds();
+                            ->inSeconds();
 
         return $this->copy()->setTimestamp(
             floor($this->timestamp / $seconds) * $seconds
@@ -401,7 +401,7 @@ class BusinessTime extends Carbon
     public function round(?DateInterval $precision = null): self
     {
         $seconds = Interval::instance($precision ?: $this->precision())
-                           ->inSeconds();
+                            ->inSeconds();
 
         return $this->copy()->setTimestamp(
             round($this->timestamp / $seconds) * $seconds
@@ -423,7 +423,7 @@ class BusinessTime extends Carbon
     public function ceil(?DateInterval $precision = null): self
     {
         $seconds = Interval::instance($precision ?: $this->precision())
-                           ->inSeconds();
+                            ->inSeconds();
 
         return $this->copy()->setTimestamp(
             ceil($this->timestamp / $seconds) * $seconds
@@ -497,8 +497,8 @@ ERR
 
         return $this->setLengthOfBusinessDay(
             $this->copy()
-                 ->setTimestamp($typicalDay->startOfDay()->getTimestamp())
-                 ->diffBusiness($typicalDay->endOfDay())
+                    ->setTimestamp($typicalDay->startOfDay()->getTimestamp())
+                    ->diffBusiness($typicalDay->endOfDay())
         );
     }
 

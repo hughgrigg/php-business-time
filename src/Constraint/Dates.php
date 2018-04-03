@@ -27,7 +27,7 @@ class Dates extends FormatConstraint
         parent::__construct(
             self::FORMAT,
             ...array_map(
-                function (string $date): string {
+                function(string $date): string {
                     return (new DateTime($date))->format(self::FORMAT);
                 },
                 $dates
