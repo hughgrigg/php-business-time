@@ -115,7 +115,7 @@ class DiffInBusinessDaysTest extends TestCase
             $diff,
             sprintf(
                 'Expected business diff between %s and %s to be %.5f;'
-                . ' got %.5f (off by %.6f)',
+                .' got %.5f (off by %.6f)',
                 $time,
                 $otherTime,
                 $expectedDiff,
