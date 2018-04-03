@@ -75,7 +75,7 @@ class BusinessTime extends Carbon
         // problem" that Monday 09:00 + 1 business day could technically be
         // Monday 17:00, but intuitively should be Tuesday 09:00.
         $daysToJump = (int) $businessDaysToAdd;
-        $next       = $this->copy()->addDays($daysToJump);
+        $next = $this->copy()->addDays($daysToJump);
 
         // We need to check how much business time we actually covered by
         // skipping ahead in days.
@@ -130,7 +130,7 @@ class BusinessTime extends Carbon
         // problem" that Tuesday 17:00 - 1 business day could technically be
         // Tuesday 09:00, but intuitively should be Monday 17:00.
         $daysToJump = (int) $businessDaysToSub;
-        $prev       = $this->copy()->subDays($daysToJump);
+        $prev = $this->copy()->subDays($daysToJump);
 
         // We need to check how much business time we actually covered by
         // skipping back in days.
@@ -180,7 +180,7 @@ class BusinessTime extends Carbon
             return $this->subBusinessHours($businessHoursToAdd * -1);
         }
 
-        $next      = $this->copy();
+        $next = $this->copy();
         $decrement = $this->precision()->inHours();
         while ($businessHoursToAdd > 0) {
             if ($next->isBusinessTime()) {
@@ -223,7 +223,7 @@ class BusinessTime extends Carbon
             return $this->addBusinessHours($businessHoursToSub * -1);
         }
 
-        $prev      = $this->copy();
+        $prev = $this->copy();
         $decrement = $this->precision()->inHours();
         while ($businessHoursToSub > 0) {
             $prev = $prev->sub($this->precision());
@@ -596,12 +596,12 @@ ERR
 
         /** @var BusinessTime $start */
         $start = $this;
-        $end   = $time;
-        $sign  = 1;
+        $end = $time;
+        $sign = 1;
         // Swap if we're diffing back in time.
         if ($this > $time) {
             $start = $time;
-            $end   = $this;
+            $end = $this;
             // We only need to negate if absolute is false.
             $sign = $absolute ? 1 : -1;
         }
