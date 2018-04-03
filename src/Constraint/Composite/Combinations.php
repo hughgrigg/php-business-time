@@ -29,8 +29,9 @@ trait Combinations
         BusinessTimeConstraint ...$additional
     ): BusinessTimeConstraint {
         return new All(
-        /* @scrutinizer ignore-type */
-            $this, ...$additional
+            /* @scrutinizer ignore-type */
+            $this,
+            ...$additional
         );
     }
 
@@ -46,8 +47,9 @@ trait Combinations
         BusinessTimeConstraint ...$alternatives
     ): BusinessTimeConstraint {
         return new Any(
-        /* @scrutinizer ignore-type */
-            $this, ...$alternatives
+            /* @scrutinizer ignore-type */
+            $this,
+            ...$alternatives
         );
     }
 
@@ -63,8 +65,9 @@ trait Combinations
         BusinessTimeConstraint ...$exceptions
     ): BusinessTimeConstraint {
         return new All(
-        /* @scrutinizer ignore-type */
-            $this, new Not(...$exceptions)
+            /* @scrutinizer ignore-type */
+            $this,
+            new Not(...$exceptions)
         );
     }
 }
