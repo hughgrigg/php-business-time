@@ -6,7 +6,7 @@ use DateTimeInterface;
 
 interface BusinessTimeNarrator
 {
-    public const DEFAULT_BUSINESS     = 'business hours';
+    public const DEFAULT_BUSINESS = 'business hours';
     public const DEFAULT_NON_BUSINESS = 'outside business hours';
 
     /**

@@ -3,8 +3,8 @@
 namespace BusinessTime\Constraint;
 
 use BusinessTime\Constraint\Composite\Combinations;
-use BusinessTime\Constraint\Narration\BusinessTimeNarrator;
 use BusinessTime\Constraint\Narration\BasicNarration;
+use BusinessTime\Constraint\Narration\BusinessTimeNarrator;
 use DateTimeInterface;
 
 /**
