@@ -580,6 +580,19 @@ ERR
     }
 
     /**
+     * Guarantee copy is instance of BusinessTime to deter analyser complaints.
+     *
+     * @return BusinessTime
+     */
+    public function copy(): self
+    {
+        $copy = parent::copy();
+        \assert($copy instanceof self);
+
+        return $copy;
+    }
+
+    /**
      * Difference in business time measured in units of the current precision.
      *
      * This is calculated by stepping through the time period in steps of the
