@@ -65,6 +65,53 @@ class BetweenTimesOfDayTest extends TestCase
     }
 
     /**
+     * @dataProvider betweenTimesOfDayNarrationProvider
+     *
+     * @param string $time
+     * @param string $expectedNarration
+     */
+    public function testBetweenTimesOfDayNarration(
+        string $time,
+        string $expectedNarration
+    ): void {
+        // Given we have a business time;
+        $businessTime = new BusinessTime($time);
+
+        // And a constraint for between 09:00 and 17:00.
+        $constraint = new BetweenTimesOfDay();
+
+        // Then the constraint should narrate the time as expected.
+        self::assertSame(
+            $expectedNarration,
+            $constraint->narrate($businessTime)
+        );
+    }
+
+    /**
+     * Provides times and their expected narration by a BetweenTimesOfDay
+     * constraint with default behaviour, i.e. that business hours are 09:00 to
+     * 17:00.
+     *
+     * @return array[]
+     */
+    public function betweenTimesOfDayNarrationProvider(): array
+    {
+        return [
+            // Time Expected narration
+            ['08:00', 'outside business hours'],
+            ['08:59', 'outside business hours'],
+            ['09:00', 'business hours'],
+            ['09:01', 'business hours'],
+            ['13:00', 'business hours'],
+            ['16:00', 'business hours'],
+            ['16:59', 'business hours'],
+            ['17:00', 'outside business hours'],
+            ['17:01', 'outside business hours'],
+            ['23:00', 'outside business hours'],
+        ];
+    }
+
+    /**
      * Should be able to get the minute index of a time of day.
      *
      * @dataProvider minuteOfDayProvider

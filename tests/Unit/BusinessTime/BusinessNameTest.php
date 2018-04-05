@@ -53,4 +53,23 @@ class BusinessNameTest extends TestCase
             ['Sunday 23:59', 'the weekend'],
         ];
     }
+
+    /**
+     * A fall-back business name should be used if there are no business time
+     * constraints.
+     */
+    public function testFallBackBusinessName(): void
+    {
+        // Given we have a business time for a particular time;
+        $businessTime = new BusinessTime('2018-05-23 13:00');
+
+        // And it has no business time constraints;
+        $businessTime->setBusinessTimeConstraints();
+
+        // Then a fall-back business time name should be used.
+        self::assertSame(
+            'Wednesday 23rd May 2018 13:00',
+            $businessTime->businessName()
+        );
+    }
 }

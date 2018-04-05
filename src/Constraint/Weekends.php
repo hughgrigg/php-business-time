@@ -29,10 +29,15 @@ class Weekends extends FormatConstraint
      */
     public function narrate(DateTimeInterface $time): string
     {
+        /**
+         * The Weekends constraint matches weekends as business time.
+         *
+         * @see WeekDays is the opposite.
+         */
         if ($this->isBusinessTime($time)) {
-            return BusinessTimeNarrator::DEFAULT_BUSINESS;
+            return 'the weekend';
         }
 
-        return 'the weekend';
+        return BusinessTimeNarrator::DEFAULT_NON_BUSINESS;
     }
 }

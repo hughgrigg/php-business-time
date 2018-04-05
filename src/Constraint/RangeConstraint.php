@@ -57,7 +57,7 @@ abstract class RangeConstraint implements
     public function isBusinessTime(DateTimeInterface $time): bool
     {
         return ($this->relevantValueOf($time) >= $this->min)
-               && ($this->relevantValueOf($time) <= $this->max);
+            && ($this->relevantValueOf($time) <= $this->max);
     }
 
     /**
@@ -68,10 +68,10 @@ abstract class RangeConstraint implements
     public function narrate(DateTimeInterface $time): string
     {
         if ($this->isBusinessTime($time)) {
-            return 'business hours';
+            return BusinessTimeNarrator::DEFAULT_BUSINESS;
         }
 
-        return 'outside business hours';
+        return BusinessTimeNarrator::DEFAULT_NON_BUSINESS;
     }
 
     /**

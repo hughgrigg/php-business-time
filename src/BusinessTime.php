@@ -74,9 +74,9 @@ class BusinessTime extends Carbon
         }
 
         // Jump ahead in whole days first, because the business days to add
-        // will be at least this much. This also solves the "intuitive
-        // problem" that Monday 09:00 + 1 business day could technically be
-        // Monday 17:00, but intuitively should be Tuesday 09:00.
+        // will be at least this much. This solves the "intuitive problem" that
+        // Monday 09:00 + 1 business day could technically be Monday 17:00, but
+        // intuitively should be Tuesday 09:00.
         $daysToJump = (int) $businessDaysToAdd;
         /** @var BusinessTime $next */
         $next = $this->copy()->addDays($daysToJump);
@@ -86,7 +86,7 @@ class BusinessTime extends Carbon
         $businessDaysToAdd -= $this->diffInPartialBusinessDays($next);
 
         $decrement = $this->precision()->inDays()
-                     / $this->lengthOfBusinessDay()->inDays();
+            / $this->lengthOfBusinessDay()->inDays();
 
         while ($businessDaysToAdd > 0) {
             /* @scrutinizer ignore-call */
@@ -142,7 +142,7 @@ class BusinessTime extends Carbon
         $businessDaysToSub -= $this->diffInPartialBusinessDays($prev);
 
         $decrement = $this->precision()->inDays()
-                     / $this->lengthOfBusinessDay()->inDays();
+            / $this->lengthOfBusinessDay()->inDays();
 
         while ($businessDaysToSub > 0) {
             $prev = $prev->sub($this->precision());
@@ -296,7 +296,7 @@ class BusinessTime extends Carbon
         bool $absolute = true
     ): float {
         return $this->diffInBusinessTime($time, $absolute)
-               / $this->lengthOfBusinessDay()->asMultipleOf($this->precision());
+            / $this->lengthOfBusinessDay()->asMultipleOf($this->precision());
     }
 
     /**
@@ -315,7 +315,7 @@ class BusinessTime extends Carbon
         bool $absolute = true
     ): float {
         return $this->diffInBusinessTime($time, $absolute)
-               * $this->precision()->inHours();
+            * $this->precision()->inHours();
     }
 
     /**
@@ -533,7 +533,7 @@ ERR
     /**
      * Get the business time constraints.
      *
-     * @return All
+     * @return All|BusinessTimeConstraint[]
      */
     public function businessTimeConstraints(): All
     {
@@ -659,6 +659,7 @@ ERR
      */
     private function canonicalNarrator(): BusinessTimeNarrator
     {
+        /** @var BusinessTimeConstraint $constraint */
         if (!$this->isBusinessTime()) {
             foreach ($this->businessTimeConstraints() as $constraint) {
                 if (!$constraint->isBusinessTime($this)) {
