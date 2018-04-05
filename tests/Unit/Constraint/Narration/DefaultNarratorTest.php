@@ -47,8 +47,7 @@ class DefaultNarratorTest extends TestCase
         string $expectedNarration
     ): void {
         // Given we have a constraint without narration;
-        $constraint = new class implements BusinessTimeConstraint
-        {
+        $constraint = new class() implements BusinessTimeConstraint {
             public function isBusinessTime(DateTimeInterface $time): bool
             {
                 return true;

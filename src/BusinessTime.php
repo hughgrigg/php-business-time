@@ -659,7 +659,7 @@ ERR
      */
     private function canonicalNarrator(): BusinessTimeNarrator
     {
-        /** @var BusinessTimeConstraint $constraint */
+        /* @var BusinessTimeConstraint $constraint */
         if (!$this->isBusinessTime()) {
             foreach ($this->businessTimeConstraints() as $constraint) {
                 if (!$constraint->isBusinessTime($this)) {
