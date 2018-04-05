@@ -7,8 +7,6 @@ use DateInterval;
 use DatePeriod;
 
 /**
- * @package BusinessTime
- *
  * @property-read BusinessTime $start
  * @property-read BusinessTime $end
  */
@@ -33,7 +31,7 @@ class BusinessTimePeriod extends DatePeriod
     }
 
     /**
-     * TODO
+     * TODO.
      *
      * Get this business time period separated into consecutive business and
      * non-business times.
