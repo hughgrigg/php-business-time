@@ -61,9 +61,10 @@ class SubPeriodsTest extends TestCase
             // Start
             // End
             // Sub-period timing pairs
+            // TODO
             [
-                'Monday 03:00',
-                'Monday 19:00',
+                'Monday 2018-05-21 03:00',
+                'Monday 2018-05-21 19:00',
                 [
                     ['Monday 03:00', 'Monday 09:00'],
                     ['Monday 09:00', 'Monday 17:00'],
@@ -71,8 +72,8 @@ class SubPeriodsTest extends TestCase
                 ],
             ],
             [
-                'Monday 09:00',
-                'Tuesday 17:00',
+                'Monday 2018-05-21 09:00',
+                'Tuesday 2018-05-22 17:00',
                 [
                     ['Monday 09:00', 'Monday 17:00'],
                     ['Monday 17:00', 'Tuesday 09:00'],
@@ -80,8 +81,8 @@ class SubPeriodsTest extends TestCase
                 ],
             ],
             [
-                'Monday 05:00',
-                'Wednesday 23:00',
+                'Monday 2018-05-21 05:00',
+                'Wednesday 2018-05-23 23:00',
                 [
                     ['Monday 05:00', 'Monday 09:00'],
                     ['Monday 09:00', 'Monday 17:00'],
@@ -93,8 +94,8 @@ class SubPeriodsTest extends TestCase
                 ],
             ],
             [
-                'Friday 13:00',
-                'Tuesday 11:00',
+                'Friday 2018-05-25 13:00',
+                'Tuesday 2018-05-29 11:00',
                 [
                     ['Friday 13:00', 'Friday 17:00'],
                     ['Friday 17:00', 'Monday 09:00'],
