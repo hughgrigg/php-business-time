@@ -25,7 +25,7 @@ class BusinessDaysTest extends TestCase
         array $expectedBusinessDays
     ): void {
         // Given we have a business time period with a particular start and end;
-        $timePeriod = BusinessTimePeriod::fromTo($startTime, $endTime);
+        $timePeriod = BusinessTimePeriod::fromStrings($startTime, $endTime);
 
         // When we get the business days inside it;
         $businessDays = array_map(
@@ -78,7 +78,7 @@ class BusinessDaysTest extends TestCase
         array $expectedBusinessDays
     ): void {
         // Given we have a business time period with a particular start and end;
-        $timePeriod = BusinessTimePeriod::fromTo($startTime, $endTime);
+        $timePeriod = BusinessTimePeriod::fromStrings($startTime, $endTime);
 
         // When we get the non-business days inside it;
         $businessDays = array_map(
@@ -122,7 +122,7 @@ class BusinessDaysTest extends TestCase
         array $expectedDays
     ): void {
         // Given we have a business time period with a particular start and end;
-        $timePeriod = BusinessTimePeriod::fromTo($startTime, $endTime);
+        $timePeriod = BusinessTimePeriod::fromStrings($startTime, $endTime);
 
         // When we get the business days inside it;
         $days = array_map(

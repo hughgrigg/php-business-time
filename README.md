@@ -310,7 +310,7 @@ with start and end times like this:
 ```php
 $start = new BusinessTime\BusinessTime('today');
 $end = $start->addBusinessDays(3);
-$timePeriod = BusinessTime\BusinessTimePeriod::fromTo($start, $end);
+$timePeriod = BusinessTime\BusinessTimePeriod::fromBusinessTimes($start, $end);
 ```
 
 You can then use the `businessDaysTo()` and `nonBusinessDaysTo()` methods on the
@@ -340,7 +340,7 @@ periods, for example:
 ```php
 $start = new BusinessTime\BusinessTime('today');
 $end = new BusinessTime\BusinessTime('tomorrow');
-$timePeriod = BusinessTime\BusinessTimePeriod::fromTo($start, $end);
+$timePeriod = BusinessTime\BusinessTimePeriod::fromBusinessTimes($start, $end);
 
 $businessPeriods = $timePeriod->businessPeriods();
 // = array of BusinessTimePeriod instances for each period of business time.

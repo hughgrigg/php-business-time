@@ -3,31 +3,33 @@
 namespace BusinessTime;
 
 use BusinessTime\Constraint\BusinessTimeConstraint;
-use DateInterval;
-use DatePeriod;
 
 /**
- * @property-read BusinessTime $start
- * @property-read BusinessTime $end
+ * A period of business time that can be divided into business and non-business
+ * days, or precise business and non-business sub-periods.
  */
-class BusinessTimePeriod extends DatePeriod
+class BusinessTimePeriod
 {
+    /** @var BusinessTime */
+    private $start;
+
+    /** @var BusinessTime */
+    private $end;
+
     /** @var BusinessTimeConstraint[] */
     private $businessTimeConstraints;
 
     /**
+     * BusinessTimePeriod constructor.
+     *
      * @param BusinessTime $start
-     * @param DateInterval $interval
      * @param BusinessTime $end
-     * @param int          $options
      */
-    public function __construct(
-        BusinessTime $start,
-        DateInterval $interval,
-        BusinessTime $end,
-        int $options = 0
-    ) {
-        parent::__construct($start, $interval, $end, $options);
+    public function __construct(BusinessTime $start, BusinessTime $end)
+    {
+        $this->start = $start;
+        $this->end = $end;
+        $this->businessTimeConstraints = $start->businessTimeConstraints();
     }
 
     /**
@@ -38,21 +40,16 @@ class BusinessTimePeriod extends DatePeriod
      *
      * @return BusinessTimePeriod
      */
-    public static function fromTo(string $start, string $end): self
+    public static function fromStrings(string $start, string $end): self
     {
-        $startTime = new BusinessTime($start);
-        $endTime = new BusinessTime($end);
-        // Allow reverse order.
-        if ($startTime->gt($endTime)) {
-            [$startTime, $endTime] = [$endTime, $startTime];
-        }
-
-        return new static($startTime, Interval::hour(), $endTime);
+        return new static(new BusinessTime($start), new BusinessTime($end));
     }
 
     /**
      * Get an array of business time instances, one for each business day in
      * this period.
+     *
+     * @see BusinessDaysTest
      *
      * @return BusinessTime[]
      */
@@ -72,6 +69,8 @@ class BusinessTimePeriod extends DatePeriod
      * Get an array of business time instances, one for each non-business day in
      * this period.
      *
+     * @see BusinessDaysTest
+     *
      * @return BusinessTime[]
      */
     public function nonBusinessDays(): array
@@ -89,14 +88,16 @@ class BusinessTimePeriod extends DatePeriod
     /**
      * Get an array of business time instances, one for each day in this period.
      *
+     * @see BusinessDaysTest
+     *
      * @return BusinessTime[]
      */
     public function allDays(): array
     {
         $days = [];
-        $next = $this->getStartDate()->copy()->startOfDay();
+        $next = $this->start()->copy()->startOfDay();
         $days[] = $next;
-        while ($next->lt($this->getEndDate())) {
+        while ($next->lt($this->end())) {
             $next = $next->copy()->addDay();
             $days[] = $next;
         }
@@ -105,28 +106,47 @@ class BusinessTimePeriod extends DatePeriod
     }
 
     /**
+     * Get the precise sub-periods of this period that are business time.
+     *
+     * E.g. a time period from Monday 06:00 to Monday 20:00 could be:
+     *     Monday 09:00 - Monday 17:00
+     *
+     * @see SubPeriodsTest
+     *
      * @return self[]
      */
     public function businessPeriods(): array
     {
-        return array_filter(
-            $this->subPeriods(),
-            function (self $subPeriod): bool {
-                return $subPeriod->isBusinessTime();
-            }
+        return array_values(
+            array_filter(
+                $this->subPeriods(),
+                function (self $subPeriod): bool {
+                    return $subPeriod->isBusinessTime();
+                }
+            )
         );
     }
 
     /**
+     * Get the precise sub-periods of this period that are not business time.
+     *
+     * E.g. a time period from Monday 06:00 to Monday 20:00 could be:
+     *     Monday 06:00 - Monday 09:00
+     *     Monday 17:00 - Monday 20:00
+     *
+     * @see SubPeriodsTest
+     *
      * @return self[]
      */
     public function nonBusinessPeriods(): array
     {
-        return array_filter(
-            $this->subPeriods(),
-            function (self $subPeriod): bool {
-                return !$subPeriod->isBusinessTime();
-            }
+        return array_values(
+            array_filter(
+                $this->subPeriods(),
+                function (self $subPeriod): bool {
+                    return !$subPeriod->isBusinessTime();
+                }
+            )
         );
     }
 
@@ -139,36 +159,38 @@ class BusinessTimePeriod extends DatePeriod
      *     Monday 09:00 - Monday 17:00
      *     Monday 17:00 - Monday 20:00
      *
+     * @see SubPeriodsTest
+     *
      * @return self[]
      */
     public function subPeriods(): array
     {
         $subPeriods = [];
-        $next = $this->getStartDate()->copy();
+        $next = $this->start()->copy();
 
         // Iterate from the start of the time period until we reach the end.
-        while ($next->lt($this->getEndDate())) {
+        while ($next->lt($this->end())) {
             $subStart = $next->copy();
 
             // When we're in a business sub-period, keep going until we hit a
             // non-business sub-period or the end of the whole period.
-            while ($next->isBusinessTime() && $next->lt($this->getEndDate())) {
+            while ($next->isBusinessTime() && $next->lt($this->end())) {
                 $next = $next->add($next->precision());
             }
             // If we advanced by doing that, record it as a sub-period.
             if ($next->gt($subStart)) {
-                $subPeriods[] = new self($subStart, $next->precision(), $next);
+                $subPeriods[] = new self($subStart->copy(), $next->copy());
                 $subStart = $next->copy();
             }
 
             // When we're in a non-business sub-period, keep going until we hit
             // a business sub-period or the end of the whole period.
-            while (!$next->isBusinessTime() && $next->lt($this->getEndDate())) {
+            while (!$next->isBusinessTime() && $next->lt($this->end())) {
                 $next = $next->add($next->precision());
             }
             // If we advanced by doing that, record it as a sub-period.
             if ($next->gt($subStart)) {
-                $subPeriods[] = new self($subStart, $next->precision(), $next);
+                $subPeriods[] = new self($subStart->copy(), $next->copy());
             }
         }
 
@@ -184,51 +206,23 @@ class BusinessTimePeriod extends DatePeriod
      */
     public function isBusinessTime(): bool
     {
-        return $this->getStartDate()->isBusinessTime();
-    }
-
-    /**
-     * @return string
-     */
-    public function businessName(): string
-    {
-        return $this->getStartDate()->businessName();
-    }
-
-    /**
-     * @return Interval
-     */
-    public function businessDiff(): Interval
-    {
-        return $this->getStartDate()->diffBusiness($this->getEndDate());
+        return $this->start()->isBusinessTime();
     }
 
     /**
      * @return BusinessTime
      */
-    public function getStartDate(): BusinessTime
+    public function start(): BusinessTime
     {
-        $start = parent::getStartDate();
-        if (!($start instanceof BusinessTime)) {
-            $start = BusinessTime::fromDti($start)
-                ->setBusinessTimeConstraints($this->businessTimeConstraints);
-        }
-
-        return $start;
+        return $this->start->copy();
     }
 
     /**
      * @return BusinessTime
      */
-    public function getEndDate(): BusinessTime
+    public function end(): BusinessTime
     {
-        $end = parent::getEndDate();
-        if (!($end instanceof BusinessTime)) {
-            $end = BusinessTime::fromDti($end)
-                ->setBusinessTimeConstraints($this->businessTimeConstraints);
-        }
-
-        return $end;
+        return $this->end->copy();
     }
 
     /**
