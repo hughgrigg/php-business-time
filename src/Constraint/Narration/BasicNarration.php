@@ -3,7 +3,6 @@
 namespace BusinessTime\Constraint\Narration;
 
 use BusinessTime\BusinessTime;
-use Carbon\Carbon;
 use DateTimeInterface;
 
 /**
