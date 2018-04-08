@@ -40,6 +40,16 @@ class BusinessTime extends Carbon
     }
 
     /**
+     * Is it a business day?
+     *
+     * @return bool
+     */
+    public function isBusinessDay(): bool
+    {
+        return $this->startOfBusinessDay()->isSameDay($this);
+    }
+
+    /**
      * Get the date time after adding one whole business day.
      *
      * @see AddBusinessDaysTest

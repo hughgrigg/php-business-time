@@ -123,6 +123,60 @@ class BusinessTimePeriod extends DatePeriod
     }
 
     /**
+     * Get an array of business time instances, one for each business day in
+     * this period.
+     *
+     * @return BusinessTime[]
+     */
+    public function businessDays(): array
+    {
+        return array_values(
+            array_filter(
+                $this->allDays(),
+                function (BusinessTime $day): bool {
+                    return $day->isBusinessDay();
+                }
+            )
+        );
+    }
+
+    /**
+     * Get an array of business time instances, one for each non-business day in
+     * this period.
+     *
+     * @return BusinessTime[]
+     */
+    public function nonBusinessDays(): array
+    {
+        return array_values(
+            array_filter(
+                $this->allDays(),
+                function (BusinessTime $day): bool {
+                    return !$day->isBusinessDay();
+                }
+            )
+        );
+    }
+
+    /**
+     * Get an array of business time instances, one for each day in this period.
+     *
+     * @return BusinessTime[]
+     */
+    public function allDays(): array
+    {
+        $days = [];
+        $next = $this->getStartDate()->copy()->startOfDay();
+        $days[] = $next;
+        while ($next->lt($this->getEndDate())) {
+            $next = $next->copy()->addDay();
+            $days[] = $next;
+        }
+
+        return $days;
+    }
+
+    /**
      * @return bool
      */
     public function isBusinessTime(): bool
