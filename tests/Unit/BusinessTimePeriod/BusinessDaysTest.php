@@ -136,7 +136,7 @@ class BusinessDaysTest extends TestCase
         self::assertSame(
             $expectedDays,
             $days,
-            print_r($expectedDays, true) . "\nvs\n" . print_r(
+            print_r($expectedDays, true)."\nvs\n".print_r(
                 $days,
                 true
             )
