@@ -40,86 +40,14 @@ class BusinessTimePeriod extends DatePeriod
      */
     public static function fromTo(string $start, string $end): self
     {
-        return new static(
-            new BusinessTime($start),
-            Interval::hour(),
-            new BusinessTime($end)
-        );
-    }
-
-    /**
-     * Get this business time period separated into consecutive business and
-     * non-business times.
-     *
-     * E.g. a time period from Monday 06:00 to Monday 20:00 could be:
-     *     Monday 06:00 - Monday 09:00
-     *     Monday 09:00 - Monday 17:00
-     *     Monday 17:00 - Monday 20:00
-     *
-     * @return self[]
-     */
-    public function subPeriods(): array
-    {
-        $subPeriods = [];
-        $next = $this->getStartDate()->copy();
-
-        // Iterate from the start of the time period until we reach the end.
-        while ($next->lt($this->getEndDate())) {
-            $subStart = $next->copy();
-
-            // When we're in a business sub-period, keep going until we hit a
-            // non-business sub-period or the end of the whole period.
-            while ($next->isBusinessTime() && $next->lt($this->getEndDate())) {
-                $next = $next->add($next->precision());
-            }
-            // If we advanced by doing that, record it as a sub-period.
-            if ($next->gt($subStart)) {
-                $subPeriods[] = new self($subStart, $next->precision(), $next);
-                $subStart = $next->copy();
-            }
-
-            // When we're in a non-business sub-period, keep going until we hit
-            // a business sub-period or the end of the whole period.
-            while (!$next->isBusinessTime() && $next->lt($this->getEndDate())) {
-                $next = $next->add($next->precision());
-            }
-            // If we advanced by doing that, record it as a sub-period.
-            if ($next->gt($subStart)) {
-                $subPeriods[] = new self($subStart, $next->precision(), $next);
-            }
+        $startTime = new BusinessTime($start);
+        $endTime = new BusinessTime($end);
+        // Allow reverse order.
+        if ($startTime->gt($endTime)) {
+            [$startTime, $endTime] = [$endTime, $startTime];
         }
 
-        // TODO: this should group the potential names and then offer the
-        // most frequently occurring name in that period.
-        // e.g. Friday 17:00 to Monday 09:00 should be called "the weekend".
-
-        return $subPeriods;
-    }
-
-    /**
-     * @return self[]
-     */
-    public function businessPeriods(): array
-    {
-        return array_filter(
-            $this->subPeriods(),
-            function (self $subPeriod): bool {
-                return $subPeriod->isBusinessTime();
-            }
-        );
-    }
-
-    /**
-     * @return self[]
-     */
-    public function nonBusinessPeriods(): array
-    {
-        return array_filter(
-            $this->subPeriods(),
-            function (self $subPeriod): bool {
-                return !$subPeriod->isBusinessTime();
-            }
-        );
+        return new static($startTime, Interval::hour(), $endTime);
     }
 
     /**
@@ -177,6 +105,81 @@ class BusinessTimePeriod extends DatePeriod
     }
 
     /**
+     * @return self[]
+     */
+    public function businessPeriods(): array
+    {
+        return array_filter(
+            $this->subPeriods(),
+            function (self $subPeriod): bool {
+                return $subPeriod->isBusinessTime();
+            }
+        );
+    }
+
+    /**
+     * @return self[]
+     */
+    public function nonBusinessPeriods(): array
+    {
+        return array_filter(
+            $this->subPeriods(),
+            function (self $subPeriod): bool {
+                return !$subPeriod->isBusinessTime();
+            }
+        );
+    }
+
+    /**
+     * Get this business time period separated into consecutive business and
+     * non-business times.
+     *
+     * E.g. a time period from Monday 06:00 to Monday 20:00 could be:
+     *     Monday 06:00 - Monday 09:00
+     *     Monday 09:00 - Monday 17:00
+     *     Monday 17:00 - Monday 20:00
+     *
+     * @return self[]
+     */
+    public function subPeriods(): array
+    {
+        $subPeriods = [];
+        $next = $this->getStartDate()->copy();
+
+        // Iterate from the start of the time period until we reach the end.
+        while ($next->lt($this->getEndDate())) {
+            $subStart = $next->copy();
+
+            // When we're in a business sub-period, keep going until we hit a
+            // non-business sub-period or the end of the whole period.
+            while ($next->isBusinessTime() && $next->lt($this->getEndDate())) {
+                $next = $next->add($next->precision());
+            }
+            // If we advanced by doing that, record it as a sub-period.
+            if ($next->gt($subStart)) {
+                $subPeriods[] = new self($subStart, $next->precision(), $next);
+                $subStart = $next->copy();
+            }
+
+            // When we're in a non-business sub-period, keep going until we hit
+            // a business sub-period or the end of the whole period.
+            while (!$next->isBusinessTime() && $next->lt($this->getEndDate())) {
+                $next = $next->add($next->precision());
+            }
+            // If we advanced by doing that, record it as a sub-period.
+            if ($next->gt($subStart)) {
+                $subPeriods[] = new self($subStart, $next->precision(), $next);
+            }
+        }
+
+        // TODO: this should group the potential names and then offer the
+        // most frequently occurring name in that period.
+        // e.g. Friday 17:00 to Monday 09:00 should be called "the weekend".
+
+        return $subPeriods;
+    }
+
+    /**
      * @return bool
      */
     public function isBusinessTime(): bool
@@ -207,8 +210,7 @@ class BusinessTimePeriod extends DatePeriod
     {
         $start = parent::getStartDate();
         if (!($start instanceof BusinessTime)) {
-            $start = (new BusinessTime())
-                ->setTimestamp($start->getTimestamp())
+            $start = BusinessTime::fromDti($start)
                 ->setBusinessTimeConstraints($this->businessTimeConstraints);
         }
 
@@ -222,8 +224,7 @@ class BusinessTimePeriod extends DatePeriod
     {
         $end = parent::getEndDate();
         if (!($end instanceof BusinessTime)) {
-            $end = (new BusinessTime())
-                ->setTimestamp($end->getTimestamp())
+            $end = BusinessTime::fromDti($end)
                 ->setBusinessTimeConstraints($this->businessTimeConstraints);
         }
 

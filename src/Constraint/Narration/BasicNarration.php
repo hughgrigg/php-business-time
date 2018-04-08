@@ -2,6 +2,7 @@
 
 namespace BusinessTime\Constraint\Narration;
 
+use BusinessTime\BusinessTime;
 use Carbon\Carbon;
 use DateTimeInterface;
 
@@ -19,7 +20,7 @@ trait BasicNarration
      */
     public function narrate(DateTimeInterface $time): string
     {
-        $time = (new Carbon())->setTimestamp($time->getTimestamp());
+        $time = BusinessTime::fromDti($time);
         if ($time->secondsSinceMidnight() === 0) {
             // Only narrate the day if it's midnight.
             return $time->format('l jS F Y');

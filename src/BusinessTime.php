@@ -614,6 +614,18 @@ ERR
     }
 
     /**
+     * @param DateTimeInterface $dti
+     *
+     * @return BusinessTime
+     */
+    public static function fromDti(DateTimeInterface $dti): self
+    {
+        return (new static())
+            ->setTimezone($dti->getTimezone())
+            ->setTimestamp($dti->getTimestamp());
+    }
+
+    /**
      * Difference in business time measured in units of the current precision.
      *
      * This is calculated by stepping through the time period in steps of the

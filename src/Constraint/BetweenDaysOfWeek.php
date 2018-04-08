@@ -2,6 +2,7 @@
 
 namespace BusinessTime\Constraint;
 
+use BusinessTime\BusinessTime;
 use Carbon\Carbon;
 use DateTime;
 use DateTimeInterface;
@@ -52,9 +53,7 @@ class BetweenDaysOfWeek extends RangeConstraint
      */
     public function relevantValueOf(DateTimeInterface $time): int
     {
-        return Carbon::instance(
-            (new DateTime())->setTimestamp($time->getTimestamp())
-        )->dayOfWeekIso;
+        return BusinessTime::fromDti($time)->dayOfWeekIso;
     }
 
     /**
