@@ -2,7 +2,7 @@
 
 namespace BusinessTime\Constraint;
 
-use DateTime;
+use DateTimeInterface;
 
 /**
  * A business time constraint that matches times between certain months of the
@@ -34,11 +34,11 @@ class BetweenMonthsOfYear extends RangeConstraint
     /**
      * Get an integer value from the time that is to be compared to this range.
      *
-     * @param DateTime $time
+     * @param DateTimeInterface $time
      *
      * @return int
      */
-    public function relevantValueOf(DateTime $time): int
+    public function relevantValueOf(DateTimeInterface $time): int
     {
         return (int) $time->format('n');
     }

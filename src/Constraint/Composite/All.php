@@ -2,9 +2,12 @@
 
 namespace BusinessTime\Constraint\Composite;
 
+use ArrayIterator;
 use BusinessTime\Constraint\BusinessTimeConstraint;
 use BusinessTime\Tests\Unit\Constraint\Composite\CompositeAllTest;
 use DateTimeInterface;
+use IteratorAggregate;
+use Traversable;
 
 /**
  * A set of constraints that matches if all of the included constraints match.
@@ -13,7 +16,7 @@ use DateTimeInterface;
  *
  * @see CompositeAllTest
  */
-class All implements BusinessTimeConstraint
+class All implements BusinessTimeConstraint, IteratorAggregate
 {
     use Combinations;
 
@@ -42,5 +45,19 @@ class All implements BusinessTimeConstraint
         }
 
         return true;
+    }
+
+    /**
+     * Retrieve an external iterator.
+     *
+     * @link  http://php.net/manual/en/iteratoraggregate.getiterator.php
+     *
+     * @return Traversable
+     *
+     * @since 5.0.0
+     */
+    public function getIterator(): Traversable
+    {
+        return new ArrayIterator($this->constraints);
     }
 }

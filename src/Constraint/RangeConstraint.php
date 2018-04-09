@@ -3,7 +3,7 @@
 namespace BusinessTime\Constraint;
 
 use BusinessTime\Constraint\Composite\Combinations;
-use DateTime;
+use BusinessTime\Constraint\Narration\BusinessTimeNarrator;
 use DateTimeInterface;
 
 /**
@@ -14,7 +14,9 @@ use DateTimeInterface;
  * Some implementing classes override this to make the max exclusive, as that
  * is more intuitive for e.g. 17 should exclude times from 5pm onwards.
  */
-abstract class RangeConstraint implements BusinessTimeConstraint
+abstract class RangeConstraint implements
+    BusinessTimeConstraint,
+    BusinessTimeNarrator
 {
     use Combinations;
 
@@ -38,7 +40,7 @@ abstract class RangeConstraint implements BusinessTimeConstraint
 
         // Allow backwards order.
         if ($min > $max) {
-            [ $min, $max ] = [$max, $min];
+            [$min, $max] = [$max, $min];
         }
 
         $this->min = $min;
@@ -55,17 +57,31 @@ abstract class RangeConstraint implements BusinessTimeConstraint
     public function isBusinessTime(DateTimeInterface $time): bool
     {
         return ($this->relevantValueOf($time) >= $this->min)
-               && ($this->relevantValueOf($time) <= $this->max);
+            && ($this->relevantValueOf($time) <= $this->max);
+    }
+
+    /**
+     * @param DateTimeInterface $time
+     *
+     * @return string
+     */
+    public function narrate(DateTimeInterface $time): string
+    {
+        if ($this->isBusinessTime($time)) {
+            return BusinessTimeNarrator::DEFAULT_BUSINESS;
+        }
+
+        return BusinessTimeNarrator::DEFAULT_NON_BUSINESS;
     }
 
     /**
      * Get an integer value from the time that is to be compared to this range.
      *
-     * @param DateTime $time
+     * @param DateTimeInterface $time
      *
      * @return int
      */
-    abstract public function relevantValueOf(DateTime $time): int;
+    abstract public function relevantValueOf(DateTimeInterface $time): int;
 
     /**
      * Get the maximum possible value of the range.

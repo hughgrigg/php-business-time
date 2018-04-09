@@ -22,7 +22,7 @@ class WeekendsTest extends TestCase
         // Given we have a business time;
         $businessTime = new BusinessTime($time);
 
-        // And a constraint for weekends
+        // And a constraint for weekends;
         $constraint = new Weekends();
 
         // Then the constraint should match the time as expected.
@@ -48,6 +48,51 @@ class WeekendsTest extends TestCase
             ['2018-05-23', false],
             ['2018-05-26', true],
             ['2018-05-27', true],
+        ];
+    }
+
+    /**
+     * @dataProvider weekendsNarrationProvider
+     *
+     * @param string $time
+     * @param string $expectedNarration
+     */
+    public function testWeekendsNarration(
+        string $time,
+        string $expectedNarration
+    ): void {
+        // Given we have a business time;
+        $businessTime = new BusinessTime($time);
+
+        // And a constraint for weekends;
+        $constraint = new Weekends();
+
+        // Then the constraint should narrate the time as expected.
+        self::assertSame(
+            $expectedNarration,
+            $constraint->narrate($businessTime)
+        );
+    }
+
+    /**
+     * Provides times and the expected business time narration for them from a
+     * Weekends constraint.
+     *
+     * @return array[]
+     */
+    public function weekendsNarrationProvider(): array
+    {
+        return [
+            // Time     Narration
+            ['Monday', 'outside business hours'],
+            ['Tuesday', 'outside business hours'],
+            ['Wednesday', 'outside business hours'],
+            ['Thursday', 'outside business hours'],
+            ['Friday', 'outside business hours'],
+            ['Saturday', 'the weekend'],
+            ['Sunday', 'the weekend'],
+            ['2018-05-23', 'outside business hours'],
+            ['2018-05-26', 'the weekend'],
         ];
     }
 }
