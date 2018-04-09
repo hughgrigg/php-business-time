@@ -2,11 +2,12 @@
 
 namespace BusinessTime;
 
-use BusinessTime\Constraint\BusinessTimeConstraint;
-
 /**
  * A period of business time that can be divided into business and non-business
  * days, or precise business and non-business sub-periods.
+ *
+ * The business time constraints of the start time are used in determining
+ * business time.
  */
 class BusinessTimePeriod
 {
@@ -15,9 +16,6 @@ class BusinessTimePeriod
 
     /** @var BusinessTime */
     private $end;
-
-    /** @var BusinessTimeConstraint[] */
-    private $businessTimeConstraints;
 
     /**
      * BusinessTimePeriod constructor.
@@ -29,7 +27,6 @@ class BusinessTimePeriod
     {
         $this->start = $start;
         $this->end = $end;
-        $this->businessTimeConstraints = $start->businessTimeConstraints();
     }
 
     /**
@@ -194,11 +191,34 @@ class BusinessTimePeriod
             }
         }
 
-        // TODO: this should group the potential names and then offer the
-        // most frequently occurring name in that period.
-        // e.g. Friday 17:00 to Monday 09:00 should be called "the weekend".
-
         return $subPeriods;
+    }
+
+    /**
+     * Get the business-relevant name of this period of time.
+     *
+     * The most commonly occurring name of all sub-intervals based on the
+     * precision of the start time is used. This means that the name of a mixed
+     * period might not be ideal; it's best used on the results of e.g.
+     *
+     * @see businessPeriods()
+     * @see nonBusinessPeriods()
+     *
+     * @see BusinessNameTest
+     *
+     * @return string
+     */
+    public function businessName(): string
+    {
+        $names = [];
+        $next = $this->start()->copy();
+        while ($next->lt($this->end())) {
+            $names[] = $next->businessName();
+            $next = $next->add($next->precision());
+        }
+        $nameCounts = array_count_values($names);
+
+        return array_search(max($nameCounts), $nameCounts, true);
     }
 
     /**
@@ -223,18 +243,5 @@ class BusinessTimePeriod
     public function end(): BusinessTime
     {
         return $this->end->copy();
-    }
-
-    /**
-     * @param BusinessTimeConstraint ...$constraints
-     *
-     * @return BusinessTimePeriod
-     */
-    public function setBusinessTimeConstraints(
-        BusinessTimeConstraint ...$constraints
-    ): self {
-        $this->businessTimeConstraints = $constraints;
-
-        return $this;
     }
 }
