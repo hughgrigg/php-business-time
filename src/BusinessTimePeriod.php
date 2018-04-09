@@ -203,7 +203,6 @@ class BusinessTimePeriod
      *
      * @see businessPeriods()
      * @see nonBusinessPeriods()
-     *
      * @see BusinessNameTest
      *
      * @return string
