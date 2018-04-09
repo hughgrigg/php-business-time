@@ -2,9 +2,12 @@
 
 namespace BusinessTime;
 
+use BusinessTime\Constraint\AnyTime;
 use BusinessTime\Constraint\BetweenHoursOfDay;
 use BusinessTime\Constraint\BusinessTimeConstraint;
 use BusinessTime\Constraint\Composite\All;
+use BusinessTime\Constraint\Narration\BusinessTimeNarrator;
+use BusinessTime\Constraint\Narration\DefaultNarrator;
 use BusinessTime\Constraint\WeekDays;
 use Carbon\Carbon;
 use DateInterval;
@@ -34,6 +37,16 @@ class BusinessTime extends Carbon
     public function isBusinessTime(): bool
     {
         return $this->businessTimeConstraints()->isBusinessTime($this);
+    }
+
+    /**
+     * Is it a business day?
+     *
+     * @return bool
+     */
+    public function isBusinessDay(): bool
+    {
+        return $this->startOfBusinessDay()->isSameDay($this);
     }
 
     /**
@@ -71,10 +84,11 @@ class BusinessTime extends Carbon
         }
 
         // Jump ahead in whole days first, because the business days to add
-        // will be at least this much. This also solves the "intuitive
-        // problem" that Monday 09:00 + 1 business day could technically be
-        // Monday 17:00, but intuitively should be Tuesday 09:00.
+        // will be at least this much. This solves the "intuitive problem" that
+        // Monday 09:00 + 1 business day could technically be Monday 17:00, but
+        // intuitively should be Tuesday 09:00.
         $daysToJump = (int) $businessDaysToAdd;
+        /** @var BusinessTime $next */
         $next = $this->copy()->addDays($daysToJump);
 
         // We need to check how much business time we actually covered by
@@ -82,9 +96,10 @@ class BusinessTime extends Carbon
         $businessDaysToAdd -= $this->diffInPartialBusinessDays($next);
 
         $decrement = $this->precision()->inDays()
-                     / $this->lengthOfBusinessDay()->inDays();
+            / $this->lengthOfBusinessDay()->inDays();
 
         while ($businessDaysToAdd > 0) {
+            /* @scrutinizer ignore-call */
             if ($next->isBusinessTime()) {
                 $businessDaysToAdd -= $decrement;
             }
@@ -137,7 +152,7 @@ class BusinessTime extends Carbon
         $businessDaysToSub -= $this->diffInPartialBusinessDays($prev);
 
         $decrement = $this->precision()->inDays()
-                     / $this->lengthOfBusinessDay()->inDays();
+            / $this->lengthOfBusinessDay()->inDays();
 
         while ($businessDaysToSub > 0) {
             $prev = $prev->sub($this->precision());
@@ -180,9 +195,11 @@ class BusinessTime extends Carbon
             return $this->subBusinessHours($businessHoursToAdd * -1);
         }
 
+        /** @var BusinessTime $next */
         $next = $this->copy();
         $decrement = $this->precision()->inHours();
         while ($businessHoursToAdd > 0) {
+            /* @scrutinizer ignore-call */
             if ($next->isBusinessTime()) {
                 $businessHoursToAdd -= $decrement;
             }
@@ -289,7 +306,7 @@ class BusinessTime extends Carbon
         bool $absolute = true
     ): float {
         return $this->diffInBusinessTime($time, $absolute)
-               / $this->lengthOfBusinessDay()->asMultipleOf($this->precision());
+            / $this->lengthOfBusinessDay()->asMultipleOf($this->precision());
     }
 
     /**
@@ -308,7 +325,7 @@ class BusinessTime extends Carbon
         bool $absolute = true
     ): float {
         return $this->diffInBusinessTime($time, $absolute)
-               * $this->precision()->inHours();
+            * $this->precision()->inHours();
     }
 
     /**
@@ -331,6 +348,14 @@ class BusinessTime extends Carbon
             $this->diffInBusinessTime($time, $absolute)
             * $this->precision()->inSeconds()
         );
+    }
+
+    /**
+     * @return string
+     */
+    public function businessName(): string
+    {
+        return $this->canonicalNarrator()->narrate($this);
     }
 
     /**
@@ -382,10 +407,10 @@ class BusinessTime extends Carbon
     public function floor(?DateInterval $precision = null): self
     {
         $seconds = Interval::instance($precision ?: $this->precision())
-                           ->inSeconds();
+            ->inSeconds();
 
         return $this->copy()->setTimestamp(
-            floor($this->timestamp / $seconds) * $seconds
+            (int) (floor($this->timestamp / $seconds) * $seconds)
         );
     }
 
@@ -401,10 +426,10 @@ class BusinessTime extends Carbon
     public function round(?DateInterval $precision = null): self
     {
         $seconds = Interval::instance($precision ?: $this->precision())
-                           ->inSeconds();
+            ->inSeconds();
 
         return $this->copy()->setTimestamp(
-            round($this->timestamp / $seconds) * $seconds
+            (int) (round($this->timestamp / $seconds) * $seconds)
         );
     }
 
@@ -423,10 +448,10 @@ class BusinessTime extends Carbon
     public function ceil(?DateInterval $precision = null): self
     {
         $seconds = Interval::instance($precision ?: $this->precision())
-                           ->inSeconds();
+            ->inSeconds();
 
         return $this->copy()->setTimestamp(
-            ceil($this->timestamp / $seconds) * $seconds
+            (int) (ceil($this->timestamp / $seconds) * $seconds)
         );
     }
 
@@ -497,8 +522,8 @@ ERR
 
         return $this->setLengthOfBusinessDay(
             $this->copy()
-                 ->setTimestamp($typicalDay->startOfDay()->getTimestamp())
-                 ->diffBusiness($typicalDay->endOfDay())
+                ->setTimestamp($typicalDay->startOfDay()->getTimestamp())
+                ->diffBusiness($typicalDay->endOfDay())
         );
     }
 
@@ -518,9 +543,9 @@ ERR
     /**
      * Get the business time constraints.
      *
-     * @return BusinessTimeConstraint
+     * @return All|BusinessTimeConstraint[]
      */
-    public function businessTimeConstraints(): BusinessTimeConstraint
+    public function businessTimeConstraints(): All
     {
         if ($this->businessTimeConstraints === null) {
             // Default to week days 09:00 - 17:00.
@@ -576,6 +601,31 @@ ERR
     }
 
     /**
+     * Guarantee copy is instance of BusinessTime to deter analyser complaints.
+     *
+     * @return BusinessTime
+     */
+    public function copy(): self
+    {
+        $copy = clone $this;
+        \assert($copy instanceof self);
+
+        return $copy;
+    }
+
+    /**
+     * @param DateTimeInterface $dti
+     *
+     * @return BusinessTime
+     */
+    public static function fromDti(DateTimeInterface $dti): self
+    {
+        return (new static())
+            ->setTimezone($dti->getTimezone())
+            ->setTimestamp($dti->getTimestamp());
+    }
+
+    /**
      * Difference in business time measured in units of the current precision.
      *
      * This is calculated by stepping through the time period in steps of the
@@ -594,6 +644,7 @@ ERR
         // We're taking a basic approach with some variables and a loop here as
         // it turns out to be ~25% faster than using Carbon::diffFiltered().
 
+        /** @var BusinessTime $start */
         $start = $this;
         $end = $time;
         $sign = 1;
@@ -608,8 +659,11 @@ ERR
         // Count the business time diff by iterating in steps the length of the
         // precision and checking if each step counts as business time.
         $diff = 0;
+        /** @var BusinessTime $next */
+        /** @scrutinizer ignore-call */
         $next = $start->copy();
         while ($next < $end) {
+            /* @scrutinizer ignore-call */
             if ($next->isBusinessTime()) {
                 $diff++;
             }
@@ -617,5 +671,32 @@ ERR
         }
 
         return $diff * $sign;
+    }
+
+    /**
+     * Get a narrator for the first business time constraint that determines
+     * whether this time is business time or not.
+     *
+     * @return BusinessTimeNarrator
+     */
+    private function canonicalNarrator(): BusinessTimeNarrator
+    {
+        /* @var BusinessTimeConstraint $constraint */
+        if (!$this->isBusinessTime()) {
+            foreach ($this->businessTimeConstraints() as $constraint) {
+                if (!$constraint->isBusinessTime($this)) {
+                    return new DefaultNarrator($constraint);
+                }
+            }
+        }
+        if ($this->isBusinessTime()) {
+            foreach ($this->businessTimeConstraints() as $constraint) {
+                if ($constraint->isBusinessTime($this)) {
+                    return new DefaultNarrator($constraint);
+                }
+            }
+        }
+
+        return new AnyTime();
     }
 }

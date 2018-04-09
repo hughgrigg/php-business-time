@@ -14,7 +14,7 @@
         "johnkary/phpunit-speedtrap": "^3.0",
         "php-coveralls/php-coveralls": "^2.0"
     },
-    "license": "MIT License",
+    "license": "MIT",
     "authors": [
         {
             "name": "Hugh Grigg",

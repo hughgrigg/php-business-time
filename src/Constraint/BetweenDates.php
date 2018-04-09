@@ -3,7 +3,7 @@
 namespace BusinessTime\Constraint;
 
 use Carbon\Carbon;
-use DateTime;
+use DateTimeInterface;
 
 /**
  * Business time constraint that matches times between specific dates
@@ -32,11 +32,11 @@ class BetweenDates extends RangeConstraint
     /**
      * Get an integer value from the time that is to be compared to this range.
      *
-     * @param DateTime $time
+     * @param DateTimeInterface $time
      *
      * @return int
      */
-    public function relevantValueOf(DateTime $time): int
+    public function relevantValueOf(DateTimeInterface $time): int
     {
         return $time->getTimestamp();
     }

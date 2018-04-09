@@ -3,6 +3,9 @@
 [![Build Status](https://travis-ci.org/hughgrigg/php-business-time.svg?branch=master)](https://travis-ci.org/hughgrigg/php-business-time)
 [![Coverage Status](https://coveralls.io/repos/github/hughgrigg/php-business-time/badge.svg)](https://coveralls.io/github/hughgrigg/php-business-time)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/ef5b774bce624ab2b1f3632e9307a909)](https://app.codacy.com/app/hugh_2/php-business-time?utm_source=github.com&utm_medium=referral&utm_content=hughgrigg/php-business-time&utm_campaign=badger)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/hughgrigg/php-business-time/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/hughgrigg/php-business-time/?branch=master)
+[![StyleCI](https://styleci.io/repos/126614310/shield?branch=master)](https://styleci.io/repos/126614310)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 "Business time" logic in PHP (aka "business hours", "working days" etc). This
 can be useful for calculating shipping dates, for example.
@@ -161,6 +164,56 @@ precision is one hour, you may well need to adjust the precision to e.g 15
 minutes to get accurate calculations (see the note on precision and
 performance).
 
+## Describing business times
+
+In some situations it's useful to have meaningful descriptions for business and
+non-business times. For example, you might want to tell your customer that you
+won't deliver their order until next week because the weekend is in between.
+
+You can use the `BusinessTimePeriod` class for this. You can make an instance
+with start and end times like this:
+
+```php
+$start = new BusinessTime\BusinessTime('today');
+$end = $start->addBusinessDays(3);
+$timePeriod = BusinessTime\BusinessTimePeriod::fromBusinessTimes($start, $end);
+```
+
+You can then use the `businessDaysTo()` and `nonBusinessDaysTo()` methods on the
+time period to get that information. For example:
+
+```php
+$businessTime = new BusinessTime\BusinessTime();
+$nonBusinessTimes = $businessTime->nonBusinessDays();
+```
+
+This returns an array of `BusinessTime` objects for each non-business day, which
+can tell you their description:
+
+```php
+$nonBusinessTimes[0]->businessName();
+// = e.g. "the weekend"
+```
+
+What intervals and descriptions you get depends on which business time
+constraints have been used.
+
+You can also ask a `BusinessTimePeriod` for its business and non-business sub-
+periods, for example:
+
+```php
+$start = new BusinessTime\BusinessTime('today');
+$end = new BusinessTime\BusinessTime('tomorrow');
+$timePeriod = BusinessTime\BusinessTimePeriod::fromBusinessTimes($start, $end);
+
+$businessPeriods = $timePeriod->businessPeriods();
+// = array of BusinessTimePeriod instances for each period of business time.
+```
+
+This lets you see the precise business timings that make up the whole time
+period. You can ask each sub-period for its business-relevant name with the
+`businessName()` method.
+
 ## Determining business time
 
 By default, this library considers Monday to Friday, 9am to 5pm to be business
@@ -294,51 +347,6 @@ $businessTime->setBusinessTimeConstraints(
     ) // Why not take off your birthday and wedding anniversary?
 );
 ```
-
-#### Describing business time constraints (WIP)
-
-In some situations it's useful to have meaningful descriptions for business and
-non-business times. For example, you might want to tell your customer that you
-won't deliver their order until next week because the weekend is in between.
-
-You can use the `businessTimesTo()` and `nonBusinessTimesTo()` methods
-to get this. For example:
-
-```php
-$businessTime = new BusinessTime\BusinessTime();
-$nonBusinessTimes = $businessTime->nonBusinessTimesTo(Carbon::now()->addWeek());
-```
-
-This returns an array of `BusinessTimePeriod` objects, which can tell you
-their description and timings:
-
-```php
-$nonBusinessTimes[0]->businessTimeDescription();
-// = "the weekend"
-$nonBusinessTimes[0]->startTime();
-// = BusinessTime object for Friday 17:00
-$nonBusinessTimes[0]->endTime();
-// = BusinessTime object for Monday 09:00
-```
-
-What intervals and descriptions you get depends on which business time
-constraints have been used.
-
-##### Custom business time constraint descriptions
-
-The constraints above come with reasonable default names, but you can also
-specify your own with the `setBusinessTimeDescription()` method:
-
-```php
-$weekDays = new BusinessTime\Constraint\Weekdays();
-$weekDays->setBusinessTimeDescription('working days', 'weekend party time');
-```
-
-The second argument is the description for times that *don't* match the
-constraint (and is therefore probably more important).
-
-*Note*: if you're using a translation system, then pass in your translation keys
-as the descriptions, then fetch the translations for them at run time.
 
 ## Incorporating business time data from a remote source (WIP)
 

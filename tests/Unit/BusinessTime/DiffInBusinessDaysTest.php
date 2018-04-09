@@ -122,7 +122,7 @@ class DiffInBusinessDaysTest extends TestCase
                 $diff,
                 abs($expectedDiff - $diff)
             ),
-            0.00001
+            0.001
         );
     }
 
