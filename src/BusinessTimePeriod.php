@@ -217,7 +217,7 @@ class BusinessTimePeriod
         }
         $nameCounts = array_count_values($names);
 
-        return array_search(max($nameCounts), $nameCounts, true);
+        return (string) array_search(max($nameCounts), $nameCounts, true);
     }
 
     /**
