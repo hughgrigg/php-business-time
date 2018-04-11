@@ -44,7 +44,7 @@ class WebCalFiFactoryTest extends TestCase
                 new Response(
                     200,
                     [],
-                    <<<JSON
+                    <<<'JSON'
 [
     {
         "date": "2018-01-01",

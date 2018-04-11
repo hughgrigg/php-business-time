@@ -11,7 +11,6 @@ use stdClass;
  * service.
  *
  * @see https://www.webcal.fi/
- *
  * @see WebCalFiFactoryTest
  */
 class WebCalFiFactory
@@ -40,9 +39,10 @@ class WebCalFiFactory
     }
 
     /**
-     * @return WebCalFiDate[]
      * @throws \RuntimeException
      * @throws \GuzzleHttp\Exception\GuzzleException
+     *
+     * @return WebCalFiDate[]
      */
     public function getDates(): array
     {
@@ -81,9 +81,10 @@ class WebCalFiFactory
     }
 
     /**
-     * @return ResponseInterface
      * @throws \RuntimeException
      * @throws \GuzzleHttp\Exception\GuzzleException
+     *
+     * @return ResponseInterface
      */
     private function getWebCalFiResponse(): ResponseInterface
     {
@@ -105,8 +106,9 @@ class WebCalFiFactory
     /**
      * @param $response
      *
-     * @return array
      * @throws \Exception
+     *
+     * @return array
      */
     private function decodeWebCalFiResponse(ResponseInterface $response): array
     {
