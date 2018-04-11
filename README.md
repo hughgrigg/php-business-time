@@ -214,6 +214,19 @@ This lets you see the precise business timings that make up the whole time
 period. You can ask each sub-period for its business-relevant name with the
 `businessName()` method.
 
+## Start and end of business day
+
+You can get the start or end of the business day based on the business time
+constraints like this:
+
+```php
+$businessTime = new BusinessTime\BusinessTime();
+$businessTime->startOfBusinessDay();
+// = BusinessTime instance for e.g. 09:00
+$businessTime->endOfBusinessDay();
+// = BusinessTime instance for e.g. 17:00
+```
+
 ## Determining business time
 
 By default, this library considers Monday to Friday, 9am to 5pm to be business
@@ -362,17 +375,17 @@ authentication. You  do need to include the Guzzle library in your project to
 use this, though.
 
 ```php
-$factory = new BusinessTime\Constraint\Factory\WebCalFi(
-    'http://www.webcal.fi/cal.php?id=83&format=json'
+$factory = new BusinessTime\Remote\WebCalFiFactory(
+    'https://www.webcal.fi/cal.php?id=83&format=json'
 );
 $dates = $factory->getDates();
-// = ['2018-03-30', '2018-04-01', etc]
+// = array of dates from the specified calendar.
 $webCalFiConstraint = $factory->getDatesConstraint();
 // = a Dates constraint containing the retrieved dates and their descriptions.
 ```
 
 You can find WebCal.fi calendars to suit your needs at e.g.
-http://www.webcal.fi/en-GB/other_file_formats.php
+https://www.webcal.fi/en-GB/other_file_formats.php
 
 Note that you can also use the `except()` method on the WebCalFi constraint to
 add customised exceptions to the dates it provides.
@@ -381,19 +394,6 @@ add customised exceptions to the dates it provides.
 
 You can add any other source you like by implementing the `Constraint` interface
 described above.
-
-## Start and end of business day
-
-You can get the start or end of the business day based on the business time
-constraints like this:
-
-```php
-$businessTime = new BusinessTime\BusinessTime();
-$businessTime->startOfBusinessDay();
-// = BusinessTime instance for e.g. 09:00
-$businessTime->endOfBusinessDay();
-// = BusinessTime instance for e.g. 17:00
-```
 
 ## Recurring business deadlines (WIP)
 
