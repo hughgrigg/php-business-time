@@ -12,7 +12,14 @@
         "phpmd/phpmd": "@stable",
         "squizlabs/php_codesniffer": "@stable",
         "johnkary/phpunit-speedtrap": "^3.0",
-        "php-coveralls/php-coveralls": "^2.0"
+        "php-coveralls/php-coveralls": "^2.0",
+        "guzzlehttp/guzzle": "^6.3",
+        "psr/http-message": "^1.0",
+        "phpunit/phpunit-mock-objects": "^6.1",
+        "guzzlehttp/psr7": "^1.4"
+    },
+    "suggest": {
+        "guzzlehttp/guzzle": "Required for using remote sources"
     },
     "license": "MIT",
     "authors": [
