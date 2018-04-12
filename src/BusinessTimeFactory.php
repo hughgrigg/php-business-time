@@ -33,8 +33,9 @@ class BusinessTimeFactory
     /**
      * @param string $time
      *
-     * @return BusinessTime
      * @throws \InvalidArgumentException
+     *
+     * @return BusinessTime
      */
     public function make(string $time): BusinessTime
     {
@@ -46,8 +47,9 @@ class BusinessTimeFactory
     }
 
     /**
-     * @return BusinessTime
      * @throws \InvalidArgumentException
+     *
+     * @return BusinessTime
      */
     public function now(): BusinessTime
     {
