@@ -39,9 +39,10 @@ class WebCalFiFactory
     }
 
     /**
-     * @return WebCalFiConstraint
      * @throws \RuntimeException
      * @throws \GuzzleHttp\Exception\GuzzleException
+     *
+     * @return WebCalFiConstraint
      */
     public function makeConstraint(): WebCalFiConstraint
     {
