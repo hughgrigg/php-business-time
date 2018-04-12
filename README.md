@@ -379,8 +379,8 @@ $factory = new BusinessTime\Remote\WebCalFiFactory(
     'https://www.webcal.fi/cal.php?id=83&format=json'
 );
 $dates = $factory->getDates();
-// = array of dates from the specified calendar.
-$webCalFiConstraint = $factory->getDatesConstraint();
+// = array of date objects from the specified calendar.
+$webCalFiConstraint = $factory->makeConstraint();
 // = a Dates constraint containing the retrieved dates and their descriptions.
 ```
 

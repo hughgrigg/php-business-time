@@ -18,4 +18,4 @@ coverage: src tests vendor
 	./vendor/squizlabs/php_codesniffer/bin/phpcs --standard=PSR2 --colors src \
 		--report-file=./build/phpcs.xml
 	./vendor/phpunit/phpunit/phpunit --coverage-clover=build/logs/clover.xml \
-		--coverage-html=build/coverage
+		--coverage-html=build/coverage --coverage-text
