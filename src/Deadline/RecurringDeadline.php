@@ -93,6 +93,7 @@ class RecurringDeadline
             BusinessTime::today(),
             BusinessTime::today()->endOfDay()
         );
+
         return $passed && $passed->lt(BusinessTime::now());
     }
 
