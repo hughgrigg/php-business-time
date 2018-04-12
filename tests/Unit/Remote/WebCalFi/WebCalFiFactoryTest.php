@@ -91,7 +91,7 @@ JSON
     {
         // Given we have a WebCalFi constraint factory;
         $factory = new WebCalFiFactory($this->client);
-        $factory->setUrl('https://www.webcal.fi/example');
+        $factory->setCalendarUrl('https://www.webcal.fi/example');
 
         // And the WebCal.fi service has some dates;
         $this->client->expects($this->any())

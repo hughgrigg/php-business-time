@@ -179,7 +179,7 @@ $end = $start->addBusinessDays(3);
 $timePeriod = BusinessTime\BusinessTimePeriod::fromBusinessTimes($start, $end);
 ```
 
-You can then use the `businessDaysTo()` and `nonBusinessDaysTo()` methods on the
+You can then use the `businessDays()` and `nonBusinessDays()` methods on the
 time period to get that information. For example:
 
 ```php
@@ -188,7 +188,7 @@ $nonBusinessTimes = $businessTime->nonBusinessDays();
 ```
 
 This returns an array of `BusinessTime` objects for each non-business day, which
-can tell you their description:
+can tell you their name:
 
 ```php
 $nonBusinessTimes[0]->businessName();
@@ -361,7 +361,7 @@ $businessTime->setBusinessTimeConstraints(
 );
 ```
 
-## Incorporating business time data from a remote source (WIP)
+## Incorporating business time data from a remote source
 
 Whilst you could try to set up constraints covering all the public holidays in
 your country, it's probably easier to just retrieve them from a remote source.
@@ -371,18 +371,23 @@ BusinessTime supports this for WebCal.fi out of the box.
 ### WebCal.fi
 
 WebCal.fi is easy to use as its data is provided publicly without any
-authentication. You  do need to include the Guzzle library in your project to
-use this, though.
+authentication. You do need to include the
+[Guzzle](https://github.com/guzzle/guzzle) library in your project to use this,
+though.
 
 ```php
 $factory = new BusinessTime\Remote\WebCalFiFactory(
-    'https://www.webcal.fi/cal.php?id=83&format=json'
+    new GuzzleHttp\Client(),
+    'https://www.webcal.fi/cal.php?id=83&format=json' // for example
 );
 $dates = $factory->getDates();
 // = array of date objects from the specified calendar.
 $webCalFiConstraint = $factory->makeConstraint();
 // = a Dates constraint containing the retrieved dates and their descriptions.
 ```
+
+The constraint will be set up with names and dates from the WebCal.fi calendar
+you specify.
 
 You can find WebCal.fi calendars to suit your needs at e.g.
 https://www.webcal.fi/en-GB/other_file_formats.php
