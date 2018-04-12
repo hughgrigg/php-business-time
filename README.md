@@ -13,11 +13,10 @@ can be useful for calculating shipping dates, for example.
 This library provides an extension for the `Carbon` class in the
 [Carbon](http://carbon.nesbot.com/docs/) date time library.
 
-While Carbon already has methods like `addWorkingDays()` and
-`diffInWeekendDays()`, this extension lets you handle business time more
-precisely and flexibly. It can consider public holidays from WebCal.fi, as well
-as your own customised times which can be specified directly or with constraint-
-matching.
+While Carbon already has methods like `diffInWeekendDays()`, this extension lets
+you handle business time more precisely and flexibly. It can consider public
+holidays from WebCal.fi, as well as your own customised times which can be
+specified directly or with constraint-matching.
 
 [Official music video for this library](https://www.youtube.com/watch?v=WGOohBytKTU)
 
@@ -55,7 +54,7 @@ $threeBusinessTime = $friday->addBusinessDays(3);
 $monday = new BusinessTime\BusinessTime('Monday');
 $previousBusinessDay = $now->subBusinessDay();
 // = Friday
-$threeBusinessTimeAgo = $now->subBusinessDays(3);
+$threeBusinessDaysAgo = $now->subBusinessDays(3);
 // = Wednesday
 ```
 
@@ -123,8 +122,6 @@ $businessTime = new BusinessTime\BusinessTime();
 $businessTime->setLengthOfBusinessDay(BusinessTime\Interval::hours(6));
 ```
 
-See https://secure.php.net/manual/en/class.dateinterval.php
-
 If you have complicated business time constraints (see below), it might be
 helpful to let BusinessTime calculate the length of a business day for you. You
 can do that by passing in a `DateTime` representing your standard business day
@@ -159,9 +156,9 @@ and forces explicitness, e.g. with `$now->addBusinessTime(30)`.
 
 Similarly, no unit smaller than an hour is included out-of-the-box because the
 concept of a "business minute" is questionable for most use cases. You can
-easily calculate minutes by multiplying by 60. Note that because the default
-precision is one hour, you may well need to adjust the precision to e.g 15
-minutes to get accurate calculations (see the note on precision and
+calculate minutes by multiplying by 60 if you do need them. Note that because
+the default precision is one hour, you may need to adjust the precision to e.g
+15 minutes to get accurate calculations (see the note on precision and
 performance).
 
 ## Describing business times
@@ -183,15 +180,15 @@ You can then use the `businessDays()` and `nonBusinessDays()` methods on the
 time period to get that information. For example:
 
 ```php
-$businessTime = new BusinessTime\BusinessTime();
-$nonBusinessTimes = $businessTime->nonBusinessDays();
+$businessDays = $timePeriod->businessDays();
+$nonBusinessDays = $timePeriod->nonBusinessDays();
 ```
 
 This returns an array of `BusinessTime` objects for each non-business day, which
 can tell you their name:
 
 ```php
-$nonBusinessTimes[0]->businessName();
+$nonBusinessDays[0]->businessName();
 // = e.g. "the weekend"
 ```
 
@@ -208,6 +205,8 @@ $timePeriod = BusinessTime\BusinessTimePeriod::fromBusinessTimes($start, $end);
 
 $businessPeriods = $timePeriod->businessPeriods();
 // = array of BusinessTimePeriod instances for each period of business time.
+$nonBusinessPeriods = $timePeriod->nonBusinessPeriods();
+// = array of BusinessTimePeriod instances for each period of non-business time.
 ```
 
 This lets you see the precise business timings that make up the whole time
@@ -383,7 +382,7 @@ $factory = new BusinessTime\Remote\WebCalFiFactory(
 $dates = $factory->getDates();
 // = array of date objects from the specified calendar.
 $webCalFiConstraint = $factory->makeConstraint();
-// = a Dates constraint containing the retrieved dates and their descriptions.
+// = a constraint containing the retrieved dates and their descriptions.
 ```
 
 The constraint will be set up with names and dates from the WebCal.fi calendar
@@ -400,7 +399,7 @@ add customised exceptions to the dates it provides.
 You can add any other source you like by implementing the `Constraint` interface
 described above.
 
-## Recurring business deadlines (WIP)
+## Recurring business deadlines
 
 As well as calculating business time, it's often useful to make calculations
 about deadlines or "cut-off" times. For example, the cut-off time for
@@ -410,9 +409,9 @@ dealing with this.
 You can create deadlines using the same time constraints described above:
 
 ```php
-$deadline = new BusinessTime\Deadlines\RecurringDeadline(
+$deadline = new BusinessTime\Deadline\RecurringDeadline(
     new BusinessTime\Constraint\Weekdays(),
-    new BusinessTime\Constraint\TimesOfDay('11:00')
+    new BusinessTime\Constraint\HoursOfDay(11)
 );
 ```
 

@@ -20,7 +20,7 @@ use InvalidArgumentException;
  */
 class BusinessTime extends Carbon
 {
-    /** @var All */
+    /** @var All|BusinessTimeConstraint[] */
     private $businessTimeConstraints;
 
     /** @var Interval */
