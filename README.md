@@ -458,7 +458,7 @@ $time->gt($deadline);
 // = true if the moment has passed.
 ```
 
-## Business time factory (WIP)
+## Business time factory
 
 You probably don't want to have to set up an instance of
 `BusinessTime\BusinessTime` in every place you want to use one in your code.
@@ -469,7 +469,7 @@ need once and then use that everywhere.
 For example:
 
 ```php
-$factory = new BusinessTime\Factory();
+$factory = new BusinessTime\BusinessTimeFactory();
 $factory->setBusinessTimeConstraints(
     new BusinessTime\Constraint\DaysOfWeek('Saturday', 'Sunday'),
     new BusinessTime\Constraint\Dates('2018-12-25'),
@@ -488,33 +488,8 @@ $date = $factory->make('2018-03-21');
 $now = $factory->now();
 ```
 
-## Loading from a cache, database, file system etc (WIP)
-
-If you're loading dates from remote sources, you most likely want to cache them
-to keep your application fast.
-
-The `BusinessTime\Factory` class implements the `__sleep()` and `__wakeup()`
-methods so it is easy to serialize and deserialize in whatever storage system
-you want to use.
-
-For example, if you've got a cache instance, you can do something like this:
-
-```php
-$factory = new BusinessTime\Factory();
-// Set up your constraints.
-$cache->put('business-days', serialize($factory));
-
-// Some time later...
-
-$factory = deserialize($cache->get('business-days'));
-$now = $factory->now();
-// ... off you go.
-```
-
-All you need is a storage system that can store a string and return it later.
-Some cache systems, such as the one provided by Laravel, can handle the
-serialization and deserialization for you, so you only need to pass in the
-BusinessTime factory instance directly.
+The `BusinessTimeFactory` instance can be serialized, which makes it easy to
+store in a cache or the filesystem.
 
 ## Precision
 
