@@ -19,23 +19,25 @@ class WebCalFiFactory
     private $client;
 
     /** @var string */
-    private $url;
+    private $calendarUrl;
 
     /** @var WebCalFiDate[] Cache of retrieved dates */
     private $dates;
 
     /**
      * @param ClientInterface $client
-     * @param string          $url
+     * @param string          $calendarUrl
      *
      * e.g. https://www.webcal.fi/cal.php?id=83&format=json
      *
      * @see https://www.webcal.fi/en-GB/calendars.php
      */
-    public function __construct(ClientInterface $client, string $url = '')
-    {
+    public function __construct(
+        ClientInterface $client,
+        string $calendarUrl = ''
+    ) {
         $this->client = $client;
-        $this->url = $url;
+        $this->calendarUrl = $calendarUrl;
     }
 
     /**
@@ -84,9 +86,9 @@ class WebCalFiFactory
      *
      * @return WebCalFiFactory
      */
-    public function setUrl(string $url): self
+    public function setCalendarUrl(string $url): self
     {
-        $this->url = $url;
+        $this->calendarUrl = $url;
 
         return $this;
     }
@@ -99,13 +101,13 @@ class WebCalFiFactory
      */
     private function getWebCalFiResponse(): ResponseInterface
     {
-        $response = $this->client->request('GET', $this->url);
+        $response = $this->client->request('GET', $this->calendarUrl);
         if ($response->getStatusCode() !== 200) {
             throw new \RuntimeException(
                 sprintf(
                     'Got HTTP status %d from %s: %s',
                     $response->getStatusCode(),
-                    $this->url,
+                    $this->calendarUrl,
                     (string) $response->getBody()
                 )
             );
@@ -128,7 +130,7 @@ class WebCalFiFactory
             throw new \RuntimeException(
                 sprintf(
                     'Failed to decode WebCal.fi dates from %s: %s : %s',
-                    $this->url,
+                    $this->calendarUrl,
                     \json_last_error_msg(),
                     (string) $response->getBody()
                 )
