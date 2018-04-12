@@ -32,7 +32,7 @@ class WebCalFiFactoryTest extends TestCase
     }
 
     /**
-     * @slowThreshold 500
+     * @slowThreshold 1500
      *
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
@@ -62,7 +62,7 @@ class WebCalFiFactoryTest extends TestCase
     }
 
     /**
-     * @slowThreshold 500
+     * @slowThreshold 1500
      *
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
