@@ -39,6 +39,16 @@ class WebCalFiFactory
     }
 
     /**
+     * @return WebCalFiConstraint
+     * @throws \RuntimeException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function makeConstraint(): WebCalFiConstraint
+    {
+        return new WebCalFiConstraint(...$this->getDates());
+    }
+
+    /**
      * @throws \RuntimeException
      * @throws \GuzzleHttp\Exception\GuzzleException
      *
@@ -106,7 +116,7 @@ class WebCalFiFactory
     /**
      * @param $response
      *
-     * @throws \Exception
+     * @throws \RuntimeException
      *
      * @return array
      */
