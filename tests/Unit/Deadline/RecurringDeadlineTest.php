@@ -3,9 +3,13 @@
 namespace BusinessTime\Tests\Unit\Deadline;
 
 use BusinessTime\BusinessTime;
+use BusinessTime\Constraint\BusinessTimeConstraint;
+use BusinessTime\Constraint\DaysOfWeek;
 use BusinessTime\Constraint\HoursOfDay;
 use BusinessTime\Constraint\WeekDays;
+use BusinessTime\Constraint\Weekends;
 use BusinessTime\Deadline\RecurringDeadline;
+use Carbon\Carbon;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -162,6 +166,153 @@ class RecurringDeadlineTest extends TestCase
             ['Sunday 11:01', 'Friday 11:00'],
             ['Sunday 17:00', 'Friday 11:00'],
             ['Sunday 23:59', 'Friday 11:00'],
+        ];
+    }
+
+    /**
+     * Should be able to see if a deadline has passed today.
+     *
+     * @dataProvider hasPassedTodayProvider
+     *
+     * @param string                   $now
+     * @param BusinessTimeConstraint[] $constraints
+     * @param bool                     $shouldHavePassed
+     */
+    public function testHasPassedToday(
+        string $now,
+        array $constraints,
+        bool $shouldHavePassed
+    ): void {
+        // Given we have a recurring deadline;
+        $deadline = new RecurringDeadline(...$constraints);
+
+        // When we check if it has passed today;
+        Carbon::setTestNow($now);
+
+        // Then the result should be as expected.
+        self::assertSame($shouldHavePassed, $deadline->hasPassedToday());
+    }
+
+    /**
+     * Provides set times for 'now' with constraints for a recurring deadline,
+     * and whether that deadline has passed 'today' accordingly.
+     *
+     * @return array[]
+     */
+    public function hasPassedTodayProvider(): array
+    {
+        return [
+            // Now
+            // Constraints
+            // Passed?
+            [
+                '2018-05-23 13:00',
+                [new WeekDays(), new HoursOfDay(12)],
+                true,
+            ],
+            [
+                '2018-05-23 13:00',
+                [new WeekDays(), new HoursOfDay(14)],
+                false,
+            ],
+            [
+                '2018-05-23 13:00',
+                [new Weekends(), new HoursOfDay(12)],
+                false,
+            ],
+            [
+                '2018-05-23 15:00',
+                [new DaysOfWeek('Wednesday'), new HoursOfDay(12)],
+                true,
+            ],
+            [
+                '2018-05-27 13:00',
+                [new WeekDays(), new HoursOfDay(12)],
+                false,
+            ],
+        ];
+    }
+
+    /**
+     * Should be able to see if a deadline has passed between two times.
+     *
+     * @dataProvider hasPassedBetweenProvider
+     *
+     * @param string $start
+     * @param string $end
+     * @param bool   $shouldHavePassed
+     */
+    public function testHasPassedBetween(
+        string $start,
+        string $end,
+        bool $shouldHavePassed
+    ): void {
+        // Given we have a recurring deadline;
+        $deadline = new RecurringDeadline(new WeekDays(), new HoursOfDay(11));
+
+        // When we check if it has passed between two times;
+        // Then the result should be as expected.
+        self::assertSame(
+            $shouldHavePassed,
+            $deadline->hasPassedBetween(
+                new BusinessTime($start),
+                new BusinessTime($end)
+            )
+        );
+    }
+
+    /**
+     * Provides set times for 'now' with start and end times, and whether a
+     * deadline for weekdays 11am should have passed accordingly.
+     *
+     * @return array[]
+     */
+    public function hasPassedBetweenProvider(): array
+    {
+        return [
+            // Start
+            // End
+            // Passed?
+            [
+                '2018-05-23 09:00',
+                '2018-05-23 17:00',
+                true,
+            ],
+            [
+                '2018-05-23 09:00',
+                '2018-05-23 10:59',
+                false,
+            ],
+            [
+                '2018-05-23 09:00',
+                '2018-05-23 11:00',
+                true,
+            ],
+            [
+                '2018-05-23 09:00',
+                '2018-05-23 11:01',
+                true,
+            ],
+            [
+                '2018-05-23 09:00',
+                '2018-05-23 11:59',
+                true,
+            ],
+            [
+                '2018-05-22 17:00',
+                '2018-05-23 12:00',
+                true,
+            ],
+            [
+                '2018-05-25 11:00',
+                '2018-05-26 12:00',
+                true,
+            ],
+            [
+                '2018-05-25 12:00',
+                '2018-05-26 12:00',
+                false,
+            ],
         ];
     }
 }

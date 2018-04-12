@@ -46,7 +46,7 @@ You can add or subtract business days from a given starting date:
 $friday = new BusinessTime\BusinessTime('Friday');
 $nextBusinessDay = $friday->addBusinessDay();
 // = Monday
-$threeBusinessTime = $friday->addBusinessDays(3);
+$threeBusinessDays = $friday->addBusinessDays(3);
 // = Wednesday
 ```
 
@@ -101,8 +101,8 @@ $fridayTenAm->diffInPartialBusinessDays('Saturday 10am');
 
 These are kept separate because usually people do not want to deal with the
 concept of fractional business time: either a business day has passed or it has
-not. The `partial` methods let you access the precise floating point numbers
-when you want to.
+not. The `partial` methods let you access the floating point number when you
+want to.
 
 #### Length of a business day
 
@@ -173,7 +173,7 @@ with start and end times like this:
 ```php
 $start = new BusinessTime\BusinessTime('today');
 $end = $start->addBusinessDays(3);
-$timePeriod = BusinessTime\BusinessTimePeriod::fromBusinessTimes($start, $end);
+$timePeriod = new BusinessTime\BusinessTimePeriod($start, $end);
 ```
 
 You can then use the `businessDays()` and `nonBusinessDays()` methods on the
@@ -201,7 +201,7 @@ periods, for example:
 ```php
 $start = new BusinessTime\BusinessTime('today');
 $end = new BusinessTime\BusinessTime('tomorrow');
-$timePeriod = BusinessTime\BusinessTimePeriod::fromBusinessTimes($start, $end);
+$timePeriod = new BusinessTime\BusinessTimePeriod($start, $end);
 
 $businessPeriods = $timePeriod->businessPeriods();
 // = array of BusinessTimePeriod instances for each period of business time.
@@ -209,9 +209,9 @@ $nonBusinessPeriods = $timePeriod->nonBusinessPeriods();
 // = array of BusinessTimePeriod instances for each period of non-business time.
 ```
 
-This lets you see the precise business timings that make up the whole time
-period. You can ask each sub-period for its business-relevant name with the
-`businessName()` method.
+This lets you see the business timings that make up the whole time period. You
+can ask each sub-period for its business-relevant name with the `businessName()`
+method.
 
 ## Start and end of business day
 

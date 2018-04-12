@@ -85,6 +85,54 @@ class RecurringDeadline
     }
 
     /**
+     * @return bool
+     */
+    public function hasPassedToday(): bool
+    {
+        $passed = $this->firstTimePassedBetween(
+            BusinessTime::today(),
+            BusinessTime::today()->endOfDay()
+        );
+        return $passed && $passed->lt(BusinessTime::now());
+    }
+
+    /**
+     * @param BusinessTime $start
+     * @param BusinessTime $end
+     *
+     * @return bool
+     */
+    public function hasPassedBetween(
+        BusinessTime $start,
+        BusinessTime $end
+    ): bool {
+        return (bool) $this->firstTimePassedBetween($start, $end);
+    }
+
+    /**
+     * Get the first time the deadline passes between two given times, if any.
+     *
+     * @param BusinessTime $start
+     * @param BusinessTime $end
+     *
+     * @return BusinessTime|null
+     */
+    public function firstTimePassedBetween(
+        BusinessTime $start,
+        BusinessTime $end
+    ): ?BusinessTime {
+        $time = $start->copy();
+        while ($time->lte($end)) {
+            if ($this->isDeadline($time)) {
+                return $time->floor();
+            }
+            $time = $time->add($time->precision());
+        }
+
+        return null;
+    }
+
+    /**
      * @param DateTimeInterface $time
      *
      * @return bool
