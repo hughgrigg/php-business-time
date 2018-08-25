@@ -470,7 +470,7 @@ For example:
 
 ```php
 $factory = new BusinessTime\BusinessTimeFactory();
-$factory->setBusinessTimeConstraints(
+$factory->setConstraints(
     new BusinessTime\Constraint\DaysOfWeek('Saturday', 'Sunday'),
     new BusinessTime\Constraint\Dates('2018-12-25'),
 );
