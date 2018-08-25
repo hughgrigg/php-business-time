@@ -2,3 +2,5 @@ vendor/
 reports/
 build/
 coverage/
+.idea/
+
