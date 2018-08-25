@@ -25,7 +25,7 @@ specified directly or with constraint-matching.
 Install via Composer:
 
 ```bash
-composer require hughgrigg/business-time
+composer require hughgrigg/php-business-time
 ```
 
 ## Usage
@@ -152,7 +152,7 @@ $now->diffInPartialBusinessHours();
 The reason a day is the largest unit included out-of-the-box is because people
 and organisations have different understandings of what is meant by larger units
 of time. Not having built-in methods for those prevents assumptions being made
-and forces explicitness, e.g. with `$now->addBusinessTime(30)`.
+and forces explicitness, e.g. with `$now->addBusinessDays(30)`.
 
 Similarly, no unit smaller than an hour is included out-of-the-box because the
 concept of a "business minute" is questionable for most use cases. You can
