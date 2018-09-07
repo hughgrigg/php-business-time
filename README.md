@@ -22,29 +22,29 @@ specified directly or with constraint-matching.
 
 ## Contents
 
-  1 Installation
-  2 Usage
-   2.1 Business days
-    2.1.1 Adding or subtracting business days
-    2.1.2 Diff in business days
-    2.1.3 Whole vs partial business days
-    2.1.4 Length of a business day
-   2.2 Business hours
-  3 Describing business times
-  4 Start and end of business day
-  5 Determining business time
-   5.1 Business time constraints
-    5.1.1 Inversion of business time constraints
-    5.1.2 Exceptions to business time constraints
-    5.1.3 Custom business time constraints
-    5.1.4 Business time constraints example
-  6 Incorporating business time data from a remote source
-   6.1 WebCal.fi
-   6.2 Custom remote sources
-  7 Recurring business deadlines
-  8 Business time factory
-  9 Precision
-  10 Testing
+  * [Installation](#installation)
+  * [Usage](#usage)
+    + [Business days](#business-days)
+      - [Adding or subtracting business days](#adding-or-subtracting-business-days)
+      - [Diff in business days](#diff-in-business-days)
+      - [Whole vs partial business days](#whole-vs-partial-business-days)
+      - [Length of a business day](#length-of-a-business-day)
+    + [Business hours](#business-hours)
+  * [Describing business times](#describing-business-times)
+  * [Start and end of business day](#start-and-end-of-business-day)
+  * [Determining business time](#determining-business-time)
+    + [Business time constraints](#business-time-constraints)
+      - [Inversion of business time constraints](#inversion-of-business-time-constraints)
+      - [Exceptions to business time constraints](#exceptions-to-business-time-constraints)
+      - [Custom business time constraints](#custom-business-time-constraints)
+      - [Business time constraints example](#business-time-constraints-example)
+  * [Incorporating business time data from a remote source](#incorporating-business-time-data-from-a-remote-source)
+    + [WebCal.fi](#webcalfi)
+    + [Custom remote sources](#custom-remote-sources)
+  * [Recurring business deadlines](#recurring-business-deadlines)
+  * [Business time factory](#business-time-factory)
+  * [Precision](#precision)
+  * [Testing](#testing)
 
 ## Installation
 
