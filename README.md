@@ -20,6 +20,32 @@ specified directly or with constraint-matching.
 
 [Official music video for this library](https://www.youtube.com/watch?v=WGOohBytKTU)
 
+## Contents
+
+  1 Installation
+  2 Usage
+   2.1 Business days
+    2.1.1 Adding or subtracting business days
+    2.1.2 Diff in business days
+    2.1.3 Whole vs partial business days
+    2.1.4 Length of a business day
+   2.2 Business hours
+  3 Describing business times
+  4 Start and end of business day
+  5 Determining business time
+   5.1 Business time constraints
+    5.1.1 Inversion of business time constraints
+    5.1.2 Exceptions to business time constraints
+    5.1.3 Custom business time constraints
+    5.1.4 Business time constraints example
+  6 Incorporating business time data from a remote source
+   6.1 WebCal.fi
+   6.2 Custom remote sources
+  7 Recurring business deadlines
+  8 Business time factory
+  9 Precision
+  10 Testing
+
 ## Installation
 
 Install via Composer:
