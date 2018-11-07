@@ -24,7 +24,7 @@ class BetweenMonthsOfYearTest extends TestCase
         string $minMonthOfYear,
         string $maxMonthOfYear,
         bool $shouldMatch
-    ): void {
+    ) {
         // Given we have a business time;
         $businessTime = new BusinessTime($time);
 

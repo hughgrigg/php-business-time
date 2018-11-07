@@ -19,7 +19,7 @@ class IsBusinessTimeDefaultTest extends TestCase
     public function testIsBusinessTimeDefault(
         string $time,
         bool $expectedToBeBusinessTime
-    ): void {
+    ) {
         // Given we have a time with default behaviour;
         $businessTime = new BusinessTime($time);
 

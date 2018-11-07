@@ -25,7 +25,7 @@ class DiffInBusinessHoursTest extends TestCase
         string $time,
         string $otherTime,
         int $expectedDiff
-    ): void {
+    ) {
         // Given we have a business time for a particular time;
         $businessTime = new BusinessTime($time);
 
@@ -119,7 +119,7 @@ class DiffInBusinessHoursTest extends TestCase
         string $time,
         string $otherTime,
         float $expectedDiff
-    ): void {
+    ) {
         // Given we have a business time for a particular time;
         $businessTime = new BusinessTime($time);
 

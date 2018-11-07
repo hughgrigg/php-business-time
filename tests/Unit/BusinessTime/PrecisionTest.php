@@ -15,7 +15,7 @@ class PrecisionTest extends TestCase
     /**
      * The default precision should be 1 hour.
      */
-    public function testPrecisionDefault(): void
+    public function testPrecisionDefault()
     {
         // Given we have a business time with the default behaviour;
         $time = new BusinessTime();
@@ -36,7 +36,7 @@ class PrecisionTest extends TestCase
     public function testSetPrecision(
         DateInterval $precision,
         string $expectedDescription
-    ): void {
+    ) {
         // Given we have a business time instance;
         $time = new BusinessTime();
 
@@ -76,7 +76,7 @@ class PrecisionTest extends TestCase
         string $otherTime,
         DateInterval $precision,
         float $expectedHoursDiff
-    ): void {
+    ) {
         // Given we have a business time instance for a particular time;
         $businessTime = new BusinessTime($time);
 

@@ -21,7 +21,7 @@ class CompositeNotTest extends TestCase
      *
      * @param BusinessTimeConstraint[] $constraints
      */
-    public function testAllMatch(array $constraints): void
+    public function testAllMatch(array $constraints)
     {
         // Given we have a set of constraints;
 
@@ -49,7 +49,7 @@ class CompositeNotTest extends TestCase
      *
      * @param BusinessTimeConstraint[] $constraints
      */
-    public function testNoneMatch(array $constraints): void
+    public function testNoneMatch(array $constraints)
     {
         // Given we have a set of constraints;
 
@@ -80,7 +80,7 @@ class CompositeNotTest extends TestCase
      *
      * @param BusinessTimeConstraint[] $constraints
      */
-    public function testSomeMatch(array $constraints): void
+    public function testSomeMatch(array $constraints)
     {
         // Given we have a set of constraints;
 

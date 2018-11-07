@@ -24,7 +24,7 @@ class BetweenDaysOfMonthTest extends TestCase
         int $maxDayOfMonth,
         string $time,
         bool $shouldMatch
-    ): void {
+    ) {
         // Given we have a business time;
         $businessTime = new BusinessTime($time);
 

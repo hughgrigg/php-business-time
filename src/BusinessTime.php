@@ -265,7 +265,7 @@ class BusinessTime extends Carbon
      * @return int
      */
     public function diffInBusinessDays(
-        ?DateTimeInterface $time = null,
+        DateTimeInterface $time = null,
         bool $absolute = true
     ): int {
         return (int) $this->diffInPartialBusinessDays($time, $absolute);
@@ -282,7 +282,7 @@ class BusinessTime extends Carbon
      * @return int
      */
     public function diffInBusinessHours(
-        ?DateTimeInterface $time = null,
+        DateTimeInterface $time = null,
         bool $absolute = true
     ): int {
         return (int) $this->diffInPartialBusinessHours($time, $absolute);
@@ -302,7 +302,7 @@ class BusinessTime extends Carbon
      * @return float
      */
     public function diffInPartialBusinessDays(
-        ?DateTimeInterface $time = null,
+        DateTimeInterface $time = null,
         bool $absolute = true
     ): float {
         return $this->diffInBusinessTime($time, $absolute)
@@ -321,7 +321,7 @@ class BusinessTime extends Carbon
      * @return float
      */
     public function diffInPartialBusinessHours(
-        ?DateTimeInterface $time = null,
+        DateTimeInterface $time = null,
         bool $absolute = true
     ): float {
         return $this->diffInBusinessTime($time, $absolute)
@@ -341,7 +341,7 @@ class BusinessTime extends Carbon
      * @return Interval
      */
     public function diffBusiness(
-        ?DateTimeInterface $time = null,
+        DateTimeInterface $time = null,
         bool $absolute = true
     ): Interval {
         return Interval::seconds(
@@ -404,7 +404,7 @@ class BusinessTime extends Carbon
      *
      * @return BusinessTime
      */
-    public function floor(?DateInterval $precision = null): self
+    public function floor(DateInterval $precision = null): self
     {
         $seconds = Interval::instance($precision ?: $this->precision())
             ->inSeconds();
@@ -423,7 +423,7 @@ class BusinessTime extends Carbon
      *
      * @return BusinessTime
      */
-    public function round(?DateInterval $precision = null): self
+    public function round(DateInterval $precision = null): self
     {
         $seconds = Interval::instance($precision ?: $this->precision())
             ->inSeconds();
@@ -445,7 +445,7 @@ class BusinessTime extends Carbon
      *
      * @return BusinessTime
      */
-    public function ceil(?DateInterval $precision = null): self
+    public function ceil(DateInterval $precision = null): self
     {
         $seconds = Interval::instance($precision ?: $this->precision())
             ->inSeconds();
@@ -509,7 +509,7 @@ ERR
      * @return BusinessTime
      */
     public function determineLengthOfBusinessDay(
-        ?DateTime $typicalDay = null
+        DateTime $typicalDay = null
     ): self {
         if ($typicalDay === null) {
             // Default to the length of a reasonable guess at a typical day.
@@ -638,7 +638,7 @@ ERR
      * @return int
      */
     private function diffInBusinessTime(
-        ?DateTimeInterface $time = null,
+        DateTimeInterface $time = null,
         bool $absolute = true
     ): int {
         // We're taking a basic approach with some variables and a loop here as

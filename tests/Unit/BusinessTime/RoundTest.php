@@ -29,9 +29,9 @@ class RoundTest extends TestCase
      */
     public function testFloor(
         string $time,
-        ?Interval $precision,
-        string $expectedFlooredTime
-    ): void {
+        Interval $precision = null,
+        string $expectedFlooredTime = ''
+    ) {
         // Given we have a business time instance for a specific time;
         $businessTime = new BusinessTime($time);
 
@@ -88,9 +88,9 @@ class RoundTest extends TestCase
      */
     public function testRound(
         string $time,
-        ?Interval $precision,
-        string $expectedRoundedTime
-    ): void {
+        Interval $precision = null,
+        string $expectedRoundedTime = ''
+    ) {
         // Given we have a business time instance for a specific time;
         $businessTime = new BusinessTime($time);
 
@@ -147,9 +147,9 @@ class RoundTest extends TestCase
      */
     public function testCeil(
         string $time,
-        ?Interval $precision,
-        string $expectedCeilTime
-    ): void {
+        Interval $precision = null,
+        string $expectedCeilTime = ''
+    ) {
         // Given we have a business time instance for a specific time;
         $businessTime = new BusinessTime($time);
 

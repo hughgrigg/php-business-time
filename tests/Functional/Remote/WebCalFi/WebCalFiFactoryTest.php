@@ -36,7 +36,7 @@ class WebCalFiFactoryTest extends TestCase
      *
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function testUkHolidaysContainsChristmas(): void
+    public function testUkHolidaysContainsChristmas()
     {
         // Given we have a WebCalFiFactory;
         $factory = new WebCalFiFactory(new Client());
@@ -66,7 +66,7 @@ class WebCalFiFactoryTest extends TestCase
      *
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function testUsHolidaysHolidaysContainsIndependenceDay(): void
+    public function testUsHolidaysHolidaysContainsIndependenceDay()
     {
         // Given we have a WebCalFiFactory;
         $factory = new WebCalFiFactory(new Client());

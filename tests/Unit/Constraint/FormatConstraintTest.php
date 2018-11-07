@@ -24,7 +24,7 @@ class FormatConstraintTest extends TestCase
         string $format,
         array $patterns,
         bool $shouldMatch
-    ): void {
+    ) {
         // Given we have a business time;
         $businessTime = new BusinessTime($time);
 
@@ -79,7 +79,7 @@ class FormatConstraintTest extends TestCase
         string $time,
         string $format,
         string $expectedNarration
-    ): void {
+    ) {
         // Given we have a business time;
         $businessTime = new BusinessTime($time);
 

@@ -19,7 +19,7 @@ class LengthOfBusinessDayTest extends TestCase
     /**
      * Test that the length of a business day is 8 hours by default.
      */
-    public function testLengthOfBusinessDayDefault(): void
+    public function testLengthOfBusinessDayDefault()
     {
         // Given we have a business time with the default behaviour;
         $time = new BusinessTime();
@@ -44,7 +44,7 @@ class LengthOfBusinessDayTest extends TestCase
     public function testSetLengthOfBusinessDay(
         Interval $length,
         string $expectedDescription
-    ): void {
+    ) {
         // Given we have a business time;
         $time = new BusinessTime();
 
@@ -87,7 +87,7 @@ class LengthOfBusinessDayTest extends TestCase
     public function testDetermineLengthOfBusinessDay(
         BusinessTimeConstraint $constraint,
         string $expectedDescription
-    ): void {
+    ) {
         // Given we have a business time with certain constraints;
         $time = new BusinessTime();
         $time->setBusinessTimeConstraints($constraint);
@@ -144,7 +144,7 @@ class LengthOfBusinessDayTest extends TestCase
     /**
      * Should not be able to set a business day to zero length.
      */
-    public function testCantSetZeroLengthBusinessDay(): void
+    public function testCantSetZeroLengthBusinessDay()
     {
         // We should get an error;
         $this->expectException(InvalidArgumentException::class);
@@ -157,7 +157,7 @@ class LengthOfBusinessDayTest extends TestCase
     /**
      * Should not be able to set the length of a business day over one day.
      */
-    public function testCantSetBusinessDayLengthOverOneDay(): void
+    public function testCantSetBusinessDayLengthOverOneDay()
     {
         // We should get an error;
         $this->expectException(InvalidArgumentException::class);

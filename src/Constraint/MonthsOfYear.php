@@ -12,7 +12,7 @@ namespace BusinessTime\Constraint;
  */
 class MonthsOfYear extends FormatConstraint
 {
-    public const NAME_INDEX = [
+    const NAME_INDEX = [
         'January'   => 1,
         'Jan'       => 1,
         'February'  => 2,

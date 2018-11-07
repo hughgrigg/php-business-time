@@ -18,7 +18,7 @@ class DefaultNarratorTest extends TestCase
      * When the decorated constraint implements the narrator interface, then
      * that should be used.
      */
-    public function testUsesNarrator(): void
+    public function testUsesNarrator()
     {
         // Given we have a constraint with narration;
         $constraint = new FormatConstraint('l');
@@ -45,7 +45,7 @@ class DefaultNarratorTest extends TestCase
     public function testOffersDefault(
         string $time,
         string $expectedNarration
-    ): void {
+    ) {
         // Given we have a constraint without narration;
         $constraint = new class() implements BusinessTimeConstraint {
             public function isBusinessTime(DateTimeInterface $time): bool

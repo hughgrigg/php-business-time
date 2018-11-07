@@ -9,7 +9,7 @@ namespace BusinessTime\Constraint;
  */
 class DaysOfWeek extends FormatConstraint
 {
-    public const NAME_INDEX = [
+    const NAME_INDEX = [
         'Monday'    => 1,
         'Tuesday'   => 2,
         'Wednesday' => 3,

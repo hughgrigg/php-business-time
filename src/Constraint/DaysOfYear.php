@@ -19,7 +19,7 @@ use DateTime;
  */
 class DaysOfYear extends FormatConstraint
 {
-    private const FORMAT = 'F j';
+    const FORMAT = 'F j';
 
     /**
      * @param string ...$daysOfYear e.g. "December 25th", "1st April"

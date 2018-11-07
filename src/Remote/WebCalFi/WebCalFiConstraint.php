@@ -12,7 +12,7 @@ use DateTimeInterface;
  */
 class WebCalFiConstraint implements BusinessTimeConstraint, BusinessTimeNarrator
 {
-    private const FORMAT = 'Y-m-d';
+    const FORMAT = 'Y-m-d';
 
     /** @var WebCalFiDate[] */
     private $dates = [];
@@ -61,7 +61,7 @@ class WebCalFiConstraint implements BusinessTimeConstraint, BusinessTimeNarrator
      *
      * @return WebCalFiDate|null
      */
-    private function dateFor(DateTimeInterface $time): ?WebCalFiDate
+    private function dateFor(DateTimeInterface $time)
     {
         if (isset($this->dates[$time->format(self::FORMAT)])) {
             return $this->dates[$time->format(self::FORMAT)];
