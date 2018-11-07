@@ -22,7 +22,7 @@ class DaysOfYearTest extends TestCase
         string $time,
         array $daysOfYear,
         bool $shouldMatch
-    ): void {
+    ) {
         // Given we have a business time;
         $businessTime = new BusinessTime($time);
 

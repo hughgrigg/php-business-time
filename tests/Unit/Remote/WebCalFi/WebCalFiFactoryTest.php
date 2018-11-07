@@ -35,7 +35,7 @@ class WebCalFiFactoryTest extends TestCase
      *
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function testGetConstraintMocked(): void
+    public function testGetConstraintMocked()
     {
         // Given we have a WebCalFi constraint factory;
         $factory = new WebCalFiFactory($this->client);
@@ -87,7 +87,7 @@ JSON
      *
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function testGetDatesMocked(): void
+    public function testGetDatesMocked()
     {
         // Given we have a WebCalFi constraint factory;
         $factory = new WebCalFiFactory($this->client);
@@ -142,7 +142,7 @@ JSON
     /**
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function testHttpStatusError(): void
+    public function testHttpStatusError()
     {
         // Given we have a WebCalFi constraint factory;
         $factory = new WebCalFiFactory($this->client);
@@ -162,7 +162,7 @@ JSON
     /**
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function testBadJsonError(): void
+    public function testBadJsonError()
     {
         // Given we have a WebCalFi constraint factory;
         $factory = new WebCalFiFactory($this->client);

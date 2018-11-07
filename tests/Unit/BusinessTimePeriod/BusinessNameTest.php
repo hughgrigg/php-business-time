@@ -23,7 +23,7 @@ class BusinessNameTest extends TestCase
         string $startTime,
         string $endTime,
         string $expectedBusinessName
-    ): void {
+    ) {
         // Given we have a business time period with a particular start and end;
         $timePeriod = BusinessTimePeriod::fromStrings($startTime, $endTime);
 

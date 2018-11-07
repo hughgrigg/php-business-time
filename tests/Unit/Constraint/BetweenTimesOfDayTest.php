@@ -25,7 +25,7 @@ class BetweenTimesOfDayTest extends TestCase
         string $maxTimeOfDay,
         string $time,
         bool $shouldMatch
-    ): void {
+    ) {
         // Given we have a constraint for between times of the day;
         $constraint = new BetweenTimesOfDay($minTimeOfDay, $maxTimeOfDay);
 
@@ -73,7 +73,7 @@ class BetweenTimesOfDayTest extends TestCase
     public function testBetweenTimesOfDayNarration(
         string $time,
         string $expectedNarration
-    ): void {
+    ) {
         // Given we have a business time;
         $businessTime = new BusinessTime($time);
 
@@ -119,7 +119,7 @@ class BetweenTimesOfDayTest extends TestCase
      * @param string $time
      * @param int    $expectedMinute
      */
-    public function testMinuteOfDay(string $time, int $expectedMinute): void
+    public function testMinuteOfDay(string $time, int $expectedMinute)
     {
         // When we get the minute of the day;
         $minuteOfTheDay = (new BetweenTimesOfDay())->minuteOfDay(

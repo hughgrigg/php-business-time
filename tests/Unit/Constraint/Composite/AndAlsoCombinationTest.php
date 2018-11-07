@@ -23,7 +23,7 @@ class AndAlsoCombinationTest extends TestCase
      *
      * @param BusinessTimeConstraint[] $additional
      */
-    public function testAndAlsoAllMatch(array $additional): void
+    public function testAndAlsoAllMatch(array $additional)
     {
         // Given we have a constraint which matches a business time;
         $time = $this->wednesdayOnePm();
@@ -49,7 +49,7 @@ class AndAlsoCombinationTest extends TestCase
      *
      * @param BusinessTimeConstraint[] $additional
      */
-    public function testAndAlsoNoneMatch(array $additional): void
+    public function testAndAlsoNoneMatch(array $additional)
     {
         // Given we have a constraint which matches a business time;
         $time = $this->wednesdayOnePm();
@@ -75,7 +75,7 @@ class AndAlsoCombinationTest extends TestCase
      *
      * @param BusinessTimeConstraint[] $additional
      */
-    public function testAndAlsoSomeMatch(array $additional): void
+    public function testAndAlsoSomeMatch(array $additional)
     {
         // Given we have a constraint which matches a business time;
         $time = $this->wednesdayOnePm();

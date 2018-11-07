@@ -24,7 +24,7 @@ class BetweenDaysOfWeekTest extends TestCase
         string $minDayOfWeek,
         string $maxDayOfWeek,
         bool $shouldMatch
-    ): void {
+    ) {
         // Given we have a business time;
         $businessTime = new BusinessTime($time);
 

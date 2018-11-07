@@ -21,7 +21,7 @@ class BusinessNameTest extends TestCase
     public function testBusinessNameDefault(
         string $time,
         string $expectedBusinessName
-    ): void {
+    ) {
         // Given we have a business time for a particular time;
         $businessTime = new BusinessTime($time);
 
@@ -58,7 +58,7 @@ class BusinessNameTest extends TestCase
      * A fall-back business name should be used if there are no business time
      * constraints.
      */
-    public function testFallBackBusinessName(): void
+    public function testFallBackBusinessName()
     {
         // Given we have a business time for a particular time;
         $businessTime = new BusinessTime('2018-05-23 13:00');

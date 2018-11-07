@@ -17,7 +17,7 @@ use DateTime;
  */
 class Dates extends FormatConstraint
 {
-    private const FORMAT = 'Y-m-d';
+    const FORMAT = 'Y-m-d';
 
     /**
      * @param string ...$dates e.g. '2018-05-23', '2019-04-01'

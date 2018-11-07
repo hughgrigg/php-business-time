@@ -22,7 +22,7 @@ class BusinessTimeFactory
      * @param BusinessTimeConstraint ...$constraints
      */
     public function __construct(
-        ?Interval $precision = null,
+        Interval $precision = null,
         BusinessTimeConstraint ...$constraints
     ) {
         // Default to hour precision.

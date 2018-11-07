@@ -25,7 +25,7 @@ class AddBusinessHoursTest extends TestCase
     public function testAddBusinessHourDefault(
         string $time,
         string $expectedNewTime
-    ): void {
+    ) {
         // Given we have a business time for a specific time;
         $businessTime = new BusinessTime($time);
 
@@ -88,7 +88,7 @@ class AddBusinessHoursTest extends TestCase
         string $time,
         float $businessHoursToAdd,
         string $expectedNewTime
-    ): void {
+    ) {
         // Given we have a business time for a specific time;
         $businessTime = new BusinessTime($time);
 
@@ -162,7 +162,7 @@ class AddBusinessHoursTest extends TestCase
         BusinessTimeConstraint $constraint,
         float $businessHoursToAdd,
         string $expectedNewTime
-    ): void {
+    ) {
         // Given we have a business time for a specific time;
         $businessTime = new BusinessTime($time);
 

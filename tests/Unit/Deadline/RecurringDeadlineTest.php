@@ -28,7 +28,7 @@ class RecurringDeadlineTest extends TestCase
     public function testNextDeadlineWeekDays11am(
         string $time,
         string $expectedNextDeadline
-    ): void {
+    ) {
         // Given we have a recurring deadline for weekdays at 11am;
         $deadline = new RecurringDeadline(new WeekDays(), new HoursOfDay(11));
 
@@ -104,7 +104,7 @@ class RecurringDeadlineTest extends TestCase
     public function testPreviousDeadlineWeekDays11am(
         string $time,
         string $expectedNextDeadline
-    ): void {
+    ) {
         // Given we have a recurring deadline for weekdays at 11am;
         $deadline = new RecurringDeadline(new WeekDays(), new HoursOfDay(11));
 
@@ -182,7 +182,7 @@ class RecurringDeadlineTest extends TestCase
         string $now,
         array $constraints,
         bool $shouldHavePassed
-    ): void {
+    ) {
         // Given we have a recurring deadline;
         $deadline = new RecurringDeadline(...$constraints);
 
@@ -246,7 +246,7 @@ class RecurringDeadlineTest extends TestCase
         string $start,
         string $end,
         bool $shouldHavePassed
-    ): void {
+    ) {
         // Given we have a recurring deadline;
         $deadline = new RecurringDeadline(new WeekDays(), new HoursOfDay(11));
 

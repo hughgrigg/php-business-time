@@ -16,7 +16,7 @@ class BusinessTimeFactoryTest extends TestCase
     /**
      * Should be able to make a business time instance.
      */
-    public function testMake(): void
+    public function testMake()
     {
         // Given we have a business time factory;
         $factory = new BusinessTimeFactory();
@@ -35,7 +35,7 @@ class BusinessTimeFactoryTest extends TestCase
     /**
      * Should be able to make a business time instance for the current time.
      */
-    public function testNow(): void
+    public function testNow()
     {
         // Given we have a business time factory;
         $factory = new BusinessTimeFactory();
@@ -55,7 +55,7 @@ class BusinessTimeFactoryTest extends TestCase
     /**
      * Should be able to serialize and deserialize the factory.
      */
-    public function testSerialization(): void
+    public function testSerialization()
     {
         // Given we have a business time factory;
         $factory = new BusinessTimeFactory();

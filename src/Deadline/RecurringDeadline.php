@@ -121,7 +121,7 @@ class RecurringDeadline
     public function firstTimePassedBetween(
         BusinessTime $start,
         BusinessTime $end
-    ): ?BusinessTime {
+    ) {
         $time = $start->copy();
         while ($time->lte($end)) {
             if ($this->isDeadline($time)) {
@@ -129,8 +129,6 @@ class RecurringDeadline
             }
             $time = $time->add($time->precision());
         }
-
-        return null;
     }
 
     /**

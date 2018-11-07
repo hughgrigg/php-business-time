@@ -22,7 +22,7 @@ class DaysOfMonthTest extends TestCase
         string $time,
         array $daysOfMonth,
         bool $shouldMatch
-    ): void {
+    ) {
         // Given we have a business time;
         $businessTime = new BusinessTime($time);
 

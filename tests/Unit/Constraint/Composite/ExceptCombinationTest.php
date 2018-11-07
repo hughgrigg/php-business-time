@@ -23,7 +23,7 @@ class ExceptCombinationTest extends TestCase
      *
      * @param BusinessTimeConstraint[] $exceptions
      */
-    public function testExceptAllMatch(array $exceptions): void
+    public function testExceptAllMatch(array $exceptions)
     {
         // Given we have a constraint which matches a business time;
         $time = $this->wednesdayOnePm();
@@ -49,7 +49,7 @@ class ExceptCombinationTest extends TestCase
      *
      * @param BusinessTimeConstraint[] $exceptions
      */
-    public function testExceptNoneMatch(array $exceptions): void
+    public function testExceptNoneMatch(array $exceptions)
     {
         // Given we have a constraint which matches a business time;
         $time = $this->wednesdayOnePm();
@@ -75,7 +75,7 @@ class ExceptCombinationTest extends TestCase
      *
      * @param BusinessTimeConstraint[] $exceptions
      */
-    public function testExceptSomeMatch(array $exceptions): void
+    public function testExceptSomeMatch(array $exceptions)
     {
         // Given we have a constraint which matches a business time;
         $time = $this->wednesdayOnePm();

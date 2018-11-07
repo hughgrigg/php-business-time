@@ -23,7 +23,7 @@ class BusinessDaysTest extends TestCase
         string $startTime,
         string $endTime,
         array $expectedBusinessDays
-    ): void {
+    ) {
         // Given we have a business time period with a particular start and end;
         $timePeriod = BusinessTimePeriod::fromStrings($startTime, $endTime);
 
@@ -76,7 +76,7 @@ class BusinessDaysTest extends TestCase
         string $startTime,
         string $endTime,
         array $expectedBusinessDays
-    ): void {
+    ) {
         // Given we have a business time period with a particular start and end;
         $timePeriod = BusinessTimePeriod::fromStrings($startTime, $endTime);
 
@@ -120,7 +120,7 @@ class BusinessDaysTest extends TestCase
         string $startTime,
         string $endTime,
         array $expectedDays
-    ): void {
+    ) {
         // Given we have a business time period with a particular start and end;
         $timePeriod = BusinessTimePeriod::fromStrings($startTime, $endTime);
 

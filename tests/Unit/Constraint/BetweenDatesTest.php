@@ -24,7 +24,7 @@ class BetweenDatesTest extends TestCase
         string $minDate,
         string $maxDate,
         bool $shouldMatch
-    ): void {
+    ) {
         // Given we have a business time;
         $businessTime = new BusinessTime($time);
 

@@ -17,7 +17,7 @@ class WeekDaysTest extends TestCase
      * @param string $time
      * @param bool   $shouldMatch
      */
-    public function testWeekends(string $time, bool $shouldMatch): void
+    public function testWeekends(string $time, bool $shouldMatch)
     {
         // Given we have a business time;
         $businessTime = new BusinessTime($time);

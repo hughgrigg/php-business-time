@@ -21,7 +21,7 @@ class SubPeriodsTest extends TestCase
         string $startTime,
         string $endTime,
         array $expectedBusinessPeriodTimings
-    ): void {
+    ) {
         // Given we have a business time period with a start and end time;
         $timePeriod = BusinessTimePeriod::fromStrings($startTime, $endTime);
 
@@ -100,7 +100,7 @@ class SubPeriodsTest extends TestCase
         string $startTime,
         string $endTime,
         array $expectedNonBusinessPeriodTimings
-    ): void {
+    ) {
         // Given we have a business time period with a start and end time;
         $timePeriod = BusinessTimePeriod::fromStrings($startTime, $endTime);
 
@@ -179,7 +179,7 @@ class SubPeriodsTest extends TestCase
         string $startTime,
         string $endTime,
         array $expectedSubPeriodTimings
-    ): void {
+    ) {
         // Given we have a business time period with a start and end time;
         $timePeriod = BusinessTimePeriod::fromStrings($startTime, $endTime);
 

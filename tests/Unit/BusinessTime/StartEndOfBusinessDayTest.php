@@ -23,7 +23,7 @@ class StartEndOfBusinessDayTest extends TestCase
     public function testStartOfBusinessDayDefault(
         string $time,
         string $expectedStartOfBusinessDay
-    ): void {
+    ) {
         // Given we have a business time for a particular time;
         $businessTime = new BusinessTime($time);
 
@@ -79,7 +79,7 @@ class StartEndOfBusinessDayTest extends TestCase
     public function testEndOfBusinessDayDefault(
         string $time,
         string $expectedEndOfBusinessDay
-    ): void {
+    ) {
         // Given we have a business time for a particular time;
         $businessTime = new BusinessTime($time);
 

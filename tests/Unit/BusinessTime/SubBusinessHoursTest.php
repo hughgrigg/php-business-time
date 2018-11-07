@@ -23,7 +23,7 @@ class SubBusinessHoursTest extends TestCase
     public function testSubBusinessHourDefault(
         string $time,
         string $expectedNewTime
-    ): void {
+    ) {
         // Given we have a business time for a specific time;
         $businessTime = new BusinessTime($time);
 
@@ -82,7 +82,7 @@ class SubBusinessHoursTest extends TestCase
         string $time,
         float $businessHoursToSub,
         string $expectedNewTime
-    ): void {
+    ) {
         // Given we have a business time for a specific time;
         $businessTime = new BusinessTime($time);
 

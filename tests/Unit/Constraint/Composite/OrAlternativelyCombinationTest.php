@@ -23,7 +23,7 @@ class OrAlternativelyCombinationTest extends TestCase
      *
      * @param BusinessTimeConstraint[] $alternatives
      */
-    public function testOrAlternativelyAllMatch(array $alternatives): void
+    public function testOrAlternativelyAllMatch(array $alternatives)
     {
         // Given we have a constraint which does not match a business time;
         $time = $this->wednesdayOnePm();
@@ -49,7 +49,7 @@ class OrAlternativelyCombinationTest extends TestCase
      *
      * @param BusinessTimeConstraint[] $alternatives
      */
-    public function testOrAlternativelyNoneMatch(array $alternatives): void
+    public function testOrAlternativelyNoneMatch(array $alternatives)
     {
         // Given we have a constraint which does not match a business time;
         $time = $this->wednesdayOnePm();
@@ -75,7 +75,7 @@ class OrAlternativelyCombinationTest extends TestCase
      *
      * @param BusinessTimeConstraint[] $alternatives
      */
-    public function testOrAlternativelySomeMatch(array $alternatives): void
+    public function testOrAlternativelySomeMatch(array $alternatives)
     {
         // Given we have a constraint which does not match a business time;
         $time = $this->wednesdayOnePm();
