@@ -129,8 +129,6 @@ class RecurringDeadline
             }
             $time = $time->add($time->precision());
         }
-
-        return null;
     }
 
     /**

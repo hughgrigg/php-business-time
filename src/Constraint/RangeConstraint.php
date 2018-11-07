@@ -40,7 +40,7 @@ abstract class RangeConstraint implements
 
         // Allow backwards order.
         if ($min > $max) {
-            list ($min, $max) = [$max, $min];
+            list($min, $max) = [$max, $min];
         }
 
         $this->min = $min;

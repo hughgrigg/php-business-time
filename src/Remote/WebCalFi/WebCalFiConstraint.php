@@ -66,7 +66,5 @@ class WebCalFiConstraint implements BusinessTimeConstraint, BusinessTimeNarrator
         if (isset($this->dates[$time->format(self::FORMAT)])) {
             return $this->dates[$time->format(self::FORMAT)];
         }
-
-        return null;
     }
 }
