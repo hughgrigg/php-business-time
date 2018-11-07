@@ -4,7 +4,7 @@
     "version": "1.0.1",
     "type": "library",
     "require": {
-        "php": "^7.2",
+        "php": "^7.1",
         "nesbot/carbon": "^1.25"
     },
     "require-dev": {
