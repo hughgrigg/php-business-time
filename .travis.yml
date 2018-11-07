@@ -1,7 +1,12 @@
 language: php
+
 php:
-  - '7.2'
+  - 7.1
+  - 7.2
+  - 7.3
+
 script:
   - make coverage
+
 after_success:
   - travis_retry php vendor/bin/php-coveralls -v
