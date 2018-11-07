@@ -1,15 +1,15 @@
 .PHONY: test
-test: src tests vendor
+test: src tests vendor/autoload.php
 	./vendor/phpmd/phpmd/src/bin/phpmd src text \
 		controversial,design,naming,unusedcode
 	./vendor/squizlabs/php_codesniffer/bin/phpcs --standard=PSR2 --colors src
 	./vendor/phpunit/phpunit/phpunit
 
-vendor: composer.lock
+vendor/autoload.php:
 	composer install
 
 .PHONY: coverage
-coverage: src tests vendor
+coverage: src tests vendor/autoload.php
 	mkdir -p build
 	rm -rf build/*
 	./vendor/phpmd/phpmd/src/bin/phpmd src text \
