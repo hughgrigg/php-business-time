@@ -2,10 +2,10 @@
 
 namespace BusinessTime\Tests\Unit\BusinessTime;
 
+use BusinessTime\BusinessTime;
 use BusinessTime\Interval;
 use Carbon\Carbon;
 use PHPUnit\Framework\TestCase;
-use BusinessTime\BusinessTime;
 
 /**
  * Test that business time calculations work correctly in different timezones.
