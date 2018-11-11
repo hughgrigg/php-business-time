@@ -21,8 +21,12 @@ class PrecisionTest extends TestCase
         $time = new BusinessTime();
 
         // Then the precision should be 1 hour.
-        self::assertSame('1 hour', $time->precision()->forHumans());
-        self::assertSame(1.0, $time->precision()->inHours());
+        self::assertEquals(
+            1.0,
+            $time->precision()->inHours(),
+            'Should be 1 hour',
+            2
+        );
     }
 
     /**
@@ -31,11 +35,11 @@ class PrecisionTest extends TestCase
      * @dataProvider setPrecisionProvider
      *
      * @param DateInterval $precision
-     * @param string       $expectedDescription
+     * @param int          $expectedSeconds
      */
     public function testSetPrecision(
         DateInterval $precision,
-        string $expectedDescription
+        int $expectedSeconds
     ) {
         // Given we have a business time instance;
         $time = new BusinessTime();
@@ -44,7 +48,12 @@ class PrecisionTest extends TestCase
         $time->setPrecision($precision);
 
         // Then the precision should be as expected.
-        self::assertSame($expectedDescription, $time->precision()->forHumans());
+        self::assertEquals(
+            $expectedSeconds,
+            $time->precision()->inSeconds(),
+            "Should be {$expectedSeconds} seconds",
+            2
+        );
     }
 
     /**
@@ -53,10 +62,10 @@ class PrecisionTest extends TestCase
     public function setPrecisionProvider(): array
     {
         return [
-            [Interval::second(), '1 second'],
-            [Interval::minute(), '1 minute'],
-            [Interval::seconds(90), '1 minute 30 seconds'],
-            [Interval::hour(), '1 hour'],
+            [Interval::second(), 1],
+            [Interval::minute(), 60],
+            [Interval::seconds(90), 90],
+            [Interval::hour(), 3600],
         ];
     }
 
