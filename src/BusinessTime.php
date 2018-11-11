@@ -406,11 +406,22 @@ class BusinessTime extends Carbon
      */
     public function floor(DateInterval $precision = null): self
     {
-        $seconds = Interval::instance($precision ?: $this->precision())
-            ->inSeconds();
+        $precisionSeconds = Interval::instance($precision ?: $this->precision())
+                                    ->inSeconds();
+
+        // Allow for sub-hour timezone differences:
+        // Add the timezone remainder, floor, then take the remainder back off.
+        $timezoneOffset = $this->getTimezone()->getOffset(new Carbon());
+        $timezoneRemainder = $timezoneOffset % 3600;
 
         return $this->copy()->setTimestamp(
-            (int) (floor($this->timestamp / $seconds) * $seconds)
+            (int) (
+                floor(
+                    (
+                        $this->timestamp + $timezoneRemainder
+                    ) / $precisionSeconds
+                ) * $precisionSeconds
+            ) - $timezoneRemainder
         );
     }
 
@@ -425,11 +436,22 @@ class BusinessTime extends Carbon
      */
     public function round(DateInterval $precision = null): self
     {
-        $seconds = Interval::instance($precision ?: $this->precision())
-            ->inSeconds();
+        $precisionSeconds = Interval::instance($precision ?: $this->precision())
+                                    ->inSeconds();
+
+        // Allow for sub-hour timezone differences:
+        // Add the timezone remainder, round, then take the remainder back off.
+        $timezoneOffset = $this->getTimezone()->getOffset(new Carbon());
+        $timezoneRemainder = $timezoneOffset % 3600;
 
         return $this->copy()->setTimestamp(
-            (int) (round($this->timestamp / $seconds) * $seconds)
+            (int) (
+                round(
+                    (
+                        $this->timestamp + $timezoneRemainder
+                    ) / $precisionSeconds
+                ) * $precisionSeconds
+            ) - $timezoneRemainder
         );
     }
 
@@ -448,10 +470,21 @@ class BusinessTime extends Carbon
     public function ceil(DateInterval $precision = null): self
     {
         $seconds = Interval::instance($precision ?: $this->precision())
-            ->inSeconds();
+                           ->inSeconds();
+
+        // Allow for sub-hour timezone differences:
+        // Add the timezone remainder, ceil, then take the remainder back off.
+        $timezoneOffset = $this->getTimezone()->getOffset(new Carbon());
+        $timezoneRemainder = $timezoneOffset % 3600;
 
         return $this->copy()->setTimestamp(
-            (int) (ceil($this->timestamp / $seconds) * $seconds)
+            (int) (
+                ceil(
+                    (
+                        $this->timestamp + $timezoneRemainder
+                    ) / $seconds
+                ) * $seconds
+            ) - $timezoneRemainder
         );
     }
 
@@ -522,8 +555,8 @@ ERR
 
         return $this->setLengthOfBusinessDay(
             $this->copy()
-                ->setTimestamp($typicalDay->startOfDay()->getTimestamp())
-                ->diffBusiness($typicalDay->endOfDay())
+                 ->setTimestamp($typicalDay->startOfDay()->getTimestamp())
+                 ->diffBusiness($typicalDay->endOfDay())
         );
     }
 
