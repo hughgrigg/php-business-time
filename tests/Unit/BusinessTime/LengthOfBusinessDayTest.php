@@ -25,12 +25,18 @@ class LengthOfBusinessDayTest extends TestCase
         $time = new BusinessTime();
 
         // Then the length of a business day should be 8 hours.
-        self::assertSame(
-            '8 hours',
-            $time->lengthOfBusinessDay()->forHumans()
+        self::assertEquals(
+            8,
+            $time->lengthOfBusinessDay()->inHours(),
+            'Should be 8 hours',
+            2
         );
-        self::assertEquals(8, $time->lengthOfBusinessDay()->inHours());
-        self::assertEquals(480, $time->lengthOfBusinessDay()->inMinutes());
+        self::assertEquals(
+            480,
+            $time->lengthOfBusinessDay()->inMinutes(),
+            'Should be 480 minutes',
+            2
+        );
     }
 
     /**
@@ -39,11 +45,11 @@ class LengthOfBusinessDayTest extends TestCase
      * @dataProvider lengthOfBusinessDayProvider
      *
      * @param Interval $length
-     * @param string   $expectedDescription
+     * @param int      $expectedSeconds
      */
     public function testSetLengthOfBusinessDay(
         Interval $length,
-        string $expectedDescription
+        int $expectedSeconds
     ) {
         // Given we have a business time;
         $time = new BusinessTime();
@@ -52,9 +58,11 @@ class LengthOfBusinessDayTest extends TestCase
         $time->setLengthOfBusinessDay($length);
 
         // Then the length of the business day should be adjusted.
-        self::assertSame(
-            $expectedDescription,
-            $time->lengthOfBusinessDay()->forHumans()
+        self::assertEquals(
+            $expectedSeconds,
+            $time->lengthOfBusinessDay()->inSeconds(),
+            "Should be ${expectedSeconds}",
+            2
         );
     }
 
@@ -66,12 +74,12 @@ class LengthOfBusinessDayTest extends TestCase
     public function lengthOfBusinessDayProvider(): array
     {
         return [
-            [Interval::hour(), '1 hour'],
-            [Interval::hours(2), '2 hours'],
-            [Interval::hours(6), '6 hours'],
-            [Interval::hours(18), '18 hours'],
-            [Interval::minutes((8 * 60) + 30), '8 hours 30 minutes'],
-            [Interval::minutes((6 * 60) + 59), '6 hours 59 minutes'],
+            [Interval::hour(), 60 * 60],
+            [Interval::hours(2), 2 * 60 * 60],
+            [Interval::hours(6), 6 * 60 * 60],
+            [Interval::hours(18), 18 * 60 * 60],
+            [Interval::minutes((8 * 60) + 30), 8.5 * 60 * 60],
+            [Interval::minutes((6 * 60) + 59), (6 * 60 * 60) + (59 * 60)],
         ];
     }
 
@@ -82,11 +90,11 @@ class LengthOfBusinessDayTest extends TestCase
      * @dataProvider determineLengthOfBusinessDayProvider
      *
      * @param BusinessTimeConstraint $constraint
-     * @param string                 $expectedDescription
+     * @param int                    $expectedSeconds
      */
     public function testDetermineLengthOfBusinessDay(
         BusinessTimeConstraint $constraint,
-        string $expectedDescription
+        int $expectedSeconds
     ) {
         // Given we have a business time with certain constraints;
         $time = new BusinessTime();
@@ -96,9 +104,11 @@ class LengthOfBusinessDayTest extends TestCase
         $time->determineLengthOfBusinessDay();
 
         // Then the determined length of a business day should be as expected.
-        self::assertSame(
-            $expectedDescription,
-            $time->lengthOfBusinessDay()->forHumans()
+        self::assertEquals(
+            $expectedSeconds,
+            $time->lengthOfBusinessDay()->inSeconds(),
+            "Should be {$expectedSeconds}",
+            2
         );
     }
 
@@ -111,32 +121,32 @@ class LengthOfBusinessDayTest extends TestCase
     public function determineLengthOfBusinessDayProvider(): array
     {
         return [
-            [new BetweenHoursOfDay(9, 17), '8 hours'],
-            [new BetweenHoursOfDay(9, 12), '3 hours'],
-            [new BetweenHoursOfDay(8, 18), '10 hours'],
-            [new BetweenHoursOfDay(0, 23), '23 hours'],
-            [new BetweenHoursOfDay(0, 24), '1 day'],
-            [new WeekDays(), '1 day'],
+            [new BetweenHoursOfDay(9, 17), 8 * 60 * 60],
+            [new BetweenHoursOfDay(9, 12), 3 * 60 * 60],
+            [new BetweenHoursOfDay(8, 18), 10 * 60 * 60],
+            [new BetweenHoursOfDay(0, 23), 23 * 60 * 60],
+            [new BetweenHoursOfDay(0, 24), 24 * 60 * 60],
+            [new WeekDays(), 24 * 60 * 60],
             [
                 new All(
                     new WeekDays(),
                     new BetweenHoursOfDay(9, 17)
                 ),
-                '8 hours',
+                8 * 60 * 60,
             ],
             [
                 // Exclude lunch time.
                 (new BetweenHoursOfDay(9, 17))->except(
                     new BetweenHoursOfDay(13, 14)
                 ),
-                '7 hours',
+                7 * 60 * 60,
             ],
             [
                 // Multiple periods.
                 (new BetweenHoursOfDay(8, 10))
                     ->orAlternatively(new BetweenHoursOfDay(12, 14))
                     ->orAlternatively(new BetweenHoursOfDay(16, 18)),
-                '6 hours',
+                6 * 60 * 60,
             ],
         ];
     }
