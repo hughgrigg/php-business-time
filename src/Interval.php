@@ -81,21 +81,36 @@ class Interval extends CarbonInterval
      * Normalise instance creation to seconds.
      *
      * @param DateInterval $dateInterval
+     * @param bool         $trimMicroseconds
      *
      * @return static
      */
-    public static function instance(DateInterval $dateInterval): self
-    {
-        return self::seconds(self::intervalToSeconds($dateInterval));
+    public static function instance(
+        DateInterval $dateInterval,
+        $trimMicroseconds = true
+    ): self {
+        return self::seconds(
+            self::intervalToSeconds($dateInterval, $trimMicroseconds)
+        );
     }
 
     /**
-     * @param DateInterval $interval
+     * @param DateInterval $dateInterval
+     * @param bool         $trimMicroseconds
      *
      * @return int
      */
-    public static function intervalToSeconds(DateInterval $interval): int
-    {
-        return (new Carbon())->add($interval)->diffInRealSeconds(new Carbon());
+    public static function intervalToSeconds(
+        DateInterval $dateInterval,
+        $trimMicroseconds = true
+    ): int {
+        $dateInterval->f =
+            $trimMicroseconds ||
+            version_compare(PHP_VERSION, '7.1.0-dev', '<') ? 0 :
+                $dateInterval->f;
+
+        return (new Carbon())->add($dateInterval)->diffInRealSeconds(
+            new Carbon()
+        );
     }
 }
