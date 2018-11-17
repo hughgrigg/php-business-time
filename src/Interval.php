@@ -111,6 +111,7 @@ class Interval extends CarbonInterval
         if ($microseconds) {
             $dateInterval->f = $microseconds;
         }
+
         return (new Carbon())->add($dateInterval)->diffInRealSeconds(
             new Carbon()
         );
