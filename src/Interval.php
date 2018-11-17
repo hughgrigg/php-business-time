@@ -104,13 +104,11 @@ class Interval extends CarbonInterval
         DateInterval $dateInterval,
         $trimMicroseconds = true
     ): int {
-        $microseconds =
+        $dateInterval->f =
             $trimMicroseconds ||
             version_compare(PHP_VERSION, '7.1.0-dev', '<') ? 0 :
                 $dateInterval->f;
-        if ($microseconds) {
-            $dateInterval->f = $microseconds;
-        }
+
         return (new Carbon())->add($dateInterval)->diffInRealSeconds(
             new Carbon()
         );
