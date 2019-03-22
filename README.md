@@ -69,19 +69,19 @@ You'll probably be dealing with business days most often.
 You can add or subtract business days from a given starting date:
 
 ```php
-$friday = new BusinessTime\BusinessTime('Friday');
+$friday = new BusinessTime\BusinessTime('Friday 10am');
 $nextBusinessDay = $friday->addBusinessDay();
-// = Monday
+// = Monday 10am
 $threeBusinessDays = $friday->addBusinessDays(3);
-// = Wednesday
+// = Wednesday 10am
 ```
 
 ```php
-$monday = new BusinessTime\BusinessTime('Monday');
+$monday = new BusinessTime\BusinessTime('Monday 10am');
 $previousBusinessDay = $now->subBusinessDay();
-// = Friday
+// = Friday 10am
 $threeBusinessDaysAgo = $now->subBusinessDays(3);
-// = Wednesday
+// = Wednesday 10am
 ```
 
 #### Diff in business days
