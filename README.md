@@ -20,6 +20,8 @@ specified directly or with constraint-matching.
 
 [Official music video for this library](https://www.youtube.com/watch?v=WGOohBytKTU)
 
+[BusinessTime in TypeScript](https://github.com/freetrade-io/ts-business-time "Business time / market hours logic for TypeScript")
+
 ## Contents
 
   * [Installation](#installation)
