@@ -73,8 +73,9 @@ class Interval extends CarbonInterval
      * @param int  $parts
      * @param null $options
      *
-     * @return string
      * @throws \Exception
+     *
+     * @return string
      *
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
