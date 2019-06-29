@@ -39,7 +39,7 @@ class TimeZoneTest extends TestCase
         $businessTime = $businessTime->setTimezone($timezone);
 
         // When we floor it to the nearest hour.
-        $floored = $businessTime->floor(Interval::hour());
+        $floored = $businessTime->floorToPrecision(Interval::hour());
 
         // Then we should get the expected floored time.
         self::assertSame(
@@ -73,7 +73,7 @@ MSG
         $businessTime = $businessTime->setTimezone($timezone);
 
         // When we round it to the nearest hour.
-        $floored = $businessTime->round(Interval::hour());
+        $floored = $businessTime->roundToPrecision(Interval::hour());
 
         // Then we should get the expected rounded time.
         self::assertSame(
@@ -107,7 +107,7 @@ MSG
         $businessTime = $businessTime->setTimezone($timezone);
 
         // When we round it to the nearest hour.
-        $floored = $businessTime->round(Interval::hour());
+        $floored = $businessTime->roundToPrecision(Interval::hour());
 
         // Then we should get the expected rounded time.
         self::assertSame(
@@ -141,7 +141,7 @@ MSG
         $businessTime = $businessTime->setTimezone($timezone);
 
         // When we ceil it to the nearest hour.
-        $floored = $businessTime->ceil(Interval::hour());
+        $floored = $businessTime->ceilToPrecision(Interval::hour());
 
         // Then we should get the expected rounded time.
         self::assertSame(
