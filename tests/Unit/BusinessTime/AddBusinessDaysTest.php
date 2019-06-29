@@ -57,6 +57,7 @@ class AddBusinessDaysTest extends TestCase
             ['Friday 2018-05-18 14:00', 'Monday 2018-05-21 14:00'],
             ['Saturday 2018-05-19 15:00', 'Monday 2018-05-21 17:00'],
             ['Sunday 2018-05-20 16:00', 'Monday 2018-05-21 17:00'],
+            ['Friday 2019-06-28 00:00', 'Monday 2019-07-01 00:00'],
         ];
     }
 
@@ -108,8 +109,14 @@ class AddBusinessDaysTest extends TestCase
             ['Monday 2018-05-14 09:00', 1.5, 'Tuesday 2018-05-15 13:00'],
             ['Monday 2018-05-14 09:00', 1.75, 'Tuesday 2018-05-15 15:00'],
             ['Monday 2018-05-14 09:00', 2, 'Wednesday 2018-05-16 09:00'],
-            // From Friday evening.
+            // From Friday morning.
             ['Friday 2018-05-18 00:00', 0, 'Friday 2018-05-18 00:00'],
+            ['Friday 2018-05-18 00:00', 0.25, 'Friday 2018-05-18 11:00'],
+            ['Friday 2018-05-18 00:00', 0.5, 'Friday 2018-05-18 13:00'],
+            ['Friday 2018-05-18 00:00', 0.75, 'Friday 2018-05-18 15:00'],
+            ['Friday 2018-05-18 00:00', 1, 'Monday 2018-05-21 00:00'],
+            ['Friday 2018-05-18 00:00', 1.25, 'Monday 2018-05-21 11:00'],
+            // From Friday evening.
             ['Friday 2018-05-18 17:00', 0, 'Friday 2018-05-18 17:00'],
             ['Friday 2018-05-18 17:00', 0.25, 'Monday 2018-05-21 11:00'],
             ['Friday 2018-05-18 17:00', 0.5, 'Monday 2018-05-21 13:00'],
@@ -132,5 +139,20 @@ class AddBusinessDaysTest extends TestCase
             ['Friday 2018-05-18 17:00', -1.75, 'Thursday 2018-05-17 11:00'],
             ['Friday 2018-05-18 17:00', -2, 'Wednesday 2018-05-16 17:00'],
         ];
+    }
+
+    /**
+     * The addBusinessDay method should always return a business day.
+     */
+    public function testAlwaysEndsOnBusinessDay()
+    {
+        // Given we have a business time for Friday;
+        $businessTime = new BusinessTime('Friday');
+
+        // When we add one business day to it;
+        $addDay = $businessTime->addBusinessDay();
+
+        // Then it should be Monday.
+        self::assertEquals('Monday', $addDay->format('l'));
     }
 }

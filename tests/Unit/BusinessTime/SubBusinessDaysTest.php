@@ -58,6 +58,7 @@ class SubBusinessDaysTest extends TestCase
             ['Monday 2018-05-21 13:00', 'Friday 2018-05-18 13:00'],
             ['Sunday 2018-05-20 11:00', 'Friday 2018-05-18 09:00'],
             ['Saturday 2018-05-19 10:00', 'Friday 2018-05-18 09:00'],
+            ['Monday 2018-05-21 17:00', 'Friday 2018-05-18 17:00'],
         ];
     }
 
@@ -114,6 +115,19 @@ class SubBusinessDaysTest extends TestCase
             ['Monday 2018-05-21 09:00', 1.5, 'Thursday 2018-05-17 13:00'],
             ['Monday 2018-05-21 09:00', 1.75, 'Thursday 2018-05-17 11:00'],
             ['Monday 2018-05-21 09:00', 2, 'Thursday 2018-05-17 09:00'],
+            // From Monday evening.
+            ['Monday 2018-05-21 17:00', 0, 'Monday 2018-05-21 17:00'],
+            ['Monday 2018-05-21 18:00', 0, 'Monday 2018-05-21 18:00'],
+            ['Monday 2018-05-21 18:00', 0.25, 'Monday 2018-05-21 15:00'],
+            ['Monday 2018-05-21 18:00', 0.5, 'Monday 2018-05-21 13:00'],
+            ['Monday 2018-05-21 18:00', 0.75, 'Monday 2018-05-21 11:00'],
+            ['Monday 2018-05-21 18:00', 1, 'Friday 2018-05-18 18:00'],
+            ['Monday 2018-05-21 18:00', 1.25, 'Friday 2018-05-18 15:00'],
+            ['Monday 2018-05-21 18:00', 1.5, 'Friday 2018-05-18 13:00'],
+            ['Monday 2018-05-21 18:00', 1.75, 'Friday 2018-05-18 11:00'],
+            ['Monday 2018-05-21 18:00', 2, 'Friday 2018-05-18 09:00'],
+            ['Monday 2018-05-21 18:00', 2.5, 'Thursday 2018-05-17 13:00'],
+            ['Monday 2018-05-21 18:00', 3, 'Thursday 2018-05-17 09:00'],
             // Negative values.
             ['Wednesday 2018-05-23 13:00', -0, 'Wednesday 2018-05-23 13:00'],
             ['Wednesday 2018-05-23 13:00', -0.25, 'Wednesday 2018-05-23 15:00'],
@@ -125,5 +139,20 @@ class SubBusinessDaysTest extends TestCase
             ['Wednesday 2018-05-23 13:00', -1.75, 'Friday 2018-05-25 11:00'],
             ['Wednesday 2018-05-23 13:00', -2, 'Friday 2018-05-25 13:00'],
         ];
+    }
+
+    /**
+     * The subBusinessDay method should always return a business day.
+     */
+    public function testAlwaysEndsOnBusinessDay()
+    {
+        // Given we have a business time for Monday;
+        $businessTime = new BusinessTime('Monday');
+
+        // When we subtract one business day from it;
+        $addDay = $businessTime->subBusinessDay();
+
+        // Then it should be Friday.
+        self::assertEquals('Friday', $addDay->format('l'));
     }
 }
