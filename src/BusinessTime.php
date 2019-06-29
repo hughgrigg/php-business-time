@@ -121,6 +121,11 @@ class BusinessTime extends Carbon
             $next = $next->add($this->precision());
         }
 
+        // Ensure we always end on a business day.
+        while (!$next->isBusinessDay()) {
+            $next = $next->addDay();
+        }
+
         return $next;
     }
 
@@ -174,6 +179,11 @@ class BusinessTime extends Carbon
             if ($prev->isBusinessTime()) {
                 $businessDaysToSub -= $decrement;
             }
+        }
+
+        // Ensure we always end on a business day.
+        while (!$prev->isBusinessDay()) {
+            $prev = $prev->subDay();
         }
 
         return $prev;
