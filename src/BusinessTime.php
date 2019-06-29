@@ -46,7 +46,22 @@ class BusinessTime extends Carbon
      */
     public function isBusinessDay(): bool
     {
-        return $this->startOfBusinessDay()->isSameDay($this);
+        // Must be a business day if it's business time right now.
+        if ($this->isBusinessTime()) {
+            return true;
+        }
+
+        // Iterate from the beginning of the day until we hit business time.
+        $time = $this->copy()->startOfDay();
+        $end = $this->copy()->endOfDay();
+        while ($time->lt($end)) {
+            if ($time->isBusinessTime()) {
+                return true;
+            }
+            $time = $time->add($this->precision());
+        }
+
+        return false;
     }
 
     /**
