@@ -68,13 +68,24 @@ class Interval extends CarbonInterval
      * intervals is to use whichever arbitrary units they are specified in,
      * leading to e.g. "480 minutes" instead of "8 hours".
      *
+     * @param bool $syntax
      * @param bool $short
+     * @param int  $parts
+     * @param null $options
+     *
+     * @throws \Exception
      *
      * @return string
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
-    public function forHumans($short = false): string
-    {
-        return (new Carbon())->add($this)->diffForHumans(null, true, $short, 2);
+    public function forHumans(
+        $syntax = true,
+        $short = false,
+        $parts = 2,
+        $options = null
+    ): string {
+        return (new Carbon())->add($this)->diffForHumans(null, $syntax, $short, $parts);
     }
 
     /**

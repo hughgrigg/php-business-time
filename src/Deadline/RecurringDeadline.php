@@ -53,7 +53,7 @@ class RecurringDeadline
             $time = $time->add($time->precision());
         }
 
-        return $time->floor();
+        return $time->floorToPrecision();
     }
 
     /**
@@ -81,7 +81,7 @@ class RecurringDeadline
             $time = $time->sub($time->precision());
         }
 
-        return $time->floor();
+        return $time->floorToPrecision();
     }
 
     /**
@@ -125,7 +125,7 @@ class RecurringDeadline
         $time = $start->copy();
         while ($time->lte($end)) {
             if ($this->isDeadline($time)) {
-                return $time->floor();
+                return $time->floorToPrecision();
             }
             $time = $time->add($time->precision());
         }

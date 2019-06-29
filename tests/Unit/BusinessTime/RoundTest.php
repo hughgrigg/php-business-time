@@ -36,7 +36,7 @@ class RoundTest extends TestCase
         $businessTime = new BusinessTime($time);
 
         // When we floor it to a precision interval.
-        $floored = $businessTime->floor($precision);
+        $floored = $businessTime->floorToPrecision($precision);
 
         // Then we should get the expected floored time.
         self::assertSame(
@@ -95,7 +95,7 @@ class RoundTest extends TestCase
         $businessTime = new BusinessTime($time);
 
         // When we round it to a precision interval.
-        $rounded = $businessTime->round($precision);
+        $rounded = $businessTime->roundToPrecision($precision);
 
         // Then we should get the expected rounded time.
         self::assertSame(
@@ -154,7 +154,7 @@ class RoundTest extends TestCase
         $businessTime = new BusinessTime($time);
 
         // When we ceil it to a precision interval.
-        $ceil = $businessTime->ceil($precision);
+        $ceil = $businessTime->ceilToPrecision($precision);
 
         // Then we should get the expected ceil-ed time.
         self::assertSame(

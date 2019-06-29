@@ -429,7 +429,7 @@ class BusinessTime extends Carbon
      *
      * @return BusinessTime
      */
-    public function floor(DateInterval $precision = null): self
+    public function floorToPrecision(DateInterval $precision = null): self
     {
         $precisionSeconds = Interval::instance($precision ?: $this->precision())
                                     ->inSeconds();
@@ -459,7 +459,7 @@ class BusinessTime extends Carbon
      *
      * @return BusinessTime
      */
-    public function round(DateInterval $precision = null): self
+    public function roundToPrecision(DateInterval $precision = null): self
     {
         $precisionSeconds = Interval::instance($precision ?: $this->precision())
                                     ->inSeconds();
@@ -492,7 +492,7 @@ class BusinessTime extends Carbon
      *
      * @return BusinessTime
      */
-    public function ceil(DateInterval $precision = null): self
+    public function ceilToPrecision(DateInterval $precision = null): self
     {
         $seconds = Interval::instance($precision ?: $this->precision())
                            ->inSeconds();
