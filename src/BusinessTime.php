@@ -375,8 +375,10 @@ class BusinessTime extends Carbon
             /** @var Interval $interval */
             $interval = Interval::seconds(0);
             $interval->seconds = $diffInBusinessTime * $this->precision()->inSeconds();
+
             return $interval;
         }
+
         return Interval::seconds(
             abs($diffInBusinessTime) * $this->precision()->inSeconds()
         );
