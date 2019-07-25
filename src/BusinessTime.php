@@ -369,9 +369,18 @@ class BusinessTime extends Carbon
         DateTimeInterface $time = null,
         bool $absolute = true
     ): Interval {
+        $diffInBusinessTime = $this->diffInBusinessTime($time, $absolute);
+        // Allow for weird behaviour of DateInterval with negatives.
+        if ($diffInBusinessTime < 0 && !$absolute) {
+            /** @var Interval $interval */
+            $interval = Interval::seconds(0);
+            $interval->seconds = $diffInBusinessTime * $this->precision()->inSeconds();
+
+            return $interval;
+        }
+
         return Interval::seconds(
-            $this->diffInBusinessTime($time, $absolute)
-            * $this->precision()->inSeconds()
+            abs($diffInBusinessTime) * $this->precision()->inSeconds()
         );
     }
 
