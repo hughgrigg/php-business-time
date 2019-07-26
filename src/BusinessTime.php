@@ -29,6 +29,9 @@ class BusinessTime extends Carbon
     /** @var Interval */
     private $precision;
 
+    /** @var int */
+    private $iterationLimit = LimitedIterator::DEFAULT_ITERATION_LIMIT;
+
     /**
      * Is it business time?
      *
@@ -54,11 +57,15 @@ class BusinessTime extends Carbon
         // Iterate from the beginning of the day until we hit business time.
         $time = $this->copy()->startOfDay();
         $end = $this->copy()->endOfDay();
+
+        $limit = new LimitedIterator($this->iterationLimit);
         while ($time->lt($end)) {
             if ($time->isBusinessTime()) {
                 return true;
             }
             $time = $time->add($this->precision());
+
+            $limit->next();
         }
 
         return false;
@@ -68,8 +75,6 @@ class BusinessTime extends Carbon
      * Get the date time after adding one whole business day.
      *
      * @see AddBusinessDaysTest
-     *
-     * @throws \InvalidArgumentException
      *
      * @return BusinessTime
      */
@@ -87,8 +92,6 @@ class BusinessTime extends Carbon
      * @see AddBusinessDaysTest
      *
      * @param float $businessDaysToAdd
-     *
-     * @throws \InvalidArgumentException
      *
      * @return BusinessTime
      */
@@ -113,12 +116,15 @@ class BusinessTime extends Carbon
         $decrement = $this->precision()->inDays()
             / $this->lengthOfBusinessDay()->inDays();
 
+        $limit = new LimitedIterator($this->iterationLimit);
         while ($businessDaysToAdd > 0) {
             /* @scrutinizer ignore-call */
             if ($next->isBusinessTime()) {
                 $businessDaysToAdd -= $decrement;
             }
             $next = $next->add($this->precision());
+
+            $limit->next();
         }
 
         // Ensure we always end on a business day.
@@ -134,8 +140,6 @@ class BusinessTime extends Carbon
      *
      * @see SubBusinessDaysTest
      *
-     * @throws \InvalidArgumentException
-     *
      * @return BusinessTime
      */
     public function subBusinessDay(): self
@@ -149,8 +153,6 @@ class BusinessTime extends Carbon
      * @see SubBusinessDaysTest
      *
      * @param float $businessDaysToSub
-     *
-     * @throws \InvalidArgumentException
      *
      * @return BusinessTime
      */
@@ -174,11 +176,14 @@ class BusinessTime extends Carbon
         $decrement = $this->precision()->inDays()
             / $this->lengthOfBusinessDay()->inDays();
 
+        $limit = new LimitedIterator($this->iterationLimit);
         while ($businessDaysToSub > 0) {
             $prev = $prev->sub($this->precision());
             if ($prev->isBusinessTime()) {
                 $businessDaysToSub -= $decrement;
             }
+
+            $limit->next();
         }
 
         // Ensure we always end on a business day.
@@ -194,8 +199,6 @@ class BusinessTime extends Carbon
      *
      * @see AddBusinessHoursTest
      *
-     * @throws \InvalidArgumentException
-     *
      * @return BusinessTime
      */
     public function addBusinessHour(): self
@@ -210,8 +213,6 @@ class BusinessTime extends Carbon
      *
      * @see AddBusinessHoursTest
      *
-     * @throws \InvalidArgumentException
-     *
      * @return BusinessTime
      */
     public function addBusinessHours(float $businessHoursToAdd): self
@@ -223,12 +224,16 @@ class BusinessTime extends Carbon
         /** @var BusinessTime $next */
         $next = $this->copy();
         $decrement = $this->precision()->inHours();
+
+        $limit = new LimitedIterator($this->iterationLimit);
         while ($businessHoursToAdd > 0) {
             /* @scrutinizer ignore-call */
             if ($next->isBusinessTime()) {
                 $businessHoursToAdd -= $decrement;
             }
             $next = $next->add($this->precision());
+
+            $limit->next();
         }
 
         return $next;
@@ -238,8 +243,6 @@ class BusinessTime extends Carbon
      * Get the date time after subtracting one business hour.
      *
      * @see SubBusinessHoursTest
-     *
-     * @throws \InvalidArgumentException
      *
      * @return BusinessTime
      */
@@ -255,8 +258,6 @@ class BusinessTime extends Carbon
      *
      * @param float $businessHoursToSub
      *
-     * @throws \InvalidArgumentException
-     *
      * @return BusinessTime
      */
     public function subBusinessHours(float $businessHoursToSub): self
@@ -267,11 +268,15 @@ class BusinessTime extends Carbon
 
         $prev = $this->copy();
         $decrement = $this->precision()->inHours();
+
+        $limit = new LimitedIterator($this->iterationLimit);
         while ($businessHoursToSub > 0) {
             $prev = $prev->sub($this->precision());
             if ($prev->isBusinessTime()) {
                 $businessHoursToSub -= $decrement;
             }
+
+            $limit->next();
         }
 
         return $prev;
@@ -284,8 +289,6 @@ class BusinessTime extends Carbon
      *
      * @param DateTimeInterface $time
      * @param bool              $absolute
-     *
-     * @throws \InvalidArgumentException
      *
      * @return int
      */
@@ -321,8 +324,6 @@ class BusinessTime extends Carbon
      *
      * @param DateTimeInterface $time
      * @param bool              $absolute
-     *
-     * @throws InvalidArgumentException
      *
      * @return float
      */
@@ -401,8 +402,12 @@ class BusinessTime extends Carbon
     {
         // Iterate from the beginning of the day until we hit business time.
         $start = $this->copy()->startOfDay();
+
+        $limit = new LimitedIterator($this->iterationLimit);
         while (!$start->isBusinessTime()) {
             $start = $start->add($this->precision());
+
+            $limit->next();
         }
 
         return $start;
@@ -417,8 +422,12 @@ class BusinessTime extends Carbon
     {
         // Iterate back from the end of the day until we hit business time.
         $end = $this->copy()->endOfDay();
+
+        $limit = new LimitedIterator($this->iterationLimit);
         while (!$end->isBusinessTime()) {
             $end = $end->sub($this->precision());
+
+            $limit->next();
         }
 
         // Add a second because we've iterated from 23:59:59.
@@ -523,8 +532,6 @@ class BusinessTime extends Carbon
     }
 
     /**
-     * @throws InvalidArgumentException
-     *
      * @return Interval
      */
     public function lengthOfBusinessDay(): Interval
@@ -540,8 +547,6 @@ class BusinessTime extends Carbon
 
     /**
      * @param DateInterval $length
-     *
-     * @throws InvalidArgumentException
      *
      * @return BusinessTime
      */
@@ -570,8 +575,6 @@ ERR
 
     /**
      * @param DateTime $typicalDay
-     *
-     * @throws InvalidArgumentException
      *
      * @return BusinessTime
      */
@@ -656,8 +659,6 @@ ERR
      *
      * @param DateInterval $precision
      *
-     * @throws InvalidArgumentException
-     *
      * @return BusinessTime
      */
     public function setPrecision(DateInterval $precision): self
@@ -690,6 +691,21 @@ ERR
         return (new static())
             ->setTimezone($dti->getTimezone())
             ->setTimestamp($dti->getTimestamp());
+    }
+
+    /**
+     * Set the maximum number of loop iterations when doing business time
+     * operations.
+     *
+     * @param int $iterationLimit
+     *
+     * @return BusinessTime
+     */
+    public function setIterationLimit(int $iterationLimit): self
+    {
+        $this->iterationLimit = $iterationLimit;
+
+        return $this;
     }
 
     /**
@@ -729,12 +745,16 @@ ERR
         /** @var BusinessTime $next */
         /** @scrutinizer ignore-call */
         $next = $start->copy();
+
+        $limit = new LimitedIterator($this->iterationLimit);
         while ($next < $end) {
             /* @scrutinizer ignore-call */
             if ($next->isBusinessTime()) {
                 $diff++;
             }
             $next = $next->add($this->precision());
+
+            $limit->next();
         }
 
         return $diff * $sign;

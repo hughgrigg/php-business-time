@@ -1,7 +1,7 @@
 .PHONY: test
 test: src tests vendor/autoload.php
 	./vendor/phpmd/phpmd/src/bin/phpmd src text \
-		controversial,design,naming,unusedcode
+		controversial,naming,unusedcode
 	./vendor/squizlabs/php_codesniffer/bin/phpcs --standard=PSR2 --colors src
 	./vendor/phpunit/phpunit/phpunit
 
@@ -13,7 +13,7 @@ coverage: src tests vendor/autoload.php
 	mkdir -p build
 	rm -rf build/*
 	./vendor/phpmd/phpmd/src/bin/phpmd src text \
-			controversial,design,naming,unusedcode \
+			controversial,naming,unusedcode \
 			--reportfile ./build/phpmd.xml
 	./vendor/squizlabs/php_codesniffer/bin/phpcs --standard=PSR2 --colors src \
 		--report-file=./build/phpcs.xml
