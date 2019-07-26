@@ -32,7 +32,6 @@ class IterationLimitTest extends TestCase
         self::assertEquals($error->getMessage(), 'Iteration limit of 3 reached.');
     }
 
-
     public function testLimitedIterator()
     {
         // Given we have a limited iterator;
@@ -49,6 +48,7 @@ class IterationLimitTest extends TestCase
         // But when we exceed the limit;
         $limit->rewind();
         $error = null;
+
         try {
             for ($i = 0; $i < 6; $i++) {
                 $limit->next();
