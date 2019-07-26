@@ -19,6 +19,7 @@ class IterationLimitTest extends TestCase
 
         // When we try to add several business hours;
         $error = null;
+
         try {
             $businessTime->addBusinessHours(36);
         } catch (Throwable $e) {
