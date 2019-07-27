@@ -45,6 +45,7 @@ class IterationLimitTest extends TestCase
 
         // Then the iterator should not throw;
         self::assertEquals(5, $limit->key());
+        self::assertTrue($limit->valid());
 
         // But when we exceed the limit;
         $limit->rewind();
@@ -60,5 +61,6 @@ class IterationLimitTest extends TestCase
         // Then an exception should be thrown.
         self::assertInstanceOf(LengthException::class, $error);
         self::assertEquals($error->getMessage(), 'Iteration limit of 5 reached.');
+        self::assertFalse($limit->valid());
     }
 }
