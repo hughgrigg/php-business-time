@@ -17,6 +17,9 @@ class BusinessTimeFactory
     /** @var Interval */
     private $precision;
 
+    /** @var int */
+    private $iterationLimit = LimitedIterator::DEFAULT_ITERATION_LIMIT;
+
     /**
      * @param Interval|null          $precision
      * @param BusinessTimeConstraint ...$constraints
@@ -42,6 +45,7 @@ class BusinessTimeFactory
         $businessTime = new BusinessTime($time);
         $businessTime->setBusinessTimeConstraints(...$this->constraints);
         $businessTime->setPrecision($this->precision);
+        $businessTime->setIterationLimit($this->iterationLimit);
 
         return $businessTime;
     }
@@ -77,6 +81,18 @@ class BusinessTimeFactory
     public function setPrecision(Interval $precision): self
     {
         $this->precision = $precision;
+
+        return $this;
+    }
+
+    /**
+     * @param int $iterationLimit
+     *
+     * @return BusinessTimeFactory
+     */
+    public function setIterationLimit(int $iterationLimit): self
+    {
+        $this->iterationLimit = $iterationLimit;
 
         return $this;
     }

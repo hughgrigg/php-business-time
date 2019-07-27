@@ -22,6 +22,7 @@ class BusinessTimeFactoryTest extends TestCase
         $factory = new BusinessTimeFactory();
         $factory->setConstraints(new DaysOfWeek('Tuesday'));
         $factory->setPrecision(Interval::minutes(30));
+        $factory->setIterationLimit(42);
 
         // When we use it to make a business time instance;
         $businessTime = $factory->make('Wednesday 13:30');
