@@ -14,7 +14,8 @@ use DateTimeInterface;
  */
 class AnyTime implements BusinessTimeConstraint, BusinessTimeNarrator
 {
-    use Combinations, BasicNarration;
+    use Combinations;
+    use BasicNarration;
 
     /**
      * Is the given time business time according to this constraint?
