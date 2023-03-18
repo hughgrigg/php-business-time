@@ -167,7 +167,7 @@ class AddBusinessHoursTest extends TestCase
         $businessTime = new BusinessTime($time);
 
         // And we set specific business time constraints;
-        $businessTime->setBusinessTimeConstraints($constraint);
+        $businessTime->setConstraints($constraint);
 
         // And we have 15-minute precision;
         $businessTime->setPrecision(Interval::minutes(15));

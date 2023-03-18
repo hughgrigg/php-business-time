@@ -43,7 +43,7 @@ class BusinessTimeFactory
     public function make(string $time): BusinessTime
     {
         $businessTime = new BusinessTime($time);
-        $businessTime->setBusinessTimeConstraints(...$this->constraints);
+        $businessTime->setConstraints(...$this->constraints);
         $businessTime->setPrecision($this->precision);
         $businessTime->setIterationLimit($this->iterationLimit);
 

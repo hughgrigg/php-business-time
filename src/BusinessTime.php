@@ -21,7 +21,7 @@ use InvalidArgumentException;
 class BusinessTime extends Carbon
 {
     /** @var All|BusinessTimeConstraint[] */
-    private $businessTimeConstraints;
+    private $constraints;
 
     /** @var Interval */
     private $lengthOfBusinessDay;
@@ -602,10 +602,10 @@ ERR
      *
      * @return BusinessTime
      */
-    public function setBusinessTimeConstraints(
+    public function setConstraints(
         BusinessTimeConstraint ...$constraints
     ): self {
-        $this->businessTimeConstraints = new All(...$constraints);
+        $this->constraints = new All(...$constraints);
 
         return $this;
     }
@@ -617,15 +617,15 @@ ERR
      */
     public function businessTimeConstraints(): All
     {
-        if ($this->businessTimeConstraints === null) {
+        if ($this->constraints === null) {
             // Default to week days 09:00 - 17:00.
-            $this->businessTimeConstraints = new All(
+            $this->constraints = new All(
                 new WeekDays(),
                 new BetweenHoursOfDay(9, 17)
             );
         }
 
-        return $this->businessTimeConstraints;
+        return $this->constraints;
     }
 
     /**
