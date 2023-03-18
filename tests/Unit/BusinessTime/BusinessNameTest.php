@@ -64,7 +64,7 @@ class BusinessNameTest extends TestCase
         $businessTime = new BusinessTime('2018-05-23 13:00');
 
         // And it has no business time constraints;
-        $businessTime->setBusinessTimeConstraints();
+        $businessTime->setConstraints();
 
         // Then a fall-back business time name should be used.
         self::assertSame(

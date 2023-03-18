@@ -2,8 +2,6 @@
 
 [![Build Status](https://travis-ci.org/hughgrigg/php-business-time.svg?branch=master)](https://travis-ci.org/hughgrigg/php-business-time)
 [![Coverage Status](https://coveralls.io/repos/github/hughgrigg/php-business-time/badge.svg)](https://coveralls.io/github/hughgrigg/php-business-time)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/ef5b774bce624ab2b1f3632e9307a909)](https://app.codacy.com/app/hugh_2/php-business-time?utm_source=github.com&utm_medium=referral&utm_content=hughgrigg/php-business-time&utm_campaign=badger)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/hughgrigg/php-business-time/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/hughgrigg/php-business-time/?branch=master)
 [![StyleCI](https://styleci.io/repos/126614310/shield?branch=master)](https://styleci.io/repos/126614310)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
@@ -14,9 +12,8 @@ This library provides an extension for the `Carbon` class in the
 [Carbon](http://carbon.nesbot.com/docs/) date time library.
 
 While Carbon already has methods like `diffInWeekendDays()`, this extension lets
-you handle business time more precisely and flexibly. It can consider public
-holidays from WebCal.fi, as well as your own customised times which can be
-specified directly or with constraint-matching.
+you handle business time more precisely and flexibly. It can use your own
+customised times which can be specified directly or with constraint-matching.
 
 [Official music video for this library](https://www.youtube.com/watch?v=WGOohBytKTU)
 
@@ -41,7 +38,6 @@ specified directly or with constraint-matching.
       - [Custom business time constraints](#custom-business-time-constraints)
       - [Business time constraints example](#business-time-constraints-example)
   * [Incorporating business time data from a remote source](#incorporating-business-time-data-from-a-remote-source)
-    + [WebCal.fi](#webcalfi)
     + [Custom remote sources](#custom-remote-sources)
   * [Recurring business deadlines](#recurring-business-deadlines)
   * [Business time factory](#business-time-factory)
@@ -266,7 +262,7 @@ class like this:
 
 ```php
 $businessTime = new BusinessTime\BusinessTime();
-$businessTime->setBusinessTimeConstraints(
+$businessTime->setConstraints(
     new BusinessTime\Constraint\WeekDays(),
     new BusinessTime\Constraint\BetweenHoursOfDay(9, 17),
 );
@@ -373,7 +369,7 @@ Here's a somewhat complicated example of using business time constraints:
 
 ```php
 $businessTime = new BusinessTime\BusinessTime();
-$businessTime->setBusinessTimeConstraints(
+$businessTime->setConstraints(
     (new BusinessTime\Constraint\BetweenHoursOfDay(10, 18))->except(
         new BusinessTime\Constraint\BetweenTimesOfDay('13:00', '14:00')
     ), // 9-6 every day, with an hour for lunch.
@@ -392,35 +388,6 @@ $businessTime->setBusinessTimeConstraints(
 
 Whilst you could try to set up constraints covering all the public holidays in
 your country, it's probably easier to just retrieve them from a remote source.
-
-BusinessTime supports this for WebCal.fi out of the box.
-
-### WebCal.fi
-
-WebCal.fi is easy to use as its data is provided publicly without any
-authentication. You do need to include the
-[Guzzle](https://github.com/guzzle/guzzle) library in your project to use this,
-though.
-
-```php
-$factory = new BusinessTime\Remote\WebCalFiFactory(
-    new GuzzleHttp\Client(),
-    'https://www.webcal.fi/cal.php?id=83&format=json' // for example
-);
-$dates = $factory->getDates();
-// = array of date objects from the specified calendar.
-$webCalFiConstraint = $factory->makeConstraint();
-// = a constraint containing the retrieved dates and their descriptions.
-```
-
-The constraint will be set up with names and dates from the WebCal.fi calendar
-you specify.
-
-You can find WebCal.fi calendars to suit your needs at e.g.
-https://www.webcal.fi/en-GB/other_file_formats.php
-
-Note that you can also use the `except()` method on the WebCalFi constraint to
-add customised exceptions to the dates it provides.
 
 ### Custom remote sources
 

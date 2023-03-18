@@ -21,11 +21,11 @@ class PrecisionTest extends TestCase
         $time = new BusinessTime();
 
         // Then the precision should be 1 hour.
-        self::assertEquals(
+        self::assertEqualsWithDelta(
             1.0,
             $time->precision()->inHours(),
+            2,
             'Should be 1 hour',
-            2
         );
     }
 
@@ -48,11 +48,11 @@ class PrecisionTest extends TestCase
         $time->setPrecision($precision);
 
         // Then the precision should be as expected.
-        self::assertEquals(
+        self::assertEqualsWithDelta(
             $expectedSeconds,
             $time->precision()->inSeconds(),
-            "Should be {$expectedSeconds} seconds",
-            2
+            2,
+            "Should be $expectedSeconds seconds",
         );
     }
 
@@ -98,7 +98,7 @@ class PrecisionTest extends TestCase
         );
 
         // Then we should get the expected diff.
-        self::assertEquals($expectedHoursDiff, $diff, '', 0.01);
+        self::assertEqualsWithDelta($expectedHoursDiff, $diff, 0.01);
     }
 
     /**

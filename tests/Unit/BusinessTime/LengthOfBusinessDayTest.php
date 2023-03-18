@@ -25,17 +25,17 @@ class LengthOfBusinessDayTest extends TestCase
         $time = new BusinessTime();
 
         // Then the length of a business day should be 8 hours.
-        self::assertEquals(
+        self::assertEqualsWithDelta(
             8,
             $time->lengthOfBusinessDay()->inHours(),
-            'Should be 8 hours',
-            2
+            2,
+            'Should be 8 hours'
         );
-        self::assertEquals(
+        self::assertEqualsWithDelta(
             480,
             $time->lengthOfBusinessDay()->inMinutes(),
-            'Should be 480 minutes',
-            2
+            2,
+            'Should be 480 minutes'
         );
     }
 
@@ -49,7 +49,7 @@ class LengthOfBusinessDayTest extends TestCase
      */
     public function testSetLengthOfBusinessDay(
         Interval $length,
-        int $expectedSeconds
+        int|float $expectedSeconds
     ) {
         // Given we have a business time;
         $time = new BusinessTime();
@@ -58,11 +58,11 @@ class LengthOfBusinessDayTest extends TestCase
         $time->setLengthOfBusinessDay($length);
 
         // Then the length of the business day should be adjusted.
-        self::assertEquals(
+        self::assertEqualsWithDelta(
             $expectedSeconds,
             $time->lengthOfBusinessDay()->inSeconds(),
-            "Should be ${expectedSeconds}",
-            2
+            2,
+            "Should be $expectedSeconds"
         );
     }
 
@@ -98,17 +98,17 @@ class LengthOfBusinessDayTest extends TestCase
     ) {
         // Given we have a business time with certain constraints;
         $time = new BusinessTime();
-        $time->setBusinessTimeConstraints($constraint);
+        $time->setConstraints($constraint);
 
         // When we determine the length of a business day;
         $time->determineLengthOfBusinessDay();
 
         // Then the determined length of a business day should be as expected.
-        self::assertEquals(
+        self::assertEqualsWithDelta(
             $expectedSeconds,
             $time->lengthOfBusinessDay()->inSeconds(),
-            "Should be {$expectedSeconds}",
-            2
+            2,
+            "Should be $expectedSeconds"
         );
     }
 
@@ -135,7 +135,7 @@ class LengthOfBusinessDayTest extends TestCase
                 8 * 60 * 60,
             ],
             [
-                // Exclude lunch time.
+                // Exclude lunchtime.
                 (new BetweenHoursOfDay(9, 17))->except(
                     new BetweenHoursOfDay(13, 14)
                 ),

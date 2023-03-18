@@ -12,7 +12,7 @@ use PHPUnit\Framework\TestCase;
  */
 class TimeZoneTest extends TestCase
 {
-    public function tearDown()
+    public function tearDown(): void
     {
         parent::tearDown();
 

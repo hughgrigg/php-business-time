@@ -4,3 +4,4 @@ build/
 coverage/
 .idea/
 composer.lock
+*.cache
